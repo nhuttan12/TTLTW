@@ -31,15 +31,14 @@ public class DBUser {
 				int USER_ID = rs.getInt("USER_ID");
 				String USER_NAME = rs.getString("USER_NAME");
 				String PASSWORD = rs.getString("PASSWORD");
-				String NAME = rs.getString("NAME");
+				String NAME = rs.getString("FULL_NAME");
 				String PHONE = rs.getString("PHONE");
 				String GENDER = rs.getString("GENDER");
 				String MESSAGE = rs.getString("MESSAGE");
-				int ROLE = rs.getInt("ROLE");
-				int SHOPPINGCART_ID = rs.getInt("SHOPPINGCART_ID");
+				int ROLE = rs.getInt("ROLE_ID");
 				String EMAIL = rs.getString("EMAIL");
-				int STATUS = rs.getInt("STATUS");
-				User user = new User(USER_ID, NAME, PASSWORD, NAME, PHONE, GENDER, MESSAGE, ROLE, SHOPPINGCART_ID,
+				int STATUS = rs.getInt("STATUS_USER_ID");
+				User user = new User(USER_ID, NAME, PASSWORD, NAME, PHONE, GENDER, MESSAGE, ROLE,
 						EMAIL, STATUS);
 				System.out.println("ok!!!");
 				return user;

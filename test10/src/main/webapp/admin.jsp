@@ -57,10 +57,9 @@ img {
 		if (confirm("Are you Logout?")) {
 			window.location = "logout";
 		}
-		function doAddItem() {
-			window.location = "addItem";
-		}
-		
+	}
+	function doAddItem() {
+		window.location = "addItem";
 	}
 </script>
 </head>
@@ -121,7 +120,10 @@ img {
 							<th>ID</th>
 							<th>TYPE</th>
 							<th>NAME</th>
-							<th>PRICE</th>
+							<th>SALE PRICE</th>
+							<th>IMPORT PRICE</th>
+							<th>DIFFERENCE</th>
+							<th>DISCOUNT</th>
 							<th>QUANITY</th>
 							<th>ACTION</th>
 						</tr>
@@ -131,7 +133,10 @@ img {
 								<td>${i.type}</td>
 								<td>${i.name}</td>
 								<td>${i.unitPrice}</td>
-								<td>${i.quantityAvailable}</td>
+								<td>${i.importPrice}</td>
+								<td>${i.difference}</td>
+								<td>${i.discount}</td>
+								<td>${i.quantity}</td>
 								<td><a class="s" href="edit?id=${i.id}&gr=spcart"> <img
 										width="20px" alt="" src="images/edit2.png"></a> <a class="s"
 									href="#" onclick="doDelete('${i.id}','item')"> <img width="20px"

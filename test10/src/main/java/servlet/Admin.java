@@ -47,7 +47,7 @@ public class Admin extends HttpServlet {
 
 			
 		}else if(gr.equals("item")) {//quan ly san pham
-			items=dbItem.getAllItem();
+			items=dbItem.getItemForAdmin();
 			req.setAttribute("listItem", items);
 			req.setAttribute("item","item");
 
@@ -123,7 +123,7 @@ public class Admin extends HttpServlet {
 
 			
 		}else if(gr.equals("item")) {//quan ly san pham
-			items=dbItem.getAllItem();
+			items=dbItem.getItemForAdmin();
 			req.setAttribute("listItem", items);
 			req.setAttribute("item","item");
 

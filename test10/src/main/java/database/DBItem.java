@@ -96,16 +96,21 @@ public class DBItem {
 			PreparedStatement ps = c.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
+				Item item = new Item();
 				int ID = rs.getInt("ITEM_ID");
 				String ITEM_NAME = rs.getString("ITEM_NAME");
-				double UNITPRICE = rs.getDouble("UNITPRICE");
-				int QUANTITY_AVAILABLE = rs.getInt("QUANTITY_AVAILABLE");
-				String TYPE = rs.getString("TYPE");
+				double PRICE = rs.getDouble("PRICE");
+				Double DISCOUNT = rs.getDouble("DISCOUNT");
+				String TYPE = rs.getString("CATEGORY_ID");
 				String IMAGES = rs.getString("IMAGES");
-
-				Item item = new Item(ID, ITEM_NAME, UNITPRICE, QUANTITY_AVAILABLE, TYPE, IMAGES);
+				item.setId(ID);
+				item.setName(ITEM_NAME);
+				item.setUnitPrice(PRICE);
+				item.setDiscount(DISCOUNT);
+				item.setType(TYPE);
+				item.setImageName(IMAGES);
+//				Item item = new Item(ID, ITEM_NAME, UNITPRICE, DISCOUNT, TYPE, IMAGES);
 				b.add(item);
-
 			}
 
 		} catch (SQLException e) {
@@ -207,31 +212,67 @@ public class DBItem {
 		}
 		return b;
 	}
-	public List<Item> getItemByPage(List<Item> list,int start,int end){
-		List<Item>  items = new ArrayList<Item>();
-		for(int i=start;i<end;i++) {
+
+	public List<Item> getItemByPage(List<Item> list, int start, int end) {
+		List<Item> items = new ArrayList<Item>();
+		for (int i = start; i < end; i++) {
 			items.add(list.get(i));
 		}
 		return items;
 	}
 
+	public List<Item> getItemForAdmin() {
+		List<Item> b = new ArrayList<Item>();
+		Connection c = connectionDB.connect();
+		String sql = "select i.ITEM_ID, c.CATEGORY_NAME as 'type', i.ITEM_NAME, i.PRICE as 'sale_price', import_detail.PRICE as 'import_price', (i.PRICE-import_detail.PRICE) as 'difference', i.DISCOUNT, import_detail.QUANTITY from items i join category c on i.CATEGORY_ID=c.CATEGORY_ID join import_detail on i.ITEM_ID=import_detail.ITEM_ID;";
+		try {
+			PreparedStatement ps = c.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				Item item = new Item();
+				int id = rs.getInt("ITEM_ID");
+				String type = rs.getString("type");
+				String itemName = rs.getString("ITEM_NAME");
+				Double salePrice = rs.getDouble("sale_price");
+				Double importPrice = rs.getDouble("import_price");
+				Double difference = rs.getDouble("difference");
+				double DISCOUNT = rs.getDouble("DISCOUNT");
+				int quantity = rs.getInt("QUANTITY");
+				item.setId(id);
+				item.setType(type);
+				item.setName(itemName);
+				item.setUnitPrice(salePrice);
+				item.setImportPrice(importPrice);
+				item.setDifference(difference);
+				item.setDiscount(DISCOUNT);
+				item.setQuantity(quantity);
+				b.add(item);
+				
+			}
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return b;
+	}
+
 	public static void main(String[] args) throws SQLException {
 		DBItem l = new DBItem();
 //		User a = l.checkUSER("PERSON1", "123");
-		Item b = new Item(1, "BURGER-BO",20000, 10, "Burger", "images/burger/bo.png");
-		Item b1 = new Item(2, "BURGER-GA",23000, 10, "Burger", "images/burger/ga.png");
-		Item b2 = new Item(3, "BURGER-TOM",23000, 10, "Burger", "images/burger/tom.jpg");
-		Item b3 = new Item(4, "CHICKENJOY-2M",20000, 10, "Chickenjoy", "images/chickenjoy/2m.png");
-		Item b4 = new Item(5, "CHICKENJOY-4M",35000, 10, "Chickenjoy", "images/chickenjoy/4m.png");
-		Item b5 = new Item(6, "CHICKENJOY-6M",50000, 10, "Chickenjoy", "images/chickenjoy/6m.png");
-		Item b6 = new Item(7, "7-UP",15000, 10, "Drinks", "images/drink/7up.png");
-		Item b7 = new Item(8, "MIRINDA",17000, 16, "Drinks", "images/drink/mirinda.png");
-		Item b8 = new Item(9, "PEPSI",16000, 10, "Drinks", "images/drink/pepsi.png");
-		Item b9 = new Item(10, "NOODLES-BO",50000, 10, "Noodles", "images/spicynoodle/bo.png");
-		Item b10 = new Item(11, "NOODLES-HAISAN",52000, 10, "Noodles", "images/spicynoodle/haisan.png");
-		Item b11 = new Item(12, "NOODLES-XUCXICH",51000, 10, "Noodles", "images/spicynoodle/xucxich.png");
+		Item b = new Item(1, "BURGER-BO", 20000, 10, "Burger", "images/burger/bo.png");
+		Item b1 = new Item(2, "BURGER-GA", 23000, 10, "Burger", "images/burger/ga.png");
+		Item b2 = new Item(3, "BURGER-TOM", 23000, 10, "Burger", "images/burger/tom.jpg");
+		Item b3 = new Item(4, "CHICKENJOY-2M", 20000, 10, "Chickenjoy", "images/chickenjoy/2m.png");
+		Item b4 = new Item(5, "CHICKENJOY-4M", 35000, 10, "Chickenjoy", "images/chickenjoy/4m.png");
+		Item b5 = new Item(6, "CHICKENJOY-6M", 50000, 10, "Chickenjoy", "images/chickenjoy/6m.png");
+		Item b6 = new Item(7, "7-UP", 15000, 10, "Drinks", "images/drink/7up.png");
+		Item b7 = new Item(8, "MIRINDA", 17000, 16, "Drinks", "images/drink/mirinda.png");
+		Item b8 = new Item(9, "PEPSI", 16000, 10, "Drinks", "images/drink/pepsi.png");
+		Item b9 = new Item(10, "NOODLES-BO", 50000, 10, "Noodles", "images/spicynoodle/bo.png");
+		Item b10 = new Item(11, "NOODLES-HAISAN", 52000, 10, "Noodles", "images/spicynoodle/haisan.png");
+		Item b11 = new Item(12, "NOODLES-XUCXICH", 51000, 10, "Noodles", "images/spicynoodle/xucxich.png");
 
-		
 		// User b = new User(2, "PERSON2", "456", "Thao", "02", "nu", "");
 		// System.out.println(l.update(a));
 //		System.out.println(l.deleteUSER("PERSON"));
@@ -239,7 +280,7 @@ public class DBItem {
 //		System.out.println(a.getUserName());
 //		l.addITEM(b);
 //		l.addITEM(b1);
-		//l.addITEM(b2);
+		// l.addITEM(b2);
 //		l.addITEM(b3);
 //		l.addITEM(b4);
 //		l.addITEM(b5);
@@ -257,7 +298,7 @@ public class DBItem {
 //		DBItem d = new DBItem();
 		List<Item> list = l.getAllItem();
 		for (Item i : list) {
-			
+
 			System.out.println(i.getName());
 		}
 	}
