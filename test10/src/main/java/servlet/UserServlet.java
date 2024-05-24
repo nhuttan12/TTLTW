@@ -29,7 +29,7 @@ public class UserServlet extends HttpServlet{
 	
 		if(role==1) {
 			req.getRequestDispatcher("user.jsp").forward(req, resp);
-		}else if(role==2) {
+		}else if(role==3) {
 			req.getRequestDispatcher("admin").forward(req, resp);
 		}
 		}

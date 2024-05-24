@@ -9,7 +9,10 @@ public class Item {
 	private int quantity;// sl mua
 	private String type;
 	private String imageName;
-
+	private double discount;
+	private double difference;
+	private double importPrice;
+	
 //	public Item() {
 //		id = name = img_name = "";
 //		unitPrice = 0.0;
@@ -28,6 +31,20 @@ public class Item {
 		this.imageName = imgName;
 
 	}
+
+	public Item(int id, String name, double unitPrice, double price, int quantityAvailable, int quantity, String type,
+		String imageName, double discount) {
+	super();
+	this.id = id;
+	this.name = name;
+	this.unitPrice = unitPrice;
+	this.price = price;
+	this.quantityAvailable = quantityAvailable;
+	this.quantity = quantity;
+	this.type = type;
+	this.imageName = imageName;
+	this.discount = discount;
+}
 
 	// item de them vao gio hang
 	public Item(int id, String name, double price, int quantity) {
@@ -78,6 +95,14 @@ public class Item {
 	
 
 
+
+	public double getDiscount() {
+		return discount;
+	}
+
+	public void setDiscount(Double discount) {
+		this.discount = discount;
+	}
 
 	public int getId() {
 		return id;
@@ -143,12 +168,28 @@ public class Item {
 		this.imageName = imageName;
 	}
 
+	
+	public double getDifference() {
+		return difference;
+	}
+
+	public void setDifference(double difference) {
+		this.difference = difference;
+	}
+
 	@Override
 	public String toString() {
 		return "Item [id=" + id + ", name=" + name + ", unitPrice=" + unitPrice + ", price=" + price
 				+ ", quantityAvailable=" + quantityAvailable + ", quantity=" + quantity + ", type=" + type
-				+ ", img_name=" + imageName + "]";
+				+ ", imageName=" + imageName + ", discount=" + discount + ", difference=" + difference + "]";
 	}
-	
+
+	public double getImportPrice() {
+		return importPrice;
+	}
+
+	public void setImportPrice(double importPrice) {
+		this.importPrice = importPrice;
+	}
 
 }
