@@ -16,8 +16,6 @@
 <!-- bootstrap core css -->
 <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
 
-
-
 <!-- font awesome style -->
 <link href="css/font-awesome.min.css" rel="stylesheet" />
 
@@ -148,7 +146,7 @@ function doLogout() {
 				</c:forEach>
 			</div>
 
-			<c:set var="list" value="${ requestScope.listItem}" />
+			<c:set var="list" value="${requestScope.listItem}" />
 			<div class="filters-content">
 				<div class="row grid">
 					<c:forEach var="i" items="${list}">
