@@ -23,7 +23,7 @@
 <link href="css/style.css" rel="stylesheet" />
 <!-- responsive style -->
 <link href="css/responsive.css" rel="stylesheet" />
-<style type="text/css"">
+<style type="text/css">
 .pagination {
 	display: inline-block;
 }
@@ -89,7 +89,7 @@ function doLogout() {
 						<div class="user_option">
 							<div class="language">
 								<a href="?lang_local=vi_VN" class="lang">VN </a> <a
-									href="?lang_local=en_US" class="lang"> EN</i>
+									href="?lang_local=en_US" class="lang"> EN
 								</a>
 							</div>
 
@@ -126,7 +126,7 @@ function doLogout() {
 
 			<ul class="filters_menu">
 				<li class="menu-all"><a class="${type2 == type?"
-					active":"" }" href="menu?type=all"><fmt:message>all</fmt:message></a></li>
+					active":""}" href="menu?type=all"><fmt:message>all</fmt:message></a></li>
 				<li class="menu-.chickenjoyz"><a class="${type2 eq Chickenjoy?"
 					active":"" }" href="menu?type=Chickenjoy"><fmt:message>chickenjoy</fmt:message></a></li>
 				<li class="menu-.burger"><a class="${type2 eq Burger?"
