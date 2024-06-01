@@ -1,2 +1,17 @@
+<<<<<<< HEAD
 /filter/
 /servlet/
+=======
+.metadata
+bin/
+tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.settings/
+.loadpath
+.recommenders
+/.classpath
+>>>>>>> 92915b773bf218b17233be83c5f7e5eeccb894a6
