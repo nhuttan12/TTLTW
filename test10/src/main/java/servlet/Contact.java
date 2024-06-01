@@ -8,17 +8,17 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.Item;
 import model.Order;
-import model.ShoppingCart;
+import model.Cart;
 import model.User;
 
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
-import database.DBCartItems;
+//import database.DBCartItems;
 import database.DBContact;
 import database.DBOrder;
-import database.DBShoppingCart;
+//import database.DBShoppingCart;
 import database.DBUser;
 import email.ClientSendEmail;
 
