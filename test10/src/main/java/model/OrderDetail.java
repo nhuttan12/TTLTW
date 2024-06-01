@@ -1,10 +1,11 @@
 package model;
 
 public class OrderDetail {
+	int id;
 	int oderId;
 	int itemId;
 	int quantity;
-	double price;
+	double price; // tổng giá của cả đơn
 	public OrderDetail(int oderId, int itemId, int quantity, double price) {
 		super();
 		this.oderId = oderId;
@@ -12,6 +13,16 @@ public class OrderDetail {
 		this.quantity = quantity;
 		this.price = price;
 	}
+	
+	public OrderDetail(int id, int oderId, int itemId, int quantity, double price) {
+		super();
+		this.id = id;
+		this.oderId = oderId;
+		this.itemId = itemId;
+		this.quantity = quantity;
+		this.price = price;
+	}
+
 	public OrderDetail() {
 
 	}

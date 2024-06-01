@@ -41,37 +41,37 @@ public class OderHistory extends HttpServlet {
 	 *      response)
 	 */
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		HttpSession httpSession = req.getSession();
-
-		User user = (User) httpSession.getAttribute("user");
-		if (user == null) {
-			req.setAttribute("erro", "bạn phải đăng nhập !");
-			req.getRequestDispatcher("login.jsp").forward(req, resp);
-		} else {
-			DBOrder db = new DBOrder();
-			DBOderDetail detail = new DBOderDetail();
-			int cartId = Integer.parseInt(req.getParameter("shoppingCartId"));
-			List<Order> os = db.getOderByCartIdStatus(cartId);
-//		req.setAttribute("listOder", os);
-
-			Map<Order, List<Item>> orderProductMap = new HashMap<>();
-			for (Order or : os) {
-				List<Item> od;
-				try {
-					od = detail.getOderDetailByOderID(or.getOrderId());
-					System.out.println(or.getOrderId());
-					orderProductMap.put(or, od);
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-
-			}
-			req.setAttribute("listOder", orderProductMap);
-
-			RequestDispatcher dispatcher = req.getRequestDispatcher("oderHistory.jsp");
-			dispatcher.forward(req, resp);
-		}
+//		HttpSession httpSession = req.getSession();
+//
+//		User user = (User) httpSession.getAttribute("user");
+//		if (user == null) {
+//			req.setAttribute("erro", "bạn phải đăng nhập !");
+//			req.getRequestDispatcher("login.jsp").forward(req, resp);
+//		} else {
+//			DBOrder db = new DBOrder();
+//			DBOderDetail detail = new DBOderDetail();
+//			int cartId = Integer.parseInt(req.getParameter("shoppingCartId"));
+//			List<Order> os = db.getOderByCartIdStatus(cartId);
+////		req.setAttribute("listOder", os);
+//
+//			Map<Order, List<Item>> orderProductMap = new HashMap<>();
+//			for (Order or : os) {
+//				List<Item> od;
+//				try {
+//					od = detail.getOderDetailByOderID(or.getOrderId());
+//					System.out.println(or.getOrderId());
+//					orderProductMap.put(or, od);
+//				} catch (SQLException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
+//
+//			}
+//			req.setAttribute("listOder", orderProductMap);
+//
+//			RequestDispatcher dispatcher = req.getRequestDispatcher("oderHistory.jsp");
+//			dispatcher.forward(req, resp);
+//		}
 	}
 
 }

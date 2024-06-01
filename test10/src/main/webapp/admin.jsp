@@ -57,10 +57,9 @@ img {
 		if (confirm("Are you Logout?")) {
 			window.location = "logout";
 		}
-		function doAddItem() {
-			window.location = "addItem";
-		}
-		
+	}
+	function doAddItem() {
+		window.location = "addItem";
 	}
 </script>
 </head>
@@ -118,12 +117,15 @@ img {
 				<div class="table-content">
 					<table style="width: 100%">
 						<tr class="table-header">
-							<th>ID</th>
-							<th>TYPE</th>
-							<th>NAME</th>
-							<th>PRICE</th>
-							<th>QUANITY</th>
-							<th>ACTION</th>
+							<th>Mã số</th>
+							<th>Loại</th>
+							<th>Tên</th>
+							<th>Giá bán</th>
+							<th>Giá nhập</th>
+							<th>Chênh lệch</th>
+							<th>Giảm giá</th>
+							<th>Số lượng</th>
+							<th>Thao tác</th>
 						</tr>
 						<c:forEach var="i" items="${listItem }">
 							<tr>
@@ -131,7 +133,10 @@ img {
 								<td>${i.type}</td>
 								<td>${i.name}</td>
 								<td>${i.unitPrice}</td>
-								<td>${i.quantityAvailable}</td>
+								<td>${i.importPrice}</td>
+								<td>${i.difference}</td>
+								<td>${i.discount}</td>
+								<td>${i.quantity}</td>
 								<td><a class="s" href="edit?id=${i.id}&gr=spcart"> <img
 										width="20px" alt="" src="images/edit2.png"></a> <a class="s"
 									href="#" onclick="doDelete('${i.id}','item')"> <img width="20px"
