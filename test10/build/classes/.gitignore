@@ -9,3 +9,7 @@ local.properties
 .settings/
 .loadpath
 .recommenders
+/servlet/
+/database/
+/filter/
+/model/
