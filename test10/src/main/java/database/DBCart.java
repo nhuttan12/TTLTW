@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import model.Cart;
 import model.Item;
@@ -140,18 +141,36 @@ public class DBCart {
 
 		return status;
 	}
-	
-	public int deleteAllITEM(int UserId) throws SQLException {
+	//khi khách hàng thực hiện thành toán rồi
+	public int deleteCartByUserID(int UserId) throws SQLException {
 		int status = 0;
 
 		try (Connection c = connectionDB.connect()) {
 
-			String sql = "DELETE FROM cart  USER_ID = ?;";
+			String sql = "DELETE FROM cart where USER_ID = ?;";
 			PreparedStatement ps = c.prepareStatement(sql);
 			// '"+title+"',"+Authorid+" , 18022018, 0000, "+Isbn+"
 			ps.setInt(1, UserId);
 			status = ps.executeUpdate();
 		
+
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+
+		return status;
+	}
+	//khi khách hàng muốn xóa 1 sp khỏi giỏ hàng
+	public int deleteCartByCartID(int cartID) throws SQLException {
+		int status = 0;
+
+		try (Connection c = connectionDB.connect()) {
+
+			String sql = "DELETE FROM cart where CART_ID = ?;";
+			PreparedStatement ps = c.prepareStatement(sql);
+			// '"+title+"',"+Authorid+" , 18022018, 0000, "+Isbn+"
+			ps.setInt(1, cartID);
+			status = ps.executeUpdate();
 
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -273,7 +292,7 @@ public class DBCart {
 		}
 		return list;
 	}
-
+//dùng để show giỏ hàng
 	public List<Cart> getListCartByUserID(int user_id) throws SQLException {
 		System.out.println("toiiiiiiiiiiiiiiiiiii");
 		List<Cart> list = new ArrayList<Cart>();
@@ -335,7 +354,20 @@ public class DBCart {
 //		for (Item item : m) {
 //			System.out.println(item.getName() + item.getQuantity());
 //		}
-
+		
+		DBCart cart = new DBCart();
+		List<Cart> a= cart.getListCartByUserID(1);
+		for (Cart c : a) {
+			System.out.println(c.getUserId());
+			
+		}
+		cart.deleteCartByUserID(1);
+		System.out.println("đã xóa");
+		List<Cart> b= cart.getListCartByUserID(1);
+		for (Cart c : b) {
+			System.out.println(c.getUserId());
+			
+		}
 	}
 
 }

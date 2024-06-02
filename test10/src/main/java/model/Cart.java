@@ -131,6 +131,12 @@ public class Cart {
 		this.totalPrice = totalPrice;
 	}
 
+	@Override
+	public String toString() {
+		return "Cart [id=" + id + ", userId=" + userId + ", itemId=" + itemId + ", quantity=" + quantity
+				+ ", totalPrice=" + totalPrice + "]";
+	}
+
 	
 
 }
