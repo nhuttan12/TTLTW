@@ -133,7 +133,7 @@
 					</tr>
 
 					<tr class="login-foot">
-						<td ><a href="#"><input
+						<td ><a href="editUser.jsp"><input
 								type="button" value="<fmt:message>CHANGEINFOR</fmt:message>"></a>
 						</td>
 
