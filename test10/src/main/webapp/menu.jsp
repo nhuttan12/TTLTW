@@ -104,7 +104,7 @@ function doLogout() {
 								<a href="#" onclick="doLogout()" class="user_link"><img width="30px" alt=""
 									src="images/logout3.png"> </a>
 							</c:if>
-							<a href="cart?shoppingCartId=${user.shoppingCartId}"
+							<a href="#"
 								class="user_link"><img width="30px" alt=""
 								src="images/cart.png"> </a>
 
@@ -127,22 +127,22 @@ function doLogout() {
 			</div>
 
 			<ul class="filters_menu">
-				<li class="menu-all"><a class="${type2 == type?"
-					active":"" }" href="menu?type=all"><fmt:message>all</fmt:message></a></li>
-				<li class="menu-.chickenjoyz"><a class="${type2 eq Chickenjoy?"
-					active":"" }" href="menu?type=Chickenjoy"><fmt:message>chickenjoy</fmt:message></a></li>
-				<li class="menu-.burger"><a class="${type2 eq Burger?"
-					active":"" }" href="menu?type=Burger"><fmt:message>burger</fmt:message></a></li>
-				<li class="menu-spicynoodles"><a class="${type2 eq Noodles?"
-					active":"" }" href="menu?type=Noodles"><fmt:message>spicynoodles</fmt:message></a></li>
-				<li class="menu-drinks"><a class="${type2 eq Drinks?"
-					active":"" }" href="menu?type=Drinks"><fmt:message>drinks</fmt:message></a></li>
+				<li class="menu-all"><a class="${type2==0?"
+					active":"" }" href="menu?type=0"><fmt:message>all</fmt:message></a></li>
+				<li class="menu-.chickenjoyz"><a class="${type2==1?"
+					active":"" }" href="menu?type=1"><fmt:message>chickenjoy</fmt:message></a></li>
+				<li class="menu-.burger"><a class="${type2==2?"
+					active":"" }" href="menu?type=2"><fmt:message>burger</fmt:message></a></li>
+				<li class="menu-spicynoodles"><a class="${type2==3?"
+					active":"" }" href="menu?type=3"><fmt:message>spicynoodles</fmt:message></a></li>
+				<li class="menu-drinks"><a class="${type2==4?"
+					active":"" }" href="menu?type=4"><fmt:message>drinks</fmt:message></a></li>
 			</ul>
 			<c:set var="page" value="${requestScope.page }" />
 			<div class="paginationn">
 
 				<c:forEach begin="${1}" end="${requestScope.number }" var="stt">
-					<a class="${stt==page?" active":"" }" href="menu?page=${stt}">
+					<a class="${stt==page?" active":"" }" href="menu?page=${stt}&&type=${type2}">
 						${stt}</a>
 
 				</c:forEach>
@@ -162,10 +162,15 @@ function doLogout() {
 									<div class="detail-box">
 										<h5>${i.name}</h5>
 										<div class="options">
-											<h6>${i.unitPrice}VND</h6>
+											<h6>${i.price}VND</h6>
 											<a
-												href="shopping?shoppingCartId=${user.shoppingCartId}&itemId=${i.id}">
+												href="#">
 												+ </a>
+												
+
+<%-- <a
+												href="#shopping?shoppingCartId=${user.shoppingCartId}&itemId=${i.id}">
+												+ </a> --%>
 
 										</div>
 									</div>

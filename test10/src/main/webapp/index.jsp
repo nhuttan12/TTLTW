@@ -31,7 +31,7 @@ function doLogout() {
 <body>
 <fmt:setLocale value="${sessionScope.lang}"/>
 <fmt:setBundle basename="languages.lang"/>
-						<c:set var="user" value="${sessionScope.user}"/>
+<c:set var="user" value="${sessionScope.user}"/>
 
 	<div class="hero_area">
 		<div class="bg-box">
@@ -51,7 +51,7 @@ function doLogout() {
 							<li class="nav-item active"><a class="nav-link"
 								href="index.jsp"><fmt:message>menu.home</fmt:message>  </a>
 							</li>
-							<li class="nav-item"><a class="nav-link" href="menu"><fmt:message>menu.menu</fmt:message></a>
+							<li class="nav-item"><a class="nav-link" href="menu?type=0"><fmt:message>menu.menu</fmt:message></a>
 							</li>
 							<li class="nav-item"><a class="nav-link" href="about.jsp"><fmt:message>menu.about</fmt:message></a>
 							</li>
@@ -75,7 +75,8 @@ function doLogout() {
 							<a href="#" onclick="doLogout()" class="user_link"><img width="30px" alt=""
 									src="images/logout3.png"> </a>
 							</c:if> 
-							<a href="cart?shoppingCartId=${user.shoppingCartId}"
+							
+							<a href="#"
 								class="user_link"><img width="30px" alt=""
 								src="images/cart.png"> </a>
 							

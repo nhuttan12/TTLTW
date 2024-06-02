@@ -87,7 +87,7 @@ function doLogout() {
 									src="images/logout3.png"> </a>
 							</c:if>
 													
-							<a href="cart?shoppingCartId=${user.shoppingCartId}"
+							<a href="#"
 								class="user_link"><img width="30px" alt=""
 								src="images/cart.png"> </a>
 								
