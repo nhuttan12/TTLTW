@@ -2,5 +2,5 @@
 .project
 .settings/
 build/classes/
-Servers2/
-.metadata
+/Servers2/
+/.metadata
