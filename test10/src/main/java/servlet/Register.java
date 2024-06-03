@@ -7,7 +7,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import model.ShoppingCart;
+import model.Cart;
 import model.User;
 
 import java.io.IOException;
@@ -15,7 +15,7 @@ import java.sql.SQLException;
 
 import javax.mail.internet.InternetAddress;
 
-import database.DBShoppingCart;
+import database.DBCart;
 import database.DBUser;
 import email.ServerSendMail;
 
@@ -46,68 +46,67 @@ public class Register extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-		String USER_NAME = req.getParameter("tentaikhoan");
-		String PASSWORD = req.getParameter("matkhau");
-		String NAME = req.getParameter("hoten");
-		String PHONE = req.getParameter("sodienthoai");
-		String GENDER = req.getParameter("gioitinh");
-		String EMAIL = req.getParameter("email");
-		
-
-		System.out.println(GENDER);
-		DBUser l = new DBUser();
-		DBShoppingCart cart = new DBShoppingCart();
-//   		System.out.println(a.getUserName());
-		if (checkUser(USER_NAME) == null && checkPass(PASSWORD) == null && checkPhone(PHONE) == null
-				&& checkEmail(EMAIL) == null) {
-			if (l.checkUSER(USER_NAME, PASSWORD) == null) {
-				ServerSendMail m = new ServerSendMail();
-				String ver = m.createVerification();
-				m.setTo(EMAIL);
-				m.setMessage(ver);
-				if (m.sendEmail()) {
-					HttpSession session = req.getSession();
-					session.setAttribute("USER_NAME", USER_NAME);
-					session.setAttribute("PASSWORD", PASSWORD);
-					session.setAttribute("NAME", NAME);
-					session.setAttribute("PHONE", PHONE);
-					session.setAttribute("GENDER", GENDER);
-					session.setAttribute("EMAIL", EMAIL);
-					session.setAttribute("ver", ver);
-
-					RequestDispatcher dispatcher = req.getRequestDispatcher("verificationRegis.jsp");
-					dispatcher.forward(req, resp);
-				}
-//   			RequestDispatcher dispatcher = req.getRequestDispatcher("login.jsp");
-//			dispatcher.forward(req, resp);
-
-			} else {
-
-				String erro = "Tài khoản đã tồn tại!";
-				req.setAttribute("erro", erro);
-				req.getRequestDispatcher("register.jsp").forward(req, resp);
-			}
-		} else {
-			req.setAttribute("er", true);
-			if (checkUser(USER_NAME) != null) {
-				req.setAttribute("us", checkUser(USER_NAME));
-			}
-			if (checkPass(PASSWORD) != null) {
-				req.setAttribute("pas", checkPass(PASSWORD));
-			}
-			if (checkPhone(PHONE) != null) {
-				req.setAttribute("phone", checkPhone(PHONE));
-			}
-			if (checkEmail(EMAIL) != null) {
-				req.setAttribute("mail", checkEmail(EMAIL));
-			}
-			req.setAttribute("username", USER_NAME);
-			req.setAttribute("PASSWORD", PASSWORD);
-			req.setAttribute("PHONE", PHONE);
-			req.setAttribute("EMAIL", EMAIL);
-			req.setAttribute("NAME", NAME);
-			req.getRequestDispatcher("register.jsp").forward(req, resp);
-		}
+//		String USER_NAME = req.getParameter("tentaikhoan");
+//		String PASSWORD = req.getParameter("matkhau");
+//		String NAME = req.getParameter("hoten");
+//		String PHONE = req.getParameter("sodienthoai");
+//		String GENDER = req.getParameter("gioitinh");
+//		String EMAIL = req.getParameter("email");
+//
+//		System.out.println(GENDER);
+//		DBUser l = new DBUser();
+//		DBShoppingCart cart = new DBShoppingCart();
+////   		System.out.println(a.getUserName());
+//		if (checkUser(USER_NAME) == null && checkPass(PASSWORD) == null && checkPhone(PHONE) == null
+//				&& checkEmail(EMAIL) == null) {
+//			if (l.checkUSER(USER_NAME, PASSWORD) == null) {
+//				ServerSendMail m = new ServerSendMail();
+//				String ver = m.createVerification();
+//				m.setTo(EMAIL);
+//				m.setMessage(ver);
+//				if (m.sendEmail()) {
+//					HttpSession session = req.getSession();
+//					session.setAttribute("USER_NAME", USER_NAME);
+//					session.setAttribute("PASSWORD", PASSWORD);
+//					session.setAttribute("NAME", NAME);
+//					session.setAttribute("PHONE", PHONE);
+//					session.setAttribute("GENDER", GENDER);
+//					session.setAttribute("EMAIL", EMAIL);
+//					session.setAttribute("ver", ver);
+//
+//					RequestDispatcher dispatcher = req.getRequestDispatcher("verificationRegis.jsp");
+//					dispatcher.forward(req, resp);
+//				}
+////   			RequestDispatcher dispatcher = req.getRequestDispatcher("login.jsp");
+////			dispatcher.forward(req, resp);
+//
+//			} else {
+//
+//				String erro = "Tài khoản đã tồn tại!";
+//				req.setAttribute("erro", erro);
+//				req.getRequestDispatcher("register.jsp").forward(req, resp);
+//			}
+//		} else {
+//			req.setAttribute("er", true);
+//			if (checkUser(USER_NAME) != null) {
+//				req.setAttribute("us", checkUser(USER_NAME));
+//			}
+//			if (checkPass(PASSWORD) != null) {
+//				req.setAttribute("pas", checkPass(PASSWORD));
+//			}
+//			if (checkPhone(PHONE) != null) {
+//				req.setAttribute("phone", checkPhone(PHONE));
+//			}
+//			if (checkEmail(EMAIL) != null) {
+//				req.setAttribute("mail", checkEmail(EMAIL));
+//			}
+//			req.setAttribute("username", USER_NAME);
+//			req.setAttribute("PASSWORD", PASSWORD);
+//			req.setAttribute("PHONE", PHONE);
+//			req.setAttribute("EMAIL", EMAIL);
+//			req.setAttribute("NAME", NAME);
+//			req.getRequestDispatcher("register.jsp").forward(req, resp);
+//		}
 
 	}
 

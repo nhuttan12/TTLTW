@@ -11,25 +11,9 @@ public class User {
 	String gender;
 	String message;
 	int role;
-	int shoppingCartId;
 	String email;
 	int status;
-	public User(int id, String userName, String password, String name, String phone, String gender, String message,
-			int role, int shoppingCartId, String email, int status) {
-		super();
-		this.id = id;
-		this.userName = userName;
-		this.password = password;
-		this.name = name;
-		this.phone = phone;
-		this.gender = gender;
-		this.message = message;
-		this.role = role;
-		this.shoppingCartId = shoppingCartId;
-		this.email = email;
-		this.status = status;
-	}
-	
+
 	public User(int id, String userName, String password, String name, String phone, String gender, String message,
 			int role, String email, int status) {
 		super();
@@ -44,7 +28,6 @@ public class User {
 		this.email = email;
 		this.status = status;
 	}
-	
 
 	public User(String userName, String password, String name, String phone, String gender, String message,
 			String email) {
@@ -57,7 +40,6 @@ public class User {
 		this.message = message;
 		this.email = email;
 	}
-	
 
 	public User(String userName, String password, String name, String phone, String gender, String email) {
 		super();
@@ -70,7 +52,7 @@ public class User {
 	}
 
 	public User(int id, String userName, String password, String name, String phone, String gender, String message,
-			int shoppingCartId, String email) {
+			String email) {
 		super();
 		this.id = id;
 		this.userName = userName;
@@ -79,7 +61,6 @@ public class User {
 		this.phone = phone;
 		this.gender = gender;
 		this.message = message;
-		this.shoppingCartId = shoppingCartId;
 		this.email = email;
 	}
 
@@ -151,14 +132,6 @@ public class User {
 		this.role = role;
 	}
 
-	public int getShoppingCartId() {
-		return shoppingCartId;
-	}
-
-	public void setShoppingCartId(int shoppingCartId) {
-		this.shoppingCartId = shoppingCartId;
-	}
-
 	public String getEmail() {
 		return email;
 	}
@@ -178,12 +151,7 @@ public class User {
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", userName=" + userName + ", password=" + password + ", name=" + name + ", phone="
-				+ phone + ", gender=" + gender + ", message=" + message + ", role=" + role + ", shoppingCartId="
-				+ shoppingCartId + ", email=" + email + ", status=" + status + "]";
+				+ phone + ", gender=" + gender + ", message=" + message + ", role=" + role + ", email=" + email + ", status=" + status + "]";
 	}
-	
-
-	
-
 
 }

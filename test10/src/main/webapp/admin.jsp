@@ -117,15 +117,15 @@ img {
 				<div class="table-content">
 					<table style="width: 100%">
 						<tr class="table-header">
-							<th>ID</th>
-							<th>TYPE</th>
-							<th>NAME</th>
-							<th>SALE PRICE</th>
-							<th>IMPORT PRICE</th>
-							<th>DIFFERENCE</th>
-							<th>DISCOUNT</th>
-							<th>QUANITY</th>
-							<th>ACTION</th>
+							<th>Mã số</th>
+							<th>Loại</th>
+							<th>Tên</th>
+							<th>Giá bán</th>
+							<th>Giá nhập</th>
+							<th>Chênh lệch</th>
+							<th>Giảm giá</th>
+							<th>Số lượng</th>
+							<th>Thao tác</th>
 						</tr>
 						<c:forEach var="i" items="${listItem }">
 							<tr>

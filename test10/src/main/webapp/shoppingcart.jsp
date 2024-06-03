@@ -6,6 +6,7 @@
 <!-- Basic -->
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -32,12 +33,12 @@
 <!-- responsive style -->
 <link href="css/responsive.css" rel="stylesheet" />
 <script type="text/javascript">
-function doLogout() {
-	if (confirm("Are you Logout?")) {
-		window.location = "logout";
+	function doLogout() {
+		if (confirm("Are you Logout?")) {
+			window.location = "logout";
+		}
+
 	}
-	
-}
 </script>
 </head>
 
@@ -54,18 +55,21 @@ function doLogout() {
 		<header class="header_section">
 			<div class="container">
 				<nav class="navbar navbar-expand-lg custom_nav-container ">
-					<a class="navbar-brand" href="index.jsp"><img alt="logo"
+					<a class="navbar-brand" href="index"><img alt="logo"
 						style="width: 120px" src="images/logo.png"> </a>
+
+
+
 					<div class="collapse navbar-collapse" id="navbarSupportedContent">
 						<ul class="navbar-nav  mx-auto ">
-							<li class="nav-item "><a class="nav-link" href="index.jsp"><fmt:message>menu.home</fmt:message>
-							</a></li>
-							<li class="nav-item"><a class="nav-link" href="menu"><fmt:message>menu.menu</fmt:message></a>
+							<li class="nav-item active"><a class="nav-link"
+								href="index.jsp"><fmt:message>menu.home</fmt:message> </a></li>
+							<li class="nav-item"><a class="nav-link" href="menu?type=0"><fmt:message>menu.menu</fmt:message></a>
 							</li>
 							<li class="nav-item"><a class="nav-link" href="about.jsp"><fmt:message>menu.about</fmt:message></a>
 							</li>
-							<li class="nav-item"><a class="nav-link"
-								href="contact.jsp"><fmt:message>menu.contact</fmt:message></a></li>
+							<li class="nav-item"><a class="nav-link" href="contact.jsp"><fmt:message>menu.contact</fmt:message></a>
+							</li>
 						</ul>
 						<div class="user_option">
 							<div class="language">
@@ -73,18 +77,18 @@ function doLogout() {
 									href="?lang_local=en_US" class="lang"> EN </a>
 							</div>
 
-							<a href="user?role=${user.role}" class="user_link"> <i
-								class="fa fa-user" aria-hidden="true">${user.userName}</i>
+							<a href="user" class="user_link"> <i class="fa fa-user"
+								aria-hidden="true">${user.userName}</i>
 
 							</a>
 
 							<c:if test="${not empty user}">
-								<a href="#" onclick="doLogout()" class="user_link"><img width="30px" alt=""
-									src="images/logout3.png"> </a>
+								<a href="#" onclick="doLogout()" class="user_link"><img
+									width="30px" alt="" src="images/logout3.png"> </a>
 							</c:if>
-							<a href="cart?shoppingCartId=${user.shoppingCartId}"
-								class="user_link"><img width="30px" alt=""
-								src="images/cart.png"> </a>
+
+							<a href="shoppingcart" class="user_link"><img width="30px"
+								alt="" src="images/cart.png"> </a>
 
 						</div>
 					</div>
@@ -103,41 +107,44 @@ function doLogout() {
 			</h1>
 
 			<div class="cart">
-				<c:set var="list" value="${ requestScope.listAll}" />
+				<c:set var="listCart" value="${ requestScope.listCart}" />
+				<c:set var="listItem" value="${ requestScope.listItem}" />
+
 				<div class="products">
 
-					<c:forEach var="o" items="${list}">
+					<c:forEach var="i" begin="0" end="${fn:length(listCart)}" step="1" >
 
 						<div class="product">
 
-							<img src="${o.imageName}">
+							<img src="${listItem[i].imageName}">
 
 							<div class="product-info">
 
 								<h3 class="product-name">
 									<fmt:message>nameItem</fmt:message>
-									: ${o.name}
+									: ${listItem[i].name}
 								</h3>
 
 								<h4 class="product-price">
 									<fmt:message>price</fmt:message>
-									: ${o.unitPrice} VND
+									: ${listItem[i].price} VND
 								</h4>
 
-								
-								
-							<h4 class="product-offer">
-							<fmt:message>QUANTITYAVAILABLE</fmt:message>:${o.quantity}
+
+
+								<h4 class="product-offer">
+									<fmt:message>QUANTITYAVAILABLE</fmt:message>
+									:${listCart[i].quantity}
 								</h4>
 								<h4 class="product-price">
 									<fmt:message>totalPrice</fmt:message>
-									: ${o.price} VND
+									: ${listCart[i].totalPrice} VND
 								</h4>
 
 								<p class="product-remove">
 
 									<a class="fa fa-trash" aria-hidden="true"
-										href="editcart?cartId=${user.shoppingCartId}&itemId=${o.id}"></a>
+										href="editcart?cartID=${listCart[i].id}"></a>
 
 								</p>
 
@@ -149,28 +156,26 @@ function doLogout() {
 
 
 				</div>
-				<c:set var="checkout" value="${ requestScope.checkout}" />
-				<c:set var="slg" value="${ requestScope.slg}" />
+ 		
 				<div class="cart-total">
 
 					<p>
 
-						<span><fmt:message>numberOfItem</fmt:message></span> <span>${slg}</span>
+						<span><fmt:message>numberOfItem</fmt:message></span> <span></span>
 
 					</p>
 
 					<p>
 
 						<span><fmt:message>totalPrice</fmt:message></span> <span>
-							${checkout.orderPrice}VND</span>
+							VND</span>
 
 					</p>
 
 
-					<a href="checkout?cartId=${user.shoppingCartId}"><fmt:message>checkout</fmt:message></a>
+					<a href="#"><fmt:message>checkout</fmt:message></a>
 
 				</div>
-
 
 
 			</div>
