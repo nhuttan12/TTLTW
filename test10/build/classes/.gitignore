@@ -1,4 +1,3 @@
-
-/filter/
-/model/
-/servlet/
+.classpath
+.project
+.settings/
