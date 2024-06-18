@@ -41,9 +41,10 @@ public class EditUser extends HttpServlet {
 //				e.printStackTrace();
 //			}
 //
-//			RequestDispatcher dispatcher = req.getRequestDispatcher("user");
-//			dispatcher.forward(req, resp);
-//		}
-	}
+			RequestDispatcher dispatcher = req.getRequestDispatcher("editUser.jsp");
+			dispatcher.forward(req, resp);
+		}
+		
+	//}
 
 }

@@ -45,43 +45,43 @@
 			<img src="images/bg.jpg" alt="">
 		</div>
 		<!-- header section strats -->
-		<header class="header_section">
+			<header class="header_section">
 			<div class="container">
 				<nav class="navbar navbar-expand-lg custom_nav-container ">
-					<a class="navbar-brand" href="index.jsp"><img alt="logo"
+					<a class="navbar-brand" href="index"><img alt="logo"
 						style="width: 120px" src="images/logo.png"> </a>
+
+
+
 					<div class="collapse navbar-collapse" id="navbarSupportedContent">
 						<ul class="navbar-nav  mx-auto ">
-							<li class="nav-item "><a class="nav-link"
-								href="index.jsp"><fmt:message>menu.home</fmt:message>  </a>
-							</li>
-							<li class="nav-item"><a class="nav-link" href="menu"><fmt:message>menu.menu</fmt:message></a>
+							<li class="nav-item active"><a class="nav-link"
+								href="index.jsp"><fmt:message>menu.home</fmt:message> </a></li>
+							<li class="nav-item"><a class="nav-link" href="menu?type=0"><fmt:message>menu.menu</fmt:message></a>
 							</li>
 							<li class="nav-item"><a class="nav-link" href="about.jsp"><fmt:message>menu.about</fmt:message></a>
 							</li>
-							<li class="nav-item "><a class="nav-link" href="contact.jsp"><fmt:message>menu.contact</fmt:message></a>
+							<li class="nav-item"><a class="nav-link" href="contact.jsp"><fmt:message>menu.contact</fmt:message></a>
 							</li>
 						</ul>
 						<div class="user_option">
-						<div class="language">
-						<a href="?lang_local=vi_VN" class="lang">VN
-							</a>
-							<a href="?lang_local=en_US" class="lang"> EN</i>
-							</a>
-						</div>
-							
-					<a href="user?role=${user.role}" class="user_link"> <i class="fa fa-user"
+							<div class="language">
+								<a href="?lang_local=vi_VN" class="lang">VN </a> <a
+									href="?lang_local=en_US" class="lang"> EN </a>
+							</div>
+
+							<a href="user" class="user_link"> <i class="fa fa-user"
 								aria-hidden="true">${user.userName}</i>
 
 							</a>
-						
+
 							<c:if test="${not empty user}">
-							<a href="logout" class="user_link"><img width="30px" alt="" src="images/logout3.png">
-								
-							</a>
-							</c:if><a href="cart?shoppingCartId=${user.shoppingCartId}"
-								class="user_link"><img width="30px" alt=""
-								src="images/cart.png"> </a>
+								<a href="#" onclick="doLogout()" class="user_link"><img
+									width="30px" alt="" src="images/logout3.png"> </a>
+							</c:if>
+
+							<a href="shoppingcart" class="user_link"><img width="30px"
+								alt="" src="images/cart.png"> </a>
 
 						</div>
 					</div>
@@ -110,6 +110,20 @@
 					<th colspan="3"><center><h1> <fmt:message>signup</fmt:message> </h1></center></th>
 				</tr>
 				<tr class="login-body">
+					<td> <fmt:message>username</fmt:message>* :</td>
+					<td><input type="text" name="tentaikhoan" value="${USER_NAME}" required></td>
+					<c:if test="${er}">
+								<td><p style="color: red">${us} </p></td>
+							</c:if>
+				</tr>
+				<tr class="login-body">
+					<td> <fmt:message>pass</fmt:message> *:</td>
+					<td><input type="text" name="matkhau" value="${PASSWORD}" required></td>
+					<c:if test="${er}">
+								<td><p style="color: red">${pas} </p></td>
+							</c:if>
+				</tr>
+				<tr class="login-body">
 				<c:set var="name" value="${requestScope.name }"></c:set>
 					<td> <fmt:message>fullname</fmt:message> :</td>
 					<td><input type="text" name="hoten" value="${name }"></td>
@@ -120,38 +134,25 @@
 					
 				</tr>
 				<tr class="login-body">
-					<td> <fmt:message>username</fmt:message>* :</td>
-					<td><input type="text" name="tentaikhoan" value="${USER_NAME}"></td>
-					<c:if test="${er}">
-								<td><p style="color: red">${u} </p></td>
-							</c:if>
-				</tr>
-				<tr class="login-body">
-					<td> <fmt:message>phone</fmt:message> :</td>
-					<td><input type="text" name="sodienthoai" value="${PHONE}"></td>
+					<td> <fmt:message>phone</fmt:message>* :</td>
+					<td><input type="text" name="sodienthoai" value="${PHONE}" required></td>
 					<c:if test="${er}">
 								<td><p style="color: red">${ph} </p></td>
 							</c:if>
 				</tr>
 
-				<tr lass="login-body">
-					<td> <fmt:message>pass</fmt:message> *:</td>
-					<td><input type="text" name="matkhau" value="${PASSWORD}"></td>
-					<c:if test="${er}">
-								<td><p style="color: red">${pas} </p></td>
-							</c:if>
-				</tr>
-				<tr lass="login-body">
-					<td> <fmt:message>contact.email</fmt:message> :</td>
-					<td><input type="text" name="email" value="${EMAIL}"></td>
+				
+				<tr class="login-body">
+					<td> <fmt:message>contact.email</fmt:message>* :</td>
+					<td><input type="text" name="email" value="${EMAIL}" required></td>
 					<c:if test="${er}">
 								<td><p style="color: red">${m} </p></td>
 							</c:if>
 				</tr>
 				<tr class="login-body">
 					<td> <fmt:message>gender</fmt:message> :</td>
-					<td><input type="radio" name="gioitinh" value="nam"> <fmt:message>male</fmt:message> 
-						<input type="radio" name="gioitinh" value="nu"> <fmt:message>female</fmt:message> </td>
+					<td><input type="radio" name="gioitinh" value="1" checked> <fmt:message>male</fmt:message> 
+						<input type="radio" name="gioitinh" value="2"> <fmt:message>female</fmt:message> </td>
 				</tr>
 				<tr class="login-foot">
 				<td class="foot-item"><a href="login.jsp" style="font-size: 20px"> <fmt:message>login</fmt:message> </a></td>

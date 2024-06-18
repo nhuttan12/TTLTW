@@ -33,4 +33,22 @@ public class DBCategory {
 		}
 		return b;
 	}
+	public Category findCategoryById(int catrgoryID) {
+		Category category = new Category();
+		try {
+			Connection connection = connectionDB.connect();
+			String sql="select * from category where CATEGORY_ID=?";
+			PreparedStatement statement = connection.prepareStatement(sql);
+			statement.setInt(0, catrgoryID);
+			ResultSet resultSet = statement.executeQuery();
+			while(resultSet.next()) {
+				category.setId(catrgoryID);
+				category.setCategoryName(resultSet.getString("CATEGORY_NAME"));
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return category;
+		
+	}
 }

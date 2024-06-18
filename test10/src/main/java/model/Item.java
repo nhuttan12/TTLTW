@@ -3,7 +3,7 @@ package model;
 public class Item {
 	private int id;
 	private String name;
-	private double price;// gia mua
+	private double price;// gia mua hiển thị trên menu
 	private String imageName;
 	private double discount;
 	private double difference;
