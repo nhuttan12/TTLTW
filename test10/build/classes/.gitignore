@@ -8,11 +8,7 @@ tmp/
 local.properties
 .settings/
 .loadpath
-<<<<<<< HEAD
-.recommenders
-=======
 .recommenders
 .classpath
 .project
 .settings/
->>>>>>> fe775c4effe40e4bde861ec098c9450b456ca822
