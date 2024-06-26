@@ -1,4 +1,4 @@
-package servlet;
+package servlet.Admin;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -42,35 +42,35 @@ public class Admin_Add_Item extends HttpServlet {
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		DBItem dbItem = new DBItem();
-		int id;
-		String name_Item;
-		double unitPrice;
-		int quantityavai;
-		String type;
-		String image;
-
-		try {
-			id = Integer.parseInt(req.getParameter("ITEM_ID"));
-			name_Item = req.getParameter("ITEM_NAME");
-			unitPrice = Double.parseDouble(req.getParameter("UNITPRICE"));
-			quantityavai = Integer.parseInt(req.getParameter("QUANTITY_AVAILABLE"));
-			type = req.getParameter("TYPE");
-			Part part = req.getPart("IMAGES");
-			String fileName = Path.of(part.getSubmittedFileName()).getFileName().toString();
-
-			part.write("D:\\Test\\test4\\test4\\src\\main\\webapp\\images\\" + fileName);
-
-			image = "images/" + fileName;
-
-			Item item = new Item(id, name_Item, unitPrice, quantityavai, type, image);
-			dbItem.addITEM(item);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		resp.sendRedirect("admin");
+//		DBItem dbItem = new DBItem();
+//		int id;
+//		String name_Item;
+//		double unitPrice;
+//		int quantityavai;
+//		String type;
+//		String image;
+//
+//		try {
+//			id = Integer.parseInt(req.getParameter("ITEM_ID"));
+//			name_Item = req.getParameter("ITEM_NAME");
+//			unitPrice = Double.parseDouble(req.getParameter("UNITPRICE"));
+//			quantityavai = Integer.parseInt(req.getParameter("QUANTITY_AVAILABLE"));
+//			type = req.getParameter("TYPE");
+//			Part part = req.getPart("IMAGES");
+//			String fileName = Path.of(part.getSubmittedFileName()).getFileName().toString();
+//
+//			part.write("D:\\Test\\test4\\test4\\src\\main\\webapp\\images\\" + fileName);
+//
+//			image = "images/" + fileName;
+//
+//			Item item = new Item(id, name_Item, unitPrice, quantityavai, type, image);
+//			dbItem.addITEM(item);
+//		} catch (SQLException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//
+//		resp.sendRedirect("admin");
 
 	}
 

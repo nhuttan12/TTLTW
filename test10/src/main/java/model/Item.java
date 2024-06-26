@@ -3,86 +3,55 @@ package model;
 public class Item {
 	private int id;
 	private String name;
-	private double unitPrice;// gia tren web
-	private double price;// gia mua
-	private int quantityAvailable;// sl ton kho
-	private int quantity;// sl mua
-	private String type;
+	private double price;// gia mua hiển thị trên menu
 	private String imageName;
 	private double discount;
 	private double difference;
-	private double importPrice;
-	
+	private String discription;	
+	private Category category;
+	private ImportDetail importDetail; //hỗ trợ lấy số lượng nhập với giá nhập dễ dàng
+
 //	public Item() {
 //		id = name = img_name = "";
 //		unitPrice = 0.0;
 //		quantityAvailable = 0;
 //	}
 
-	public Item(int id, String name, double unitPrice, double price, int quantityAvailable, int quantity, String type,
-			String imgName) {
-		this.id = id;
-		this.name = name;
-		this.unitPrice = unitPrice;
-		this.price = price;
-		this.quantityAvailable = quantityAvailable;
-		this.quantity = quantity;
-		this.type = type;
-		this.imageName = imgName;
-
+	public Category getCategory() {
+		return category;
 	}
 
-	public Item(int id, String name, double unitPrice, double price, int quantityAvailable, int quantity, String type,
-		String imageName, double discount) {
-	super();
-	this.id = id;
-	this.name = name;
-	this.unitPrice = unitPrice;
-	this.price = price;
-	this.quantityAvailable = quantityAvailable;
-	this.quantity = quantity;
-	this.type = type;
-	this.imageName = imageName;
-	this.discount = discount;
-}
+	public void setCategory(Category category) {
+		this.category = category;
+	}
 
-	// item de them vao gio hang
-	public Item(int id, String name, double price, int quantity) {
+	public void setDiscount(double discount) {
+		this.discount = discount;
+	}
+
+	public Item(int id, String name, double price, String imageName, double discount, Category category,
+			String discription) {
+		super();
 		this.id = id;
 		this.name = name;
 		this.price = price;
-		this.quantity = quantity;
+		this.imageName = imageName;
+		this.discount = discount;
+		this.category = category;
+		this.discription = discription;
+	}
 
+	// item de them vao gio hang
+	public Item(int id, String name, double price, double discount, Category category) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.price = price;
+		this.discount = discount;
+		this.category = category;
 	}
 
 	// item de them san pham vao list sp tren web
-	public Item(int id, String name, double unitPrice, int quantityAvailable, String type, String imgName) {
-		this.id = id;
-		this.name = name;
-		this.unitPrice = unitPrice;
-		this.quantityAvailable = quantityAvailable;
-		this.type = type;
-		this.imageName = imgName;
-	}
-
-	
-	public Item(String name, double unitPrice, double price, int quantity, String imageName) {
-		super();
-		this.name = name;
-		this.unitPrice = unitPrice;
-		this.price = price;
-		this.quantity = quantity;
-		this.imageName = imageName;
-	}
-
-	public Item(String name, double unitPrice, int quantityAvailable, String type, String imageName) {
-		super();
-		this.name = name;
-		this.unitPrice = unitPrice;
-		this.quantityAvailable = quantityAvailable;
-		this.type = type;
-		this.imageName = imageName;
-	}
 
 	public Item(int id) {
 		super();
@@ -90,11 +59,7 @@ public class Item {
 	}
 
 	public Item() {
-		super();
 	}
-	
-
-
 
 	public double getDiscount() {
 		return discount;
@@ -120,44 +85,22 @@ public class Item {
 		this.name = name;
 	}
 
-	public double getUnitPrice() {
-		return unitPrice;
-	}
-
-	public void setUnitPrice(double unitPrice) {
-		this.unitPrice = unitPrice;
-	}
+	
 
 	public double getPrice() {
-		return this.unitPrice * this.quantity;
+		return this.price;
 	}
 
 	public void setPrice(double price) {
 		this.price = price;
 	}
 
-	public int getQuantityAvailable() {
-		return quantityAvailable;
+	public String getDiscription() {
+		return discription;
 	}
 
-	public void setQuantityAvailable(int quantityAvailable) {
-		this.quantityAvailable = quantityAvailable;
-	}
-
-	public int getQuantity() {
-		return quantity;
-	}
-
-	public void setQuantity(int quantity) {
-		this.quantity = quantity;
-	}
-
-	public String getType() {
-		return type;
-	}
-
-	public void setType(String type) {
-		this.type = type;
+	public void setDiscription(String discription) {
+		this.discription = discription;
 	}
 
 	public String getImageName() {
@@ -168,7 +111,6 @@ public class Item {
 		this.imageName = imageName;
 	}
 
-	
 	public double getDifference() {
 		return difference;
 	}
@@ -177,19 +119,21 @@ public class Item {
 		this.difference = difference;
 	}
 
+	
+
 	@Override
 	public String toString() {
-		return "Item [id=" + id + ", name=" + name + ", unitPrice=" + unitPrice + ", price=" + price
-				+ ", quantityAvailable=" + quantityAvailable + ", quantity=" + quantity + ", type=" + type
-				+ ", imageName=" + imageName + ", discount=" + discount + ", difference=" + difference + "]";
+		return "Item [id=" + id + ", name=" + name + ", price=" + price + ", imageName=" + imageName + ", discount="
+				+ discount + ", difference=" + difference + ", category="
+				+ category + ", discription=" + discription + "]";
 	}
 
-	public double getImportPrice() {
-		return importPrice;
+	public ImportDetail getImportDetail() {
+		return importDetail;
 	}
 
-	public void setImportPrice(double importPrice) {
-		this.importPrice = importPrice;
+	public void setImportDetail(ImportDetail importDetail) {
+		this.importDetail = importDetail;
 	}
 
 }

@@ -5,12 +5,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import database.DBCategory;
 import database.DBItem;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import model.Category;
 import model.Item;
 @WebServlet("/menu")
 public class Menu extends HttpServlet{
@@ -18,14 +20,18 @@ public class Menu extends HttpServlet{
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String type = req.getParameter("type");
+		int id_type=Integer.parseInt(type);
 		Item it = new Item();
 		DBItem dbItem = new DBItem();
+		DBCategory dbCategory = new DBCategory();
 		List<Item> items = new ArrayList<Item>();
-		if(type==null || type.equals("all")) {
+		if( id_type==0) {
 			items=dbItem.getAllItem();
 		}else {
 			try {
-				items=dbItem.getItemByType(type);
+		
+			
+				items=dbItem.getItemByType(id_type);
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -50,8 +56,8 @@ public class Menu extends HttpServlet{
 		
 		
 		
-		
-		req.setAttribute("type2", type);
+	
+		req.setAttribute("type2", id_type);
 		req.setAttribute("Chickenjoy", "Chickenjoy");
 		req.setAttribute("Burger", "Burger");
 		req.setAttribute("Noodles", "Noodles");
@@ -61,6 +67,6 @@ public class Menu extends HttpServlet{
 		req.setAttribute("page", page);
 		req.setAttribute("number", numberOfPage);
 		req.getRequestDispatcher("menu.jsp").forward(req, resp);
-	
+//	
 	}
 }

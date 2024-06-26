@@ -20,7 +20,7 @@ public class LanguageFilter implements Filter{
 		System.out.println(lang);
 		if(lang!=null) {
 			req.getSession().setAttribute("lang", lang);
-			
+	
 		}
 		arg2.doFilter(arg0, arg1);
 		
