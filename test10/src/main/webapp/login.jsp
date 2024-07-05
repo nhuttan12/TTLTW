@@ -130,20 +130,24 @@
 						<tr>
 							<th class="foot-item"><a
 								href="https://accounts.google.com/o/oauth2/auth?scope=email%20profile&redirect_uri=http://localhost:8080/test10/loginGoogle&response_type=code
-    &client_id=1089316008342-fllevmop2b90sd7mmsqotdo1neb934sg.apps.googleusercontent.com&approval_prompt=force">Login
-									with google</a></th>
+    &client_id=1089316008342-fllevmop2b90sd7mmsqotdo1neb934sg.apps.googleusercontent.com&approval_prompt=force">
+									<button class="btn google-btn social-btn" type="button">
+										<span><i class="fab fa-google-plus-g"></i> Đăng nhập
+											với Google+</span>
+									</button>
+							</a></th>
 
 
 						</tr>
 						<tr>
-							<th class="foot-item">
-
-								<button>
-									<a
-										href="https://www.facebook.com/v19.0/dialog/oauth?client_id=1586113255570962&redirect_uri=http://localhost:8080/test10/loginFacebook&scope=email">Login
-										with facebook</a>
-								</button>
-							</th>
+							<th class="foot-item"><a
+								href="https://www.facebook.com/v19.0/dialog/oauth?client_id=1586113255570962&redirect_uri=http://localhost:8080/test10/loginFacebook&scope=email">
+									<button class="btn fa-book-btn social-btn" type="button"
+										style="background-color: #3b5998; color: white;">
+										<span><i class="fab fa-facebook-f"></i> Đăng nhập với
+											Facebook</span>
+									</button>
+							</a></th>
 						</tr>
 
 					</table>
