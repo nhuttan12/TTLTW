@@ -7,9 +7,9 @@ public class Item {
 	private String imageName;
 	private double discount;
 	private double difference;
-	private double importPrice;
-	private int category_id;
-	private String discription;
+	private String discription;	
+	private Category category;
+	private ImportDetail importDetail; //hỗ trợ lấy số lượng nhập với giá nhập dễ dàng
 
 //	public Item() {
 //		id = name = img_name = "";
@@ -17,7 +17,19 @@ public class Item {
 //		quantityAvailable = 0;
 //	}
 
-	public Item(int id, String name, double price, String imageName, double discount, int category_id,
+	public Category getCategory() {
+		return category;
+	}
+
+	public void setCategory(Category category) {
+		this.category = category;
+	}
+
+	public void setDiscount(double discount) {
+		this.discount = discount;
+	}
+
+	public Item(int id, String name, double price, String imageName, double discount, Category category,
 			String discription) {
 		super();
 		this.id = id;
@@ -25,18 +37,18 @@ public class Item {
 		this.price = price;
 		this.imageName = imageName;
 		this.discount = discount;
-		this.category_id = category_id;
+		this.category = category;
 		this.discription = discription;
 	}
 
 	// item de them vao gio hang
-	public Item(int id, String name, double price, double discount, int category_id) {
+	public Item(int id, String name, double price, double discount, Category category) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.price = price;
 		this.discount = discount;
-		this.category_id = category_id;
+		this.category = category;
 	}
 
 	// item de them san pham vao list sp tren web
@@ -47,7 +59,6 @@ public class Item {
 	}
 
 	public Item() {
-		super();
 	}
 
 	public double getDiscount() {
@@ -84,14 +95,6 @@ public class Item {
 		this.price = price;
 	}
 
-	public int getCategory_id() {
-		return category_id;
-	}
-
-	public void setCategory_id(int category_id) {
-		this.category_id = category_id;
-	}
-
 	public String getDiscription() {
 		return discription;
 	}
@@ -121,16 +124,16 @@ public class Item {
 	@Override
 	public String toString() {
 		return "Item [id=" + id + ", name=" + name + ", price=" + price + ", imageName=" + imageName + ", discount="
-				+ discount + ", difference=" + difference + ", importPrice=" + importPrice + ", category_id="
-				+ category_id + ", discription=" + discription + "]";
+				+ discount + ", difference=" + difference + ", category="
+				+ category + ", discription=" + discription + "]";
 	}
 
-	public double getImportPrice() {
-		return importPrice;
+	public ImportDetail getImportDetail() {
+		return importDetail;
 	}
 
-	public void setImportPrice(double importPrice) {
-		this.importPrice = importPrice;
+	public void setImportDetail(ImportDetail importDetail) {
+		this.importDetail = importDetail;
 	}
 
 }
