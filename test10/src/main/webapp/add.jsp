@@ -34,7 +34,7 @@
 <body>
 	<div class="main m-auto">
 		<h1 class="text-center">Thêm sản phẩm</h1>
-		<form action="" method="post">
+		<form action="/addItem" method="post">
 			<div class="form-group">
 				<label for="category">Loại sản phẩm</label> <select
 					class="form-control" id="category">
