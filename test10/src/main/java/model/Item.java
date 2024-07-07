@@ -9,7 +9,8 @@ public class Item {
 	private double difference;
 	private String discription;	
 	private Category category;
-	private ImportDetail importDetail; //hỗ trợ lấy số lượng nhập với giá nhập dễ dàng
+	private ImportDetail importDetail;//hỗ trợ lấy số lượng nhập với giá nhập dễ dàng
+	private int hidden;//trang thai (0: ẩn, 1: hiện)
 
 //	public Item() {
 //		id = name = img_name = "";
@@ -40,6 +41,21 @@ public class Item {
 		this.category = category;
 		this.discription = discription;
 	}
+	
+
+	public Item(int id, String name, double price, String imageName, double discount, Category category,
+			String discription,int hidden) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.price = price;
+		this.imageName = imageName;
+		this.discount = discount;
+		this.category = category;
+		this.discription = discription;
+		this.hidden=hidden;
+	}
+	
 
 	// item de them vao gio hang
 	public Item(int id, String name, double price, double discount, Category category) {
@@ -135,5 +151,14 @@ public class Item {
 	public void setImportDetail(ImportDetail importDetail) {
 		this.importDetail = importDetail;
 	}
+
+	public int getHidden() {
+		return hidden;
+	}
+
+	public void setHidden(int hidden) {
+		this.hidden = hidden;
+	}
+	
 
 }
