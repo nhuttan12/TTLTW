@@ -83,9 +83,16 @@ function doLogout() {
 
 							</a>
 
+							
 							<c:if test="${not empty user}">
 								<a href="#" onclick="doLogout()" class="user_link"><img
 									width="30px" alt="" src="images/logout3.png"> </a>
+									<c:if test="${user.role != 1}">
+								<a href="#" class="user_link"><img
+									width="30px" alt="" src="images/admin.png"> </a>
+									
+									</c:if>
+									
 							</c:if>
 
 							<a href="shoppingcart" class="user_link"><img width="30px"
