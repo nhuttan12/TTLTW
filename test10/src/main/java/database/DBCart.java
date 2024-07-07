@@ -249,8 +249,14 @@ public class DBCart {
 				int CATEGORY_ID = rs.getInt("CATEGORY_ID");
 				String IMAGES = rs.getString("IMAGES");
 				
-				i = new Item(ITEM_ID, ITEM_NAME, PRICE, IMAGES, DISCOUNT, CATEGORY_ID, DISCRIPTION);
-
+//				i = new Item(ITEM_ID, ITEM_NAME, PRICE, IMAGES, DISCOUNT, CATEGORY_ID, DISCRIPTION);
+				i.setId(ITEM_ID);
+				i.setName(ITEM_NAME);
+				i.setPrice(PRICE);
+				i.setDiscount(DISCOUNT);
+				i.setDiscription(DISCRIPTION);
+				i.getCategory().setId(CATEGORY_ID);
+				i.setImageName(IMAGES);
 			}
 			rs.close();
 		} catch (Exception ex) {
@@ -283,7 +289,14 @@ public class DBCart {
 				int CATEGORY_ID = rs.getInt("CATEGORY_ID");
 				String IMAGES = rs.getString("IMAGES");
 				
-				Item i = new Item(ITEM_ID, ITEM_NAME, PRICE, IMAGES, DISCOUNT, CATEGORY_ID, DISCRIPTION);
+				Item i = new Item();
+				i.setId(ITEM_ID);
+				i.setName(ITEM_NAME);
+				i.setPrice(PRICE);
+				i.setDiscount(DISCOUNT);
+				i.setDiscription(DISCRIPTION);
+				i.getCategory().setId(CATEGORY_ID);
+				i.setImageName(IMAGES);
 				list.add(i);
 			}
 			rs.close();
