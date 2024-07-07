@@ -95,7 +95,7 @@ public class DBItem {
 	public List<Item> getAllItem() {
 		List<Item> b = new ArrayList<Item>();
 		Connection c = connectionDB.connect();
-		String sql = "SELECT * FROM items";
+		String sql = "SELECT * FROM ITEMS";
 		try {
 			PreparedStatement ps = c.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
@@ -110,7 +110,7 @@ public class DBItem {
 				String IMAGES = rs.getString("IMAGES");
 				
 				item.setId(ID);
-				item.getCategory().setId(CATEGORY_ID);
+				item.setCategory(new Category(CATEGORY_ID));;
 				item.setName(ITEM_NAME);
 				item.setPrice(PRICE);
 				item.setDiscount(DISCOUNT);
@@ -157,7 +157,7 @@ public class DBItem {
 				item.setPrice(PRICE);
 				item.setImageName(IMAGES);
 				item.setDiscount(DISCOUNT);
-				item.getCategory().setId(CATEGORY_ID);
+				item.setCategory(new Category(CATEGORY_ID));;
 				item.setDiscription(DISCRIPTION);
 				b.add(item);
 			}
@@ -195,7 +195,7 @@ public class DBItem {
 				item.setPrice(PRICE);
 				item.setImageName(IMAGES);
 				item.setDiscount(DISCOUNT);
-				item.getCategory().setId(CATEGORY_ID);
+				item.setCategory(new Category(CATEGORY_ID));;
 				item.setDiscription(DISCRIPTION);
 			}
 			rs.close();
@@ -232,7 +232,7 @@ public class DBItem {
 				item.setPrice(PRICE);
 				item.setImageName(IMAGES);
 				item.setDiscount(DISCOUNT);
-				item.getCategory().setId(CATEGORY_ID);
+				item.setCategory(new Category(CATEGORY_ID));;
 				item.setDiscription(DISCRIPTION);
 			}
 			rs.close();
@@ -299,8 +299,9 @@ public class DBItem {
 
 	public static void main(String[] args) throws SQLException {
 		DBItem l = new DBItem();
-		List<Item >items = l.getAllItem();
+		List<Item> items = l.getAllItem();
 		System.out.println(items);
+
 	}
 
 }
