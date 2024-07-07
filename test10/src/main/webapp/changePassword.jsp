@@ -15,7 +15,7 @@
 <meta name="keywords" content="" />
 <meta name="description" content="" />
 <meta name="author" content="" />
-<link rel="shortcut icon" href="images/logo2.png" />
+<link rel="shortcut icon" href="images/loo6.png" />
 <title>Contact</title>
 <!-- bootstrap core css -->
 <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
@@ -53,7 +53,7 @@ function doLogout() {
 			<div class="container">
 				<nav class="navbar navbar-expand-lg custom_nav-container ">
 					<a class="navbar-brand" href="index"><img alt="logo"
-						style="width: 120px" src="images/logo.png"> </a>
+						style="width: 120px" src="images/log5.png"> </a>
 
 
 
@@ -84,7 +84,7 @@ function doLogout() {
 								<a href="#" onclick="doLogout()" class="user_link"><img
 									width="30px" alt="" src="images/logout3.png"> </a>
 									<c:if test="${user.role != 1}">
-								<a href="#" class="user_link"><img
+								<a href="admin" class="user_link"><img
 									width="30px" alt="" src="images/admin.png"> </a>
 									
 									</c:if>

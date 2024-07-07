@@ -47,7 +47,7 @@ img {
 	crossorigin="anonymous"></script>
 
 <!-- Css & Js -->
-<link rel="shortcut icon" href="images/logo2.png" />
+<link rel="shortcut icon" href="images/loo6.png" />
 <link rel="stylesheet" href="css/admin/ad.css">
 
 <!-- boot strap -->
