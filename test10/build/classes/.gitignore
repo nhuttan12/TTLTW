@@ -1,9 +1,2 @@
-.classpath
-.project
-.settings/
-build/classes/
-/Servers2/
-/.metadata
-/servlet/
 /database/
 /model/

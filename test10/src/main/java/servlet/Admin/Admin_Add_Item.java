@@ -36,6 +36,7 @@ public class Admin_Add_Item extends HttpServlet {
 			List<Category> categories=dao.getCategoryList();
 			req.setAttribute("categoryList", categories);
 			req.getRequestDispatcher("/add.jsp").forward(req, resp);
+			
 		}
 
 	}
