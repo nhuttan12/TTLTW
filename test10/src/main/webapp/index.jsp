@@ -18,7 +18,7 @@
 <link href="css/style.css" rel="styleSheet" />
 <link href="css/responsive.css" rel="styleSheet" />
 <title>Home Page</title>
-<link rel="shortcut icon" href="images/logo2.png" />
+<link rel="shortcut icon" href="images/loo6.png" />
 <script type="text/javascript">
 	function doLogout() {
 		if (confirm("Are you Logout?")) {
@@ -42,7 +42,7 @@
 			<div class="container">
 				<nav class="navbar navbar-expand-lg custom_nav-container ">
 					<a class="navbar-brand" href="index"><img alt="logo"
-						style="width: 120px" src="images/logo.png"> </a>
+						style="width: 120px" src="images/log5.png"> </a>
 
 
 
@@ -71,6 +71,12 @@
 							<c:if test="${not empty user}">
 								<a href="#" onclick="doLogout()" class="user_link"><img
 									width="30px" alt="" src="images/logout3.png"> </a>
+									<c:if test="${user.role != 1}">
+								<a href="admin" class="user_link"><img
+									width="30px" alt="" src="images/admin.png"> </a>
+									
+									</c:if>
+									
 							</c:if>
 
 							<a href="shoppingcart" class="user_link"><img width="30px"
