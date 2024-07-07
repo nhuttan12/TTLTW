@@ -15,7 +15,7 @@
 <meta name="keywords" content="" />
 <meta name="description" content="" />
 <meta name="author" content="" />
-<link rel="shortcut icon" href="images/logo2.png" />
+<link rel="shortcut icon" href="images/loo6.png" />
 <title>Login</title>
 <!-- bootstrap core css -->
 <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
@@ -48,13 +48,21 @@
 			<div class="container">
 				<nav class="navbar navbar-expand-lg custom_nav-container ">
 					<a class="navbar-brand" href="index"><img alt="logo"
+<<<<<<< HEAD
 						style="width: 120px" src="images/logo.png"> </a>
+=======
+						style="width: 120px" src="images/log5.png"> </a>
+>>>>>>> origin/code
 
 
 
 					<div class="collapse navbar-collapse" id="navbarSupportedContent">
 						<ul class="navbar-nav  mx-auto ">
+<<<<<<< HEAD
 							<li class="nav-item active"><a class="nav-link"
+=======
+							<li class="nav-item "><a class="nav-link"
+>>>>>>> origin/code
 								href="index.jsp"><fmt:message>menu.home</fmt:message> </a></li>
 							<li class="nav-item"><a class="nav-link" href="menu?type=0"><fmt:message>menu.menu</fmt:message></a>
 							</li>
@@ -77,6 +85,15 @@
 							<c:if test="${not empty user}">
 								<a href="#" onclick="doLogout()" class="user_link"><img
 									width="30px" alt="" src="images/logout3.png"> </a>
+<<<<<<< HEAD
+=======
+									<c:if test="${user.role != 1}">
+								<a href="admin" class="user_link"><img
+									width="30px" alt="" src="images/admin.png"> </a>
+									
+									</c:if>
+									
+>>>>>>> origin/code
 							</c:if>
 
 							<a href="shoppingcart" class="user_link"><img width="30px"

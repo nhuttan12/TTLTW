@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import model.Category;
+import model.ImportDetail;
 import model.Item;
 import model.User;
 
@@ -21,7 +23,11 @@ public class DBItem {
 		if (item == null) {
 			String sql = "INSERT INTO ITEMS (CATEGORY_ID, ITEM_NAME, PRICE, DISCOUNT, DISCRIPTION, IMAGES) VALUES (?, ?, ?, ?, ?, ?);";
 			PreparedStatement ps = c.prepareStatement(sql);
+<<<<<<< HEAD
 			ps.setInt(1, e.getCategory_id());
+=======
+			ps.setInt(1, e.getCategory().getId());
+>>>>>>> origin/code
 			ps.setString(2, e.getName());
 			ps.setDouble(3, e.getPrice());
 			ps.setDouble(4, e.getDiscount());
@@ -70,7 +76,11 @@ public class DBItem {
 				String sql = "UPDATE ITEMS SET CATEGORY_ID = ? ITEM_NAME = ?, PRICE = ?, DISCOUNT = ?, DISCRIPTION = ?, IMAGES = ? WHERE ITEM_ID = ?;";
 				PreparedStatement ps = c.prepareStatement(sql);
 				// '"+title+"',"+Authorid+" , 18022018, 0000, "+Isbn+"
+<<<<<<< HEAD
 				ps.setInt(1, e.getCategory_id());
+=======
+				ps.setInt(1, e.getCategory().getId());
+>>>>>>> origin/code
 				ps.setString(2, e.getName());
 				ps.setDouble(3, e.getPrice());
 				ps.setDouble(4, e.getDiscount());
@@ -89,7 +99,7 @@ public class DBItem {
 		return status;
 	}
 
-	// lam menu cho All
+	// lam menu cho All( hidden =1)
 	public List<Item> getAllItem() {
 		List<Item> b = new ArrayList<Item>();
 		Connection c = connectionDB.connect();
@@ -106,15 +116,31 @@ public class DBItem {
 				Double DISCOUNT = rs.getDouble("DISCOUNT");
 				String DISCRIPTION = rs.getString("DISCRIPTION");
 				String IMAGES = rs.getString("IMAGES");
+<<<<<<< HEAD
 				item.setId(ID);
 				item.setCategory_id(CATEGORY_ID);
+=======
+				int HIDDEN=rs.getInt("HIDDEN");
+				
+				item.setId(ID);
+				item.setCategory(new Category(CATEGORY_ID));;
+>>>>>>> origin/code
 				item.setName(ITEM_NAME);
 				item.setPrice(PRICE);
 				item.setDiscount(DISCOUNT);
 				item.setDiscription(DISCRIPTION);
 				item.setImageName(IMAGES);
+<<<<<<< HEAD
 //				Item item = new Item(ID, ITEM_NAME, UNITPRICE, DISCOUNT, TYPE, IMAGES);
 				b.add(item);
+=======
+				item.setHidden(HIDDEN);
+//				Item item = new Item(ID, ITEM_NAME, UNITPRICE, DISCOUNT, TYPE, IMAGES);
+				if(item.getHidden()==1) {
+					b.add(item);
+				}
+				
+>>>>>>> origin/code
 			}
 
 		} catch (SQLException e) {
@@ -147,9 +173,26 @@ public class DBItem {
 				Double DISCOUNT = rs.getDouble("DISCOUNT");
 				String DISCRIPTION = rs.getString("DISCRIPTION");
 				String IMAGES = rs.getString("IMAGES");
+				int HIDDEN=rs.getInt("HIDDEN");
 
+<<<<<<< HEAD
 				Item item = new Item(ID, ITEM_NAME, PRICE, IMAGES, DISCOUNT, CATEGORY_ID, DISCRIPTION);
 				b.add(item);
+=======
+				Item item = new Item();
+				item.setId(ID);
+				item.setName(ITEM_NAME);
+				item.setPrice(PRICE);
+				item.setImageName(IMAGES);
+				item.setDiscount(DISCOUNT);
+				item.setCategory(new Category(CATEGORY_ID));;
+				item.setDiscription(DISCRIPTION);
+				item.setHidden(HIDDEN);
+				if(item.getHidden()==1) {
+					b.add(item);
+				}
+				
+>>>>>>> origin/code
 			}
 			rs.close();
 		} catch (Exception ex) {
@@ -159,7 +202,7 @@ public class DBItem {
 	}
 
 	public Item getItemByName(String n) throws SQLException {
-		Item b = null;
+		Item item = null;
 
 		try (Connection c = connectionDB.connect()) {
 
@@ -179,18 +222,33 @@ public class DBItem {
 				Double DISCOUNT = rs.getDouble("DISCOUNT");
 				String DISCRIPTION = rs.getString("DISCRIPTION");
 				String IMAGES = rs.getString("IMAGES");
+//				int HIDDEN=rs.getInt("HIDDEN");
 
+<<<<<<< HEAD
 				b = new Item(ID, ITEM_NAME, PRICE, IMAGES, DISCOUNT, CATEGORY_ID, DISCRIPTION);
+=======
+
+				item.setId(ID);
+				item.setName(ITEM_NAME);
+				item.setPrice(PRICE);
+				item.setImageName(IMAGES);
+				item.setDiscount(DISCOUNT);
+				item.setCategory(new Category(CATEGORY_ID));;
+				item.setDiscription(DISCRIPTION);
+//				item.setHidden(HIDDEN);
+				
+>>>>>>> origin/code
 			}
 			rs.close();
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
-		return b;
+	
+		return item;
 	}
 
 	public Item getItemByID(int id) throws SQLException {
-		Item b = null;
+		Item item = null;
 
 		try (Connection c = connectionDB.connect()) {
 
@@ -210,14 +268,25 @@ public class DBItem {
 				Double DISCOUNT = rs.getDouble("DISCOUNT");
 				String DISCRIPTION = rs.getString("DISCRIPTION");
 				String IMAGES = rs.getString("IMAGES");
+<<<<<<< HEAD
 
 				b = new Item(ID, ITEM_NAME, PRICE, IMAGES, DISCOUNT, CATEGORY_ID, DISCRIPTION);;
+=======
+				
+				item.setId(ID);
+				item.setName(ITEM_NAME);
+				item.setPrice(PRICE);
+				item.setImageName(IMAGES);
+				item.setDiscount(DISCOUNT);
+				item.setCategory(new Category(CATEGORY_ID));;
+				item.setDiscription(DISCRIPTION);
+>>>>>>> origin/code
 			}
 			rs.close();
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
-		return b;
+		return item;
 	}
 
 	public List<Item> getItemByPage(List<Item> list, int start, int end) {
@@ -230,6 +299,7 @@ public class DBItem {
 
 	// bài của Tân chưa sửa
 	
+<<<<<<< HEAD
 //	public List<Item> getItemForAdmin() {
 //		List<Item> b = new ArrayList<Item>();
 //		Connection c = connectionDB.connect();
@@ -310,6 +380,58 @@ public class DBItem {
 
 			System.out.println(i.getName());
 		}
+=======
+	public List<Item> getItemForAdmin() {
+		List<Item> b = new ArrayList<Item>();
+		Connection c = connectionDB.connect();
+		String sql = "select i.ITEM_ID AS 'id', c.CATEGORY_NAME as 'category', i.ITEM_NAME AS 'item_name', i.PRICE as 'sale_price', \r\n"
+				+ "	import_detail.PRICE as 'import_price', (i.PRICE-import_detail.PRICE) as 'difference', \r\n"
+				+ "	i.DISCOUNT, import_detail.QUANTITY \r\n"
+				+ "from items i \r\n"
+				+ "join category c on i.CATEGORY_ID=c.CATEGORY_ID \r\n"
+				+ "join import_detail on i.ITEM_ID=import_detail.ITEM_ID;";
+		try {
+			PreparedStatement ps = c.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				Item item = new Item();
+				Category category = new Category();
+				ImportDetail importDetail = new ImportDetail();
+				item.setCategory(category);
+				item.setImportDetail(importDetail);
+				int id = rs.getInt("id");
+				String categoryName = rs.getString("category");
+				String itemName = rs.getString("item_name");
+				Double salePrice = rs.getDouble("sale_price");
+				Double importPrice = rs.getDouble("import_price");
+				Double difference = rs.getDouble("difference");
+				double DISCOUNT = rs.getDouble("DISCOUNT");
+				int quantity = rs.getInt("QUANTITY");
+				item.setId(id);
+				item.getCategory().setCategoryName(categoryName);
+				item.setName(itemName);
+				item.setPrice(salePrice);
+				item.getImportDetail().setPrice(importPrice);
+				item.setDifference(difference);
+				item.setDiscount(DISCOUNT);
+				item.getImportDetail().setQuantity(quantity);
+				b.add(item);
+				
+			}
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return b;
+	}
+
+	public static void main(String[] args) throws SQLException {
+		DBItem l = new DBItem();
+		List<Item> items = l.getAllItem();
+		System.out.println(items);
+
+>>>>>>> origin/code
 	}
 
 }

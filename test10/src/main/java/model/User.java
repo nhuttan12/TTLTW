@@ -14,7 +14,11 @@ public class User {
 	String email;
 	int status;
 
+<<<<<<< HEAD
 	public User(int id, String userName, String password, String name, String phone, int gender, String message,
+=======
+	public User(int id, String userName, String password, String name, String phone, String gender, String message,
+>>>>>>> origin/code
 			int role, String email, int status) {
 		super();
 		this.id = id;
@@ -51,7 +55,11 @@ public class User {
 		this.email = email;
 	}
 
+<<<<<<< HEAD
 	public User(int id, String userName, String password, String name, String phone, int gender, String message,
+=======
+	public User(int id, String userName, String password, String name, String phone, String gender, String message,
+>>>>>>> origin/code
 			String email) {
 		super();
 		this.id = id;

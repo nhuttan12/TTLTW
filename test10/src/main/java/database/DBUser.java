@@ -39,6 +39,7 @@ public class DBUser {
 				String EMAIL = rs.getString("EMAIL");
 				int STATUS = rs.getInt("STATUS_USER_ID");
 				User user = new User(USER_ID, NAME, PASSWORD, NAME, PHONE, GENDER, MESSAGE, ROLE,
+<<<<<<< HEAD
 						EMAIL, STATUS);
 				System.out.println("ok!!!");
 				return user;
@@ -75,6 +76,8 @@ public class DBUser {
 				String EMAIL = rs.getString("EMAIL");
 				int STATUS = rs.getInt("STATUS_USER_ID");
 				User user = new User(USER_ID, NAME, PASSWORD, NAME, PHONE, GENDER, MESSAGE, ROLE,
+=======
+>>>>>>> origin/code
 						EMAIL, STATUS);
 				System.out.println("ok!!!");
 				return user;
@@ -347,7 +350,11 @@ public class DBUser {
 				String USER_NAME = rs.getString("USER_NAME");
 				String PASSWORD = rs.getString("PASSWORD");
 				String PHONE = rs.getString("PHONE");
+<<<<<<< HEAD
 				int GENDER = rs.getInt("GENDER");
+=======
+				String GENDER = rs.getString("GENDER");
+>>>>>>> origin/code
 				int ROLE_ID = rs.getInt("ROLE_ID");
 				String EMAIL = rs.getString("EMAIL");
 				String MESSAGE = rs.getString("MESSAGE");
@@ -415,7 +422,11 @@ public class DBUser {
 				String USER_NAME = rs.getString("USER_NAME");
 				String PASSWORD = rs.getString("PASSWORD");
 				String PHONE = rs.getString("PHONE");
+<<<<<<< HEAD
 				int GENDER = rs.getInt("GENDER");
+=======
+				String GENDER = rs.getString("GENDER");
+>>>>>>> origin/code
 				int ROLE_ID = rs.getInt("ROLE_ID");
 				String EMAIL = rs.getString("EMAIL");
 				String MESSAGE = rs.getString("MESSAGE");
@@ -449,7 +460,11 @@ public class DBUser {
 				String USER_NAME = rs.getString("USER_NAME");
 				String PASSWORD = rs.getString("PASSWORD");
 				String PHONE = rs.getString("PHONE");
+<<<<<<< HEAD
 				int GENDER = rs.getInt("GENDER");
+=======
+				String GENDER = rs.getString("GENDER");
+>>>>>>> origin/code
 				int ROLE_ID = rs.getInt("ROLE_ID");
 				String EMAIL = rs.getString("EMAIL");
 				String MESSAGE = rs.getString("MESSAGE");

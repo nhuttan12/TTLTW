@@ -27,7 +27,10 @@ public class DBOderDetail {
 //			ps.setInt(3, i.getQuantity());
 //			ps.setDouble(4, i.getUnitPrice()*i.getQuantity());
 //			status = ps.executeUpdate();
+<<<<<<< HEAD
 //
+=======
+>>>>>>> origin/code
 //			c.close();
 //		} catch (Exception ex) {
 //			System.err.println(ex.getClass().getName() + ": " + ex.getMessage());

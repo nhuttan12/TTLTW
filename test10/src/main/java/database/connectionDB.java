@@ -2,7 +2,11 @@ package database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import com.mysql.cj.jdbc.Driver;
 
 public class connectionDB {
 	public static Connection connect(){
@@ -18,6 +22,10 @@ public class connectionDB {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+<<<<<<< HEAD
+=======
+      
+>>>>>>> origin/code
         	c=DriverManager.getConnection("jdbc:mysql://localhost:3306/csdl","root","");
             System.out.println("connection database!!!!" );
         } catch (  SQLException e ) {
@@ -27,9 +35,18 @@ public class connectionDB {
     }
 	
 	
+<<<<<<< HEAD
 	public static void main(String[] args) {
+=======
+	public static void main(String[] args) throws SQLException {
+>>>>>>> origin/code
 		Connection a = connectionDB.connect();
-		System.out.println(a);
+		PreparedStatement preparedStatement = a.prepareStatement("SELECT * FROM ITEMS");
+		ResultSet resultSet = preparedStatement.executeQuery();
+		while (resultSet.next()) {
+			System.out.println(resultSet.first());
+			
+		}
 		
 	}
 	
