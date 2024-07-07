@@ -77,6 +77,7 @@ public class Login extends HttpServlet {
 //				System.out.println(a.getId());
 				HttpSession session = req.getSession();
 				session.setAttribute("user", a);
+				session.setMaxInactiveInterval(20);
 				System.out.println("login thanh cong");
 				RequestDispatcher dispatcher = req.getRequestDispatcher("index.jsp");
 				dispatcher.forward(req, resp);

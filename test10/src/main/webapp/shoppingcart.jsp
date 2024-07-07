@@ -39,6 +39,9 @@
 		}
 
 	}
+	function name() {
+		
+	}
 </script>
 </head>
 
@@ -234,4 +237,5 @@
 		</div>
 	</footer>
 </body>
+
 </html>
