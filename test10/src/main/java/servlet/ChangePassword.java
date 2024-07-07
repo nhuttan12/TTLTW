@@ -62,9 +62,11 @@ HttpSession httpSession=req.getSession();
 
 		}else {
 			 System.out.println("kiem tra lai thong tin");
+			 RequestDispatcher dispatcher = req.getRequestDispatcher("changePassword.jsp");
+			dispatcher.forward(req, resp);
 		}
 		
-		}
+	}
 		
 		
 	}

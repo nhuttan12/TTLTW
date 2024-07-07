@@ -131,10 +131,6 @@ public class Item {
 		return difference;
 	}
 
-	public void setDifference(double difference) {
-		this.difference = difference;
-	}
-
 	
 
 	@Override
@@ -159,6 +155,8 @@ public class Item {
 	public void setHidden(int hidden) {
 		this.hidden = hidden;
 	}
-	
 
+	public void setDifference(double difference) {
+		this.difference = difference;
+	}
 }

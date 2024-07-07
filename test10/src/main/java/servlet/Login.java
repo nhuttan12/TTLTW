@@ -77,14 +77,22 @@ public class Login extends HttpServlet {
 //				System.out.println(a.getId());
 				HttpSession session = req.getSession();
 				session.setAttribute("user", a);
+<<<<<<< HEAD
+=======
 				session.setMaxInactiveInterval(20);
+>>>>>>> origin/code
 				System.out.println("login thanh cong");
 				RequestDispatcher dispatcher = req.getRequestDispatcher("index.jsp");
 				dispatcher.forward(req, resp);
 			}
 
+<<<<<<< HEAD
+		}
+	}
+=======
 	}
 	}
+>>>>>>> origin/code
 }
 
 //	public static void main(String[] args) throws SQLException {
@@ -93,5 +101,8 @@ public class Login extends HttpServlet {
 //		System.out.println(a.getUserName());
 //
 //	}
+<<<<<<< HEAD
+=======
 
 
+>>>>>>> origin/code
