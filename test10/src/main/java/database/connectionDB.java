@@ -1,8 +1,9 @@
 package database;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
+
+import com.mysql.cj.jdbc.Driver;
 
 public class connectionDB {
 	public static Connection connect(){
@@ -18,6 +19,7 @@ public class connectionDB {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+      
         	c=DriverManager.getConnection("jdbc:mysql://localhost:3306/csdl","root","");
             System.out.println("connection database!!!!" );
         } catch (  SQLException e ) {

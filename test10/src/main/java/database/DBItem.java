@@ -95,7 +95,7 @@ public class DBItem {
 	public List<Item> getAllItem() {
 		List<Item> b = new ArrayList<Item>();
 		Connection c = connectionDB.connect();
-		String sql = "SELECT * FROM ITEMS";
+		String sql = "SELECT * FROM items";
 		try {
 			PreparedStatement ps = c.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
@@ -299,10 +299,8 @@ public class DBItem {
 
 	public static void main(String[] args) throws SQLException {
 		DBItem l = new DBItem();
-		List<Item> list = l.getItemForAdmin();
-		for (Item item : list) {
-			System.out.println(item.getCategory().getCategoryName());
-		}
+		List<Item >items = l.getAllItem();
+		System.out.println(items);
 	}
 
 }
