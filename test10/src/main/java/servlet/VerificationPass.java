@@ -64,7 +64,7 @@ HttpSession httpSession=req.getSession();
 
 		}else {
 			 System.out.println("ma khong dung");
-			 RequestDispatcher dispatcher = req.getRequestDispatcher("verification.jsp");
+			 RequestDispatcher dispatcher = req.getRequestDispatcher("verificationPass.jsp");
 				dispatcher.forward(req, resp);
 		}
     }

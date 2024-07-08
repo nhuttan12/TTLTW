@@ -122,7 +122,6 @@ public class DBItem {
 				if(item.getHidden()==1) {
 					b.add(item);
 				}
-				
 			}
 
 		} catch (SQLException e) {
@@ -169,7 +168,6 @@ public class DBItem {
 				if(item.getHidden()==1) {
 					b.add(item);
 				}
-				
 			}
 			rs.close();
 		} catch (Exception ex) {
@@ -200,8 +198,6 @@ public class DBItem {
 				String DISCRIPTION = rs.getString("DISCRIPTION");
 				String IMAGES = rs.getString("IMAGES");
 //				int HIDDEN=rs.getInt("HIDDEN");
-
-
 				item.setId(ID);
 				item.setName(ITEM_NAME);
 				item.setPrice(PRICE);
@@ -210,7 +206,6 @@ public class DBItem {
 				item.setCategory(new Category(CATEGORY_ID));;
 				item.setDiscription(DISCRIPTION);
 //				item.setHidden(HIDDEN);
-				
 			}
 			rs.close();
 		} catch (Exception ex) {
@@ -241,7 +236,6 @@ public class DBItem {
 				Double DISCOUNT = rs.getDouble("DISCOUNT");
 				String DISCRIPTION = rs.getString("DISCRIPTION");
 				String IMAGES = rs.getString("IMAGES");
-				
 				item.setId(ID);
 				item.setName(ITEM_NAME);
 				item.setPrice(PRICE);
@@ -265,8 +259,6 @@ public class DBItem {
 		return items;
 	}
 
-	// bài của Tân chưa sửa
-	
 	public List<Item> getItemForAdmin() {
 		List<Item> b = new ArrayList<Item>();
 		Connection c = connectionDB.connect();
@@ -316,7 +308,6 @@ public class DBItem {
 		DBItem l = new DBItem();
 		List<Item> items = l.getAllItem();
 		System.out.println(items);
-
 	}
 
 }
