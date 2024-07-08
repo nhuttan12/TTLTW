@@ -21,10 +21,6 @@ public class Index extends HttpServlet{
 //		if(user!=null) {
 //			if(user.getRole())
 //		}
-<<<<<<< HEAD
-=======
-	
->>>>>>> origin/code
 		String lang=(String)session.getAttribute("lang_local");
 		session.setAttribute("lang_local", lang);
 		RequestDispatcher re = req.getRequestDispatcher("index.jsp");

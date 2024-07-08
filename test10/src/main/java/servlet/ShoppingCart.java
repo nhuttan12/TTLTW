@@ -42,36 +42,6 @@ public class ShoppingCart extends HttpServlet {
 	 *      response)
 	 */
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-<<<<<<< HEAD
-//		HttpSession session = req.getSession();
-//		User a = (User) session.getAttribute("user");
-//		if (a == null) {
-//			req.setAttribute("erro", "bạn phải đăng nhập!");
-//
-//			RequestDispatcher dispatcher = req.getRequestDispatcher("login");
-//			dispatcher.forward(req, resp);
-//		} else {
-//			String xcartId = req.getParameter("shoppingCartId");
-//			int cartId = 0;
-//			String xitemId = req.getParameter("itemId");
-//
-//			DBCartItems dbCartItem = new DBCartItems();
-//			int status;
-//			try {
-//				int itemId = Integer.parseInt(xitemId);
-//				cartId = Integer.parseInt(xcartId);
-//				status = dbCartItem.addITEM(cartId, itemId, 1);
-//
-//
-//			} catch (SQLException m) {
-//				// TODO Auto-generated catch block
-//				m.printStackTrace();
-//			}
-//			RequestDispatcher dispatcher = req.getRequestDispatcher("menu");
-//			dispatcher.forward(req, resp);
-//
-//		}
-=======
 		HttpSession session = req.getSession();
 		User a = (User) session.getAttribute("user");
 		int userID;
@@ -98,7 +68,6 @@ public class ShoppingCart extends HttpServlet {
 			RequestDispatcher dispatcher = req.getRequestDispatcher("shoppingcart.jsp");
 			dispatcher.forward(req, resp);
 		}
->>>>>>> origin/code
 	}
 
 }

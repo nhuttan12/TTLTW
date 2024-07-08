@@ -54,21 +54,10 @@
 			<div class="container">
 				<nav class="navbar navbar-expand-lg custom_nav-container ">
 					<a class="navbar-brand" href="index"><img alt="logo"
-<<<<<<< HEAD
-						style="width: 120px" src="images/logo.png"> </a>
-=======
 						style="width: 120px" src="images/log5.png"> </a>
->>>>>>> origin/code
-
-
-
 					<div class="collapse navbar-collapse" id="navbarSupportedContent">
 						<ul class="navbar-nav  mx-auto ">
-<<<<<<< HEAD
-							<li class="nav-item active"><a class="nav-link"
-=======
 							<li class="nav-item "><a class="nav-link"
->>>>>>> origin/code
 								href="index.jsp"><fmt:message>menu.home</fmt:message> </a></li>
 							<li class="nav-item"><a class="nav-link" href="menu?type=0"><fmt:message>menu.menu</fmt:message></a>
 							</li>
@@ -91,17 +80,11 @@
 							<c:if test="${not empty user}">
 								<a href="#" onclick="doLogout()" class="user_link"><img
 									width="30px" alt="" src="images/logout3.png"> </a>
-<<<<<<< HEAD
-=======
 									<c:if test="${user.role != 1}">
 								<a href="admin" class="user_link"><img
 									width="30px" alt="" src="images/admin.png"> </a>
-									
 									</c:if>
-									
->>>>>>> origin/code
 							</c:if>
-
 							<a href="shoppingcart" class="user_link"><img width="30px"
 								alt="" src="images/cart.png"> </a>
 
@@ -142,15 +125,10 @@
 
 					<tr lass="login-body">
 						<td><fmt:message>gender</fmt:message> :</td>
-<<<<<<< HEAD
 						<td><c:choose>
 								<c:when test="${user.gender == 1}">Male</c:when>
 								<c:otherwise>Female</c:otherwise>
 							</c:choose></td>
-
-=======
-						<td>${user.gender}</td>
->>>>>>> origin/code
 					</tr>
 					<tr class="login-body">
 						<td><fmt:message>contact.email</fmt:message> :</td>
@@ -158,25 +136,15 @@
 					</tr>
 
 					<tr class="login-foot">
-<<<<<<< HEAD
-						<td><a href="editUser.jsp"><input type="button"
-								value="<fmt:message>CHANGEINFOR</fmt:message>"></a></td>
-=======
 						<td ><a href="editUser.jsp"><input
 								type="button" value="<fmt:message>CHANGEINFOR</fmt:message>"></a>
 						</td>
->>>>>>> origin/code
-
 					</tr>
 					</tr>
 					<tr class="login-foot">
 						<td colspan="2"><a href="#"><input type="button"
 								value="<fmt:message>ODERHISTORY</fmt:message>"></a></td>
-<<<<<<< HEAD
-						<td><a href="changePassword.jsp?uid=${user.id}"><input
-=======
 						<td ><a href="changePassword.jsp?uid=${user.id}"><input
->>>>>>> origin/code
 								type="button" value="<fmt:message>CHAGEPASSWORD</fmt:message>"></a>
 						</td>
 					</tr>
