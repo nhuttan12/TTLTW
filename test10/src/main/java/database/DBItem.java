@@ -91,7 +91,7 @@ public class DBItem {
 		return status;
 	}
 
-	// lam menu cho All
+	// lam menu cho All( hidden =1)
 	public List<Item> getAllItem() {
 		List<Item> b = new ArrayList<Item>();
 		Connection c = connectionDB.connect();
@@ -108,16 +108,21 @@ public class DBItem {
 				Double DISCOUNT = rs.getDouble("DISCOUNT");
 				String DISCRIPTION = rs.getString("DISCRIPTION");
 				String IMAGES = rs.getString("IMAGES");
+				int HIDDEN=rs.getInt("HIDDEN");
 				
 				item.setId(ID);
-				item.getCategory().setId(CATEGORY_ID);
+				item.setCategory(new Category(CATEGORY_ID));;
 				item.setName(ITEM_NAME);
 				item.setPrice(PRICE);
 				item.setDiscount(DISCOUNT);
 				item.setDiscription(DISCRIPTION);
 				item.setImageName(IMAGES);
+				item.setHidden(HIDDEN);
 //				Item item = new Item(ID, ITEM_NAME, UNITPRICE, DISCOUNT, TYPE, IMAGES);
-				b.add(item);
+				if(item.getHidden()==1) {
+					b.add(item);
+				}
+				
 			}
 
 		} catch (SQLException e) {
@@ -150,6 +155,7 @@ public class DBItem {
 				Double DISCOUNT = rs.getDouble("DISCOUNT");
 				String DISCRIPTION = rs.getString("DISCRIPTION");
 				String IMAGES = rs.getString("IMAGES");
+				int HIDDEN=rs.getInt("HIDDEN");
 
 				Item item = new Item();
 				item.setId(ID);
@@ -157,9 +163,13 @@ public class DBItem {
 				item.setPrice(PRICE);
 				item.setImageName(IMAGES);
 				item.setDiscount(DISCOUNT);
-				item.getCategory().setId(CATEGORY_ID);
+				item.setCategory(new Category(CATEGORY_ID));;
 				item.setDiscription(DISCRIPTION);
-				b.add(item);
+				item.setHidden(HIDDEN);
+				if(item.getHidden()==1) {
+					b.add(item);
+				}
+				
 			}
 			rs.close();
 		} catch (Exception ex) {
@@ -189,19 +199,24 @@ public class DBItem {
 				Double DISCOUNT = rs.getDouble("DISCOUNT");
 				String DISCRIPTION = rs.getString("DISCRIPTION");
 				String IMAGES = rs.getString("IMAGES");
+//				int HIDDEN=rs.getInt("HIDDEN");
+
 
 				item.setId(ID);
 				item.setName(ITEM_NAME);
 				item.setPrice(PRICE);
 				item.setImageName(IMAGES);
 				item.setDiscount(DISCOUNT);
-				item.getCategory().setId(CATEGORY_ID);
+				item.setCategory(new Category(CATEGORY_ID));;
 				item.setDiscription(DISCRIPTION);
+//				item.setHidden(HIDDEN);
+				
 			}
 			rs.close();
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
+	
 		return item;
 	}
 
@@ -232,7 +247,7 @@ public class DBItem {
 				item.setPrice(PRICE);
 				item.setImageName(IMAGES);
 				item.setDiscount(DISCOUNT);
-				item.getCategory().setId(CATEGORY_ID);
+				item.setCategory(new Category(CATEGORY_ID));;
 				item.setDiscription(DISCRIPTION);
 			}
 			rs.close();
@@ -299,10 +314,9 @@ public class DBItem {
 
 	public static void main(String[] args) throws SQLException {
 		DBItem l = new DBItem();
-		List<Item> list = l.getItemForAdmin();
-		for (Item item : list) {
-			System.out.println(item.getCategory().getCategoryName());
-		}
+		List<Item> items = l.getAllItem();
+		System.out.println(items);
+
 	}
 
 }

@@ -7,6 +7,7 @@ import java.util.List;
 
 import database.DBCategory;
 import database.DBItem;
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -52,11 +53,6 @@ public class Menu extends HttpServlet{
 		List<Item> list = new ArrayList<Item>();
 		list=dbItem.getItemByPage(items, start, end);
 		
-		
-		
-		
-		
-	
 		req.setAttribute("type2", id_type);
 		req.setAttribute("Chickenjoy", "Chickenjoy");
 		req.setAttribute("Burger", "Burger");
@@ -66,7 +62,13 @@ public class Menu extends HttpServlet{
 		req.setAttribute("listItem", list);
 		req.setAttribute("page", page);
 		req.setAttribute("number", numberOfPage);
-		req.getRequestDispatcher("menu.jsp").forward(req, resp);
+		RequestDispatcher dispatcher = req.getRequestDispatcher("menu.jsp");
+		dispatcher.forward(req, resp);
 //	
+	}
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		super.doPost(req, resp);
 	}
 }
