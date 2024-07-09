@@ -289,10 +289,6 @@ public class DBCart {
 				String DISCRIPTION = rs.getString("DISCRIPTION");
 				int CATEGORY_ID = rs.getInt("CATEGORY_ID");
 				String IMAGES = rs.getString("IMAGES");
-				
-<<<<<<< HEAD
-				Item i = new Item(ITEM_ID, ITEM_NAME, PRICE, IMAGES, DISCOUNT, CATEGORY_ID, DISCRIPTION);
-=======
 				Item i = new Item();
 				i.setId(ITEM_ID);
 				i.setName(ITEM_NAME);
@@ -301,7 +297,6 @@ public class DBCart {
 				i.setDiscription(DISCRIPTION);
 				i.getCategory().setId(CATEGORY_ID);
 				i.setImageName(IMAGES);
->>>>>>> origin/code
 				list.add(i);
 			}
 			rs.close();

@@ -9,4 +9,24 @@
     <welcome-file>default.jsp</welcome-file>
     <welcome-file>default.htm</welcome-file>
   </welcome-file-list>
+  <servlet>
+    <description></description>
+    <display-name>LoginGoogle</display-name>
+    <servlet-name>LoginGoogle</servlet-name>
+    <servlet-class>servlet.LoginGoogle</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>LoginGoogle</servlet-name>
+    <url-pattern>/LoginGoogle</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>LoginFacebook</display-name>
+    <servlet-name>LoginFacebook</servlet-name>
+    <servlet-class>servlet.LoginFacebook</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>LoginFacebook</servlet-name>
+    <url-pattern>/LoginFacebook</url-pattern>
+  </servlet-mapping>
 </web-app>
