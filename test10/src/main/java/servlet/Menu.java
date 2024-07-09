@@ -63,6 +63,7 @@ public class Menu extends HttpServlet{
 		req.setAttribute("page", page);
 		req.setAttribute("number", numberOfPage);
 		RequestDispatcher dispatcher = req.getRequestDispatcher("menu.jsp");
+		System.out.println("aaaaa"+req.getRemoteAddr());
 		dispatcher.forward(req, resp);
 //	
 	}

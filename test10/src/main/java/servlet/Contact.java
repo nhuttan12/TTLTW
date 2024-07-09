@@ -41,7 +41,6 @@ public class Contact extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		
 		String email = req.getParameter("email");
 		String name = req.getParameter("name");
 		String message = req.getParameter("message");
