@@ -104,5 +104,3 @@ public class Login extends HttpServlet {
 //		System.out.println(a.getUserName());
 //
 //	}
-
-

@@ -55,9 +55,6 @@
 				<nav class="navbar navbar-expand-lg custom_nav-container ">
 					<a class="navbar-brand" href="index"><img alt="logo"
 						style="width: 120px" src="images/log5.png"> </a>
-
-
-
 					<div class="collapse navbar-collapse" id="navbarSupportedContent">
 						<ul class="navbar-nav  mx-auto ">
 							<li class="nav-item "><a class="nav-link"
@@ -86,11 +83,8 @@
 									<c:if test="${user.role != 1}">
 								<a href="admin" class="user_link"><img
 									width="30px" alt="" src="images/admin.png"> </a>
-									
 									</c:if>
-									
 							</c:if>
-
 							<a href="shoppingcart" class="user_link"><img width="30px"
 								alt="" src="images/cart.png"> </a>
 
@@ -131,7 +125,10 @@
 
 					<tr lass="login-body">
 						<td><fmt:message>gender</fmt:message> :</td>
-						<td>${user.gender}</td>
+						<td><c:choose>
+								<c:when test="${user.gender == 1}">Male</c:when>
+								<c:otherwise>Female</c:otherwise>
+							</c:choose></td>
 					</tr>
 					<tr class="login-body">
 						<td><fmt:message>contact.email</fmt:message> :</td>
@@ -142,7 +139,6 @@
 						<td ><a href="editUser.jsp"><input
 								type="button" value="<fmt:message>CHANGEINFOR</fmt:message>"></a>
 						</td>
-
 					</tr>
 					</tr>
 					<tr class="login-foot">

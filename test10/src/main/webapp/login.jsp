@@ -49,9 +49,6 @@
 				<nav class="navbar navbar-expand-lg custom_nav-container ">
 					<a class="navbar-brand" href="index"><img alt="logo"
 						style="width: 120px" src="images/log5.png"> </a>
-
-
-
 					<div class="collapse navbar-collapse" id="navbarSupportedContent">
 						<ul class="navbar-nav  mx-auto ">
 							<li class="nav-item "><a class="nav-link"
@@ -80,11 +77,8 @@
 									<c:if test="${user.role != 1}">
 								<a href="admin" class="user_link"><img
 									width="30px" alt="" src="images/admin.png"> </a>
-									
 									</c:if>
-									
 							</c:if>
-
 							<a href="shoppingcart" class="user_link"><img width="30px"
 								alt="" src="images/cart.png"> </a>
 
@@ -114,11 +108,11 @@
 						</tr>
 						<tr class="login-body">
 							<td><fmt:message>username</fmt:message> :</td>
-							<td><input type="text" name="taikhoan"></td>
+							<td><input type="text" name="taikhoan" required></td>
 						</tr>
 						<tr class="login-body">
 							<td><fmt:message>pass</fmt:message> :</td>
-							<td><input type="text" name="matkhau"></td>
+							<td><input type="text" name="matkhau" required></td>
 						</tr>
 						<tr class="login-foot">
 							<th class="foot-item"><input class="button" type="submit"
@@ -131,7 +125,31 @@
 									<fmt:message>register</fmt:message>?
 							</a></th>
 
+
 						</tr>
+						<tr>
+							<th class="foot-item"><a
+								href="https://accounts.google.com/o/oauth2/auth?scope=email%20profile&redirect_uri=http://localhost:8080/test10/loginGoogle&response_type=code
+    &client_id=1089316008342-fllevmop2b90sd7mmsqotdo1neb934sg.apps.googleusercontent.com&approval_prompt=force">
+									<button class="btn google-btn social-btn" type="button">
+										<span><i class="fab fa-google-plus-g"></i> Đăng nhập
+											với Google+</span>
+									</button>
+							</a></th>
+
+
+						</tr>
+						<tr>
+							<th class="foot-item"><a
+								href="https://www.facebook.com/v19.0/dialog/oauth?client_id=1586113255570962&redirect_uri=http://localhost:8080/test10/loginFacebook&scope=email">
+									<button class="btn fa-book-btn social-btn" type="button"
+										style="background-color: #3b5998; color: white;">
+										<span><i class="fab fa-facebook-f"></i> Đăng nhập với
+											Facebook</span>
+									</button>
+							</a></th>
+						</tr>
+
 					</table>
 				</center>
 			</form>
@@ -186,5 +204,31 @@
 			</div>
 		</div>
 	</footer>
+	<script>
+		window.fbAsyncInit = function() {
+			FB.init({
+				appId : '{your-app-id}',
+				cookie : true,
+				xfbml : true,
+				version : '{api-version}'
+			});
+
+			FB.AppEvents.logPageView();
+
+		};
+
+		(function(d, s, id) {
+			var js, fjs = d.getElementsByTagName(s)[0];
+			if (d.getElementById(id)) {
+				return;
+			}
+			js = d.createElement(s);
+			js.id = id;
+			js.src = "https://connect.facebook.net/en_US/sdk.js";
+			fjs.parentNode.insertBefore(js, fjs);
+		}(document, 'script', 'facebook-jssdk'));
+	</script>
 </body>
+
+
 </html>

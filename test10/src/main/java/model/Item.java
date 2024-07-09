@@ -12,12 +12,6 @@ public class Item {
 	private ImportDetail importDetail;//hỗ trợ lấy số lượng nhập với giá nhập dễ dàng
 	private int hidden;//trang thai (0: ẩn, 1: hiện)
 
-//	public Item() {
-//		id = name = img_name = "";
-//		unitPrice = 0.0;
-//		quantityAvailable = 0;
-//	}
-
 	public Category getCategory() {
 		return category;
 	}
@@ -131,10 +125,6 @@ public class Item {
 		return difference;
 	}
 
-	public void setDifference(double difference) {
-		this.difference = difference;
-	}
-
 	
 
 	@Override
@@ -159,6 +149,8 @@ public class Item {
 	public void setHidden(int hidden) {
 		this.hidden = hidden;
 	}
-	
 
+	public void setDifference(double difference) {
+		this.difference = difference;
+	}
 }

@@ -54,9 +54,6 @@ function doLogout() {
 				<nav class="navbar navbar-expand-lg custom_nav-container ">
 					<a class="navbar-brand" href="index"><img alt="logo"
 						style="width: 120px" src="images/log5.png"> </a>
-
-
-
 					<div class="collapse navbar-collapse" id="navbarSupportedContent">
 						<ul class="navbar-nav  mx-auto ">
 							<li class="nav-item "><a class="nav-link"
@@ -87,7 +84,6 @@ function doLogout() {
 									width="30px" alt="" src="images/admin.png"> </a>
 									
 									</c:if>
-									
 							</c:if>
 
 							<a href="shoppingcart" class="user_link"><img width="30px"

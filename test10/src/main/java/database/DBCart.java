@@ -249,6 +249,7 @@ public class DBCart {
 				int CATEGORY_ID = rs.getInt("CATEGORY_ID");
 				String IMAGES = rs.getString("IMAGES");
 				
+
 //				i = new Item(ITEM_ID, ITEM_NAME, PRICE, IMAGES, DISCOUNT, CATEGORY_ID, DISCRIPTION);
 				i.setId(ITEM_ID);
 				i.setName(ITEM_NAME);
@@ -288,7 +289,6 @@ public class DBCart {
 				String DISCRIPTION = rs.getString("DISCRIPTION");
 				int CATEGORY_ID = rs.getInt("CATEGORY_ID");
 				String IMAGES = rs.getString("IMAGES");
-				
 				Item i = new Item();
 				i.setId(ITEM_ID);
 				i.setName(ITEM_NAME);
