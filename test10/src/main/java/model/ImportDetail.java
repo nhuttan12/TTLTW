@@ -1,5 +1,7 @@
 package model;
 
+import java.util.logging.Logger;
+
 //chi tiết của từng đợt nhập hàng, sẽ đại diện cho từng món hàng trong đợt nhập hàng đó 
 public class ImportDetail {
 	//mã của chi tiết món hàng nhập
@@ -55,4 +57,5 @@ public class ImportDetail {
 		return "ImportDetail [id=" + id + ", impoItem=" + impoItem + ", item=" + item + ", quantity=" + quantity
 				+ ", price=" + price + "]";
 	}
+	
 }

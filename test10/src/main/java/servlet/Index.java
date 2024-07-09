@@ -14,18 +14,11 @@ import model.User;
 public class Index extends HttpServlet{
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		
-		
 		HttpSession session =req.getSession();
-		User user =(User) session.getAttribute("user");
-//		if(user!=null) {
-//			if(user.getRole())
-//		}
-	
+		User user =(User) session.getAttribute("user");	
 		String lang=(String)session.getAttribute("lang_local");
 		session.setAttribute("lang_local", lang);
 		RequestDispatcher re = req.getRequestDispatcher("index.jsp");
-		//req.getRequestDispatcher("index.jsp").forward(req, resp);
 		re.forward(req, resp);
 
 	}
