@@ -8,6 +8,9 @@ import java.sql.SQLException;
 
 import com.mysql.cj.jdbc.Driver;
 
+import log.MyLog;
+import model.Logging;
+
 public class connectionDB {
 	public static Connection connect(){
 //		String Path="D:\\HOCTAP\\PROJECT\\database\\";
@@ -26,6 +29,7 @@ public class connectionDB {
             System.out.println("connection database!!!!" );
         } catch (  SQLException e ) {
             System.out.println( e.getClass().getName() + ": " + e.getMessage() );
+//            MyLog.insertLog(new Logging())
         }
         return c;
     }
