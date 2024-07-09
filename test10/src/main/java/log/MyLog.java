@@ -9,6 +9,8 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+import com.google.gson.Gson;
+
 import database.connectionDB;
 import jakarta.servlet.http.HttpServletRequest;
 import log.LevelLog;
@@ -27,12 +29,13 @@ public static boolean insertLog(Logging logging,HttpServletRequest httpServletRe
 	String sql="INSERT INTO LOG(TIME,IP,LEVEL,MESSAGE,PRE_VALUE,CURRENT_VALUE) VALUES(?,?,?,?,?,?);";
 		PreparedStatement preparedStatement =connection.prepareStatement(sql);
 		LocalDateTime time=LocalDateTime.now();
+		Gson gson = new Gson();
 		preparedStatement.setTimestamp(1, Timestamp.valueOf(time));
 		preparedStatement.setString(2, IP.getClientIP(httpServletRequest ));
 		preparedStatement.setString(3, logging.getLevel());
 		preparedStatement.setString(4, logging.getMessage());
-		preparedStatement.setString(5, logging.getPre_value());
-		preparedStatement.setString(6, logging.getCurrent_value());
+		preparedStatement.setString(5,gson.toJson(logging.getPre_value()) );
+		preparedStatement.setString(6, gson.toJson(logging.getCurrent_value()));
 		int result =preparedStatement.executeUpdate(); 
 			if(result>0) {
 				return true;

@@ -102,7 +102,7 @@
 							<c:set var="EMAIL" value="${requestScope.EMAIL }" />
 							<c:set var="PHONE" value="${requestScope.PHONE }" />
 							<c:set var="PASSWORD" value="${requestScope.PASSWORD }" />
-							<c:set var="USER_NAME" value="${requestScope.USER_NAME }" />
+							<c:set var="USERNAME" value="${requestScope.USER_NAME }" />
 		
 				<h4 style="color: red"&"front-size:10px">${erro}</h4>
 			<table class="login-table">
@@ -111,14 +111,15 @@
 				</tr>
 				<tr class="login-body">
 					<td> <fmt:message>username</fmt:message>* :</td>
-					<td><input type="text" name="tentaikhoan" value="${USER_NAME}" required></td>
+					<td><input type="text" name="tentaikhoan" value="${USERNAME}"  minlength="6" maxlength="20" required ></td>
 					<c:if test="${er}">
 								<td><p style="color: red">${us} </p></td>
 							</c:if>
 				</tr>
 				<tr class="login-body">
 					<td> <fmt:message>pass</fmt:message> *:</td>
-					<td><input type="text" name="matkhau" value="${PASSWORD}" required></td>
+					<td><input type="password"  minlength="6" maxlength="20"
+                                       data-validation="required" name="matkhau" value="${PASSWORD}" required></td>
 					<c:if test="${er}">
 								<td><p style="color: red">${pas} </p></td>
 							</c:if>
@@ -126,7 +127,7 @@
 				<tr class="login-body">
 				<c:set var="name" value="${requestScope.name }"></c:set>
 					<td> <fmt:message>fullname</fmt:message> :</td>
-					<td><input type="text" name="hoten" value="${name }"></td>
+					<td><input type="text" name="hoten" value="${name }"  minlength="6" maxlength="20"></td>
 					<c:set var="u" value="${requestScope.us }" />
 					<c:set var="pas" value="${requestScope.pas }" />
 					<c:set var="ph" value="${requestScope.phone }" />
@@ -135,7 +136,7 @@
 				</tr>
 				<tr class="login-body">
 					<td> <fmt:message>phone</fmt:message>* :</td>
-					<td><input type="text" name="sodienthoai" value="${PHONE}" required></td>
+					<td><input type="text" name="sodienthoai" value="${PHONE}" minlength="10" maxlength="10" required></td>
 					<c:if test="${er}">
 								<td><p style="color: red">${ph} </p></td>
 							</c:if>
@@ -144,7 +145,9 @@
 				
 				<tr class="login-body">
 					<td> <fmt:message>contact.email</fmt:message>* :</td>
-					<td><input type="text" name="email" value="${EMAIL}" required></td>
+					<td><input type="text" name="email"  data-validation="email"
+                                       pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,63}$"
+                                       data-validation-error-msg="Email sai định dạng" value="${EMAIL}" required></td>
 					<c:if test="${er}">
 								<td><p style="color: red">${m} </p></td>
 							</c:if>

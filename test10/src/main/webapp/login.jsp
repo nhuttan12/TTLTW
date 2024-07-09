@@ -97,7 +97,7 @@
 
 			<form action="login" method="post">
 				<center>
-					<h4 style="color: red">${erro}</h4>
+					<h4  style="color: blue">${erro}</h4>
 					<table class="login-table" border: 5px>
 						<tr class="login-head">
 							<th colspan="3"><center>
@@ -108,11 +108,11 @@
 						</tr>
 						<tr class="login-body">
 							<td><fmt:message>username</fmt:message> :</td>
-							<td><input type="text" name="taikhoan" required></td>
+							<td><input type="text" name="taikhoan" required ></td>
 						</tr>
 						<tr class="login-body">
 							<td><fmt:message>pass</fmt:message> :</td>
-							<td><input type="text" name="matkhau" required></td>
+							<td><input type="text" name="matkhau" required ></td>
 						</tr>
 						<tr class="login-foot">
 							<th class="foot-item"><input class="button" type="submit"

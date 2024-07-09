@@ -51,7 +51,7 @@ HttpSession httpSession=req.getSession();
 				HttpSession session = req.getSession();
 				session.setAttribute("newpas", newpas);
 				session.setAttribute("ver", ver);
-				
+				session.setAttribute("oldpass", oldpas);
 				RequestDispatcher dispatcher = req.getRequestDispatcher("verificationPass.jsp");
 				dispatcher.forward(req, resp);
 			}else {

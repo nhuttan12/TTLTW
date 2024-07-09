@@ -17,34 +17,22 @@ import model.User;
 public class EditUser extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//		HttpSession httpSession = req.getSession();
-//
-//		User user = (User) httpSession.getAttribute("user");
-//		if (user == null) {
-//			req.setAttribute("erro", "bạn phải đăng nhập !");
-//			req.getRequestDispatcher("login.jsp").forward(req, resp);
-//		} else {
-//			String name = req.getParameter("fullname");
-//			String phone = req.getParameter("phone");
-//			String gender = req.getParameter("gender");
-//			String email = req.getParameter("email");
-//			int id = user.getId();
-//			User a;
-//			DBUser dbUser = new DBUser();
-//			try {
-//				dbUser.update1(id, name, phone, gender, email);
-//				httpSession.removeAttribute("user");
-//				a = dbUser.getUserByID(id);
-//				httpSession.setAttribute("user", a);
-//			} catch (SQLException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//
-			RequestDispatcher dispatcher = req.getRequestDispatcher("editUser.jsp");
-			dispatcher.forward(req, resp);
+		HttpSession httpSession = req.getSession();
+
+		User user = (User) httpSession.getAttribute("user");
+		if (user == null) {
+			req.setAttribute("erro", "bạn phải đăng nhập !");
+			req.getRequestDispatcher("login.jsp").forward(req, resp);
+		} else {
+		req.getRequestDispatcher("user.jsp").forward(req, resp);
+			
 		}
 		
-	//}
+	}
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		super.doPost(req, resp);
+	}
 
 }

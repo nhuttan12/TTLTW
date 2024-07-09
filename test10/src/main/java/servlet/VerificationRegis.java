@@ -7,7 +7,12 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import log.ErrorMessage;
+import log.InforMessage;
+import log.LevelLog;
+import log.MyLog;
 import model.Cart;
+import model.Logging;
 import model.User;
 
 import java.io.IOException;
@@ -38,7 +43,7 @@ public class VerificationRegis extends HttpServlet {
     }
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+    	Logging logging = null;
     	HttpSession httpSession =req.getSession();
 		String verification = null;
 
@@ -72,27 +77,21 @@ public class VerificationRegis extends HttpServlet {
 				a.setRole(1);
 				a.setStatus(1);
 				System.out.println(l.getUserId(a));
-//				Cart s = new Cart(a);
-//				cart.addShoppingCart(s);
-//				s.setId(cart.getCartId(a.getId()));
-//				l.updateCart(a, s.getId());
-	   			httpSession.setAttribute("user", a);
-//	   			httpSession.setAttribute("cart", s);
-//	   			System.out.println("zzzzzzzzzzzzzzzzzzzzzzzzzzzzz");
-	   			RequestDispatcher dispatcher = req.getRequestDispatcher("index.jsp");
+				req.setAttribute("erro", "Đăng Ký Thành Công");
+				logging=new Logging(LevelLog.INFOR.name(),InforMessage.DANG_KY_TAI_KHOAN_THANH_CONG.name());
+	   			RequestDispatcher dispatcher = req.getRequestDispatcher("login.jsp");
 	   			dispatcher.forward(req, resp);
-	   			//req.getRequestDispatcher("login.jsp").forward(req, resp);
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
-
 		}else {
 			 System.out.println("ma khong dung");
+			 logging=new Logging(LevelLog.ERROR.name(),ErrorMessage.DANG_KY_TAI_KHOAN_THAT_BAI__MA_XAC_THUC_KHONG_DUNG.name());
 			 RequestDispatcher dispatcher = req.getRequestDispatcher("verificationRegis.jsp");
-				dispatcher.forward(req, resp);
+			dispatcher.forward(req, resp);
 		}
+		MyLog.insertLog(logging, req);
     }
 
 }

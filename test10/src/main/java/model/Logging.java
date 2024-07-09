@@ -8,12 +8,12 @@ public  class Logging {
 	private String IP;
 	private String level;//level cua log( 
 	private String message;//noi dung cua log
-	private String pre_value;//giatritruocdo
-	private String current_value;//giatrihientai
+	private Object pre_value;//giatritruocdo
+	private Object current_value;//giatrihientai
 	public Logging() {
 		
 	}
-	public Logging(int id,LocalDateTime time, String iP, String level, String message, String pre_value, String current_value) {
+	public Logging(int id,LocalDateTime time, String iP, String level, String message, Object pre_value, Object current_value) {
 		super();
 		this.id = id;
 		this.time=time;
@@ -31,7 +31,7 @@ public  class Logging {
 		this.message = message;
 	}
 	
-	public Logging(LocalDateTime time, String iP, String message, String pre_value, String current_value) {
+	public Logging(LocalDateTime time, String iP, String message, Object pre_value, Object current_value) {
 		super();
 		this.time = time;
 		IP = iP;
@@ -48,8 +48,8 @@ public  class Logging {
 		this.message = message;
 	}
 	
-	public Logging(LocalDateTime time, String iP, String level, String message, String pre_value,
-			String current_value) {
+	public Logging(LocalDateTime time, String iP, String level, String message, Object pre_value,
+			Object current_value) {
 		super();
 		this.time = time;
 		IP = iP;
@@ -60,7 +60,7 @@ public  class Logging {
 	}
 	
 	//phuongthuc insertLog
-	public Logging( String level, String message, String pre_value, String current_value) {
+	public Logging( String level, String message, Object pre_value, Object current_value) {
 		super();
 
 		this.level = level;
@@ -98,16 +98,16 @@ public  class Logging {
 	public void setMessage(String message) {
 		this.message = message;
 	}
-	public String getPre_value() {
+	public Object getPre_value() {
 		return pre_value;
 	}
-	public void setPre_value(String pre_value) {
+	public void setPre_value(Object pre_value) {
 		this.pre_value = pre_value;
 	}
-	public String getCurrent_value() {
+	public Object getCurrent_value() {
 		return current_value;
 	}
-	public void setCurrent_value(String current_value) {
+	public void setCurrent_value(Object current_value) {
 		this.current_value = current_value;
 	}
 	public LocalDateTime getTime() {
