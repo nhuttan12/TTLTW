@@ -15,6 +15,7 @@ import log.WarnMessage;
 import model.Cart;
 import model.Logging;
 import model.User;
+import utils.Encryption;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -64,7 +65,7 @@ public class Login extends HttpServlet {
 		System.out.println(USER_NAME + PASSWORD);
 		DBUser l = new DBUser();
 		User a = new User();
-		a = l.checkUSER(USER_NAME, PASSWORD);
+		a = l.checkUSER(USER_NAME, Encryption.mahoaPass(PASSWORD));
 		String erro;
 		Logging logging = null;
 
