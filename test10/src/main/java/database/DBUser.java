@@ -327,7 +327,7 @@ public class DBUser {
 
 		return status;
 	}
-	public int updateInfor(int id, String fullname,int phone, String gender) throws SQLException {
+	public int updateInfor(int id, String fullname,String phone, String gender) throws SQLException {
 		int status = 0;
 
 		try (Connection c = connectionDB.connect()) {
@@ -336,7 +336,7 @@ public class DBUser {
 				String sql = "UPDATE USERS SET FULL_NAME = ?, PHONE = ?, GENDER = ? WHERE USER_ID = ?;";
 				PreparedStatement ps = c.prepareStatement(sql);
 				ps.setString(1, fullname);
-				ps.setInt(2, phone);
+				ps.setString(2, phone);
 				ps.setString(3, gender);
 				ps.setInt(4, id);
 				status = ps.executeUpdate();

@@ -13,6 +13,7 @@ import log.LevelLog;
 import log.MyLog;
 import model.Logging;
 import model.User;
+import utils.Encryption;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -61,9 +62,10 @@ public class VerificationPass extends HttpServlet {
 			if (verification.equals(ver)) {
 				DBUser db = new DBUser();
 				try{
-					db.updatePas(uid, newpas);
+					db.updatePas(uid, Encryption.mahoaPass(newpas));
 					System.out.println("da update pas");
 					logging=new Logging(LevelLog.INFOR.name(),InforMessage.THAY_DOI_MAT_KHAU_THANH_CONG.name(),oldpass,newpas);
+					req.setAttribute("erro", "Thay đổi mật khẩu thành công");
 					RequestDispatcher dispatcher = req.getRequestDispatcher("user");
 					dispatcher.forward(req, resp);
 				} catch (SQLException e) {
@@ -73,6 +75,7 @@ public class VerificationPass extends HttpServlet {
 
 			} else {
 				System.out.println("ma khong dung");
+				req.setAttribute("erro", "Mã không đúng");
 				logging=new Logging(LevelLog.ERROR.name(),ErrorMessage.THAY_DOI_MAT_KHAU_THAT_BAI_MA_XAC_THUC_KHONG_DUNG.name(),oldpass,newpas);
 				RequestDispatcher dispatcher = req.getRequestDispatcher("verificationPass.jsp");
 				dispatcher.forward(req, resp);
