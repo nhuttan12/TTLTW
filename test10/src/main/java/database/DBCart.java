@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import model.Cart;
+import model.Category;
 import model.Item;
 import model.User;
 
@@ -15,33 +16,34 @@ public class DBCart {
 
 	// phần chưa làm đang cmt
 	
-//	public int addITEM(int sId, int iId, int slm) throws SQLException {
-//		int status = 0;
+	public int addITEM(int uId, int iId, int slm) throws SQLException {
+		int status = 0;
 //		try (Connection c = connectionDB.connect()) {
-//			List<Item> list = new ArrayList<Item>();
-//			list = getListItemByCartID(sId);
+//			List<Cart> list = new ArrayList<Cart>();
+//			list = getListCartByUserID(uId);
 //			
+//			// kiểm tra xem có sản phẩm trong giỏ hàng chưa
 //			boolean test = false;
-//			Item i = new Item();
-//			for (Item item : list) {
-//				if (item.getId()== iId) {
+//			Cart i = new Cart();
+//			for (Cart cart : list) {
+//				if (cart.getItemId()== iId) {
 //					test = true;
-//					i = item;
+//					i = cart;
 //				} 
 //			}
 //
 //			// neu trong list item do da co sp muon them thi chi update so luong mua
 //			if (test) {
-//				System.out.println(i.getName() +" "+ i.getQuantity() +" "+ i.getQuantityAvailable());
-//				if(i.getQuantity() + slm <= i.getQuantityAvailable()) {
+////				System.out.println(i.getName() +" "+ i.getQuantity() +" "+ i.getQuantityAvailable());
+////				if(i.getQuantity() + slm <= i.getQuantityAvailable()) {
 //					updateSLItem(sId,i, i.getQuantity() + slm);
 //					updateTotalPriceItem(sId, i, i.getQuantity() + slm);
-//					System.out.println("upload");
-//				}else {
-//					System.out.println(i.getQuantity() + slm);
-//					System.out.println(i.getQuantityAvailable());
-//					System.out.println("sp khong du sl ton kho");
-//				}
+////					System.out.println("upload");
+////				}else {
+////					System.out.println(i.getQuantity() + slm);
+////					System.out.println(i.getQuantityAvailable());
+////					System.out.println("sp khong du sl ton kho");
+////				}
 //				
 //			// neu trong list item do chua co sp muon them thi them sp do vao list item trong cart
 //			} else {
@@ -63,9 +65,9 @@ public class DBCart {
 //			System.err.println(ex.getClass().getName() + ": " + ex.getMessage());
 //			System.exit(0);
 //		}
-//
-//		return status;
-//	}
+
+		return status;
+	}
 //	
 //	public int subITEM(int cId, int iId, int slb) throws SQLException {
 //		int status = 0;
@@ -179,17 +181,16 @@ public class DBCart {
 		return status;
 	}
 // UPLOAD Số lượng mua của từng item trong cart
-	public int updateSLItem(int uId, Item item, int slm) throws SQLException {
+	public int updateSLItem(int cId, int slm) throws SQLException {
 		int status = 0;
 
 		try (Connection c = connectionDB.connect()) {
 			if(slm >= 0) {
-				String sql = "UPDATE cart SET QUANTITY = ? WHERE ITEM_ID = ? and USER_ID = ?;";
+				String sql = "UPDATE cart SET QUANTITY = ? WHERE CART_ID = ?;";
 				PreparedStatement ps = c.prepareStatement(sql);
 				// '"+title+"',"+Authorid+" , 18022018, 0000, "+Isbn+"
 				ps.setInt(1, slm);
-				ps.setInt(2, item.getId());
-				ps.setInt(3, uId);
+				ps.setInt(2, cId);
 				System.out.println("update thanh cong");
 				status = ps.executeUpdate();
 			}
@@ -295,7 +296,8 @@ public class DBCart {
 				i.setPrice(PRICE);
 				i.setDiscount(DISCOUNT);
 				i.setDiscription(DISCRIPTION);
-				i.getCategory().setId(CATEGORY_ID);
+				Category ca = new Category(CATEGORY_ID);
+				i.setCategory(ca);
 				i.setImageName(IMAGES);
 				list.add(i);
 			}
@@ -369,18 +371,21 @@ public class DBCart {
 //		}
 		
 		DBCart cart = new DBCart();
-		List<Cart> a= cart.getListCartByUserID(1);
-		for (Cart c : a) {
-			System.out.println(c.getUserId());
-			
-		}
-		cart.deleteCartByUserID(1);
-		System.out.println("đã xóa");
-		List<Cart> b= cart.getListCartByUserID(1);
-		for (Cart c : b) {
-			System.out.println(c.getUserId());
-			
-		}
+		List<Item> a= cart.getListItemByUserID(2);
+//		for (Cart c : a) {
+//			System.out.println(c.getUserId());
+//			
+//		}
+//		cart.getListItemByUserID(2);
+//		System.out.println("đã xóa");
+//		List<Cart> b= cart.getListCartByUserID(1);
+		
+//		System.out.println(a.size());
+//		for (Item c : a) {
+//			System.out.println(c.getName());
+//			
+//		}
+		cart.updateSLItem(3, 7);
 	}
 
 }

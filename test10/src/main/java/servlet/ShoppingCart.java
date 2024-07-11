@@ -63,8 +63,10 @@ public class ShoppingCart extends HttpServlet {
 				e.getMessage();
 				
 			}
+			System.out.println(listItem.size() + "aaaaaaaaaa");
 			req.setAttribute("listCart", listCart);
 			req.setAttribute("listItem", listItem);
+			
 			RequestDispatcher dispatcher = req.getRequestDispatcher("shoppingcart.jsp");
 			dispatcher.forward(req, resp);
 		}
