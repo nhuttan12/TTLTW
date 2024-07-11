@@ -15,7 +15,7 @@ import model.User;
 public class DBCart {
 	DBItem it = new DBItem();
 
-	// phần chưa làm đang cmt
+	// chưa xét đến phần còn sản phẩm tồn kho không?
 	
 	public int addITEM(int uId, int iId, int slm) throws SQLException {
 		int status = 0;
@@ -76,45 +76,53 @@ public class DBCart {
 
 		return status;
 	}
-//	
-//	public int subITEM(int cId, int iId, int slb) throws SQLException {
-//		int status = 0;
-//		try (Connection c = connectionDB.connect()) {
-//			List<Item> list = new ArrayList<Item>();
-//			list = getListItemByCartID(cId);
-//			
-//			boolean test = false;
-//			Item i = new Item();
-//			for (Item item : list) {
-//				if (item.getId()== iId) {
-//					test = true;
-//					i = item;
-//				} 
-//			}
-//
-//			if (test) {
-//				if(i.getQuantity() > slb ) {
-//					updateSLItem(sId,i, i.getQuantity() - slb);
-//					updateTotalPriceItem(sId, i, i.getQuantity() - slb);
+	// giảm số lượng
+	public int subITEM(int uId, int iId, int slt) throws SQLException {
+		int status = 0;
+		try (Connection c = connectionDB.connect()) {
+			Item item = it.getItemByID(iId);
+			List<Cart> list = new ArrayList<Cart>();
+			list = getListCartByUserID(uId);
+			
+			// kiểm tra xem có sản phẩm trong giỏ hàng chưa
+			boolean test = false;
+			Cart gh = new Cart();
+			for (Cart cart : list) {
+				if (cart.getItemId()== iId) {
+					test = true;
+					gh = cart;
+//					item = getItem(cart.getId());
+				} 
+			}
+
+			// neu trong list item do da co sp muon them thi chi update so luong mua
+			if (test) {
+//				System.out.println(i.getName() +" "+ i.getQuantity() +" "+ i.getQuantityAvailable());
+				if(gh.getQuantity() >1) {
+					int slmmoi = gh.getQuantity() - slt;
+					updateSLItem(gh.getId(), slmmoi);
+					gh.setQuantity(slmmoi);
+					double tonggiamoi = slmmoi*item.getPrice();
+					updateTotalPriceItem(gh.getId(), tonggiamoi);
+					gh.setTotalPrice(tonggiamoi);
 //					System.out.println("upload");
-//				}else if(i.getQuantity() <= slb) {
-//					deleteITEM(sId, i.getId());
-//					System.out.println("xoa sp");
-//				}
-//				
-//			} else {
-//				System.out.println("item chua co trong cart");
-//				c.close();
-//
-//			}
-//
-//		} catch (Exception ex) {
-//			System.err.println(ex.getClass().getName() + ": " + ex.getMessage());
-//			System.exit(0);
-//		}
-//
-//		return status;
-//	}
+				}else {
+					deleteCartByCartID(gh.getId());
+				}
+				
+			} else {
+				System.out.println("item chua co trong cart");
+				c.close();
+
+			}
+
+		} catch (Exception ex) {
+			System.err.println(ex.getClass().getName() + ": " + ex.getMessage());
+			System.exit(0);
+		}
+
+		return status;
+	}
 
 	public int deleteITEM(int uId, int iId) throws SQLException {
 		int status = 0;

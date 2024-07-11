@@ -6,7 +6,7 @@
 <!-- Basic -->
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
 <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -40,7 +40,7 @@
 
 	}
 	function name() {
-		
+
 	}
 </script>
 </head>
@@ -65,8 +65,8 @@
 
 					<div class="collapse navbar-collapse" id="navbarSupportedContent">
 						<ul class="navbar-nav  mx-auto ">
-							<li class="nav-item "><a class="nav-link"
-								href="index.jsp"><fmt:message>menu.home</fmt:message> </a></li>
+							<li class="nav-item "><a class="nav-link" href="index.jsp"><fmt:message>menu.home</fmt:message>
+							</a></li>
 							<li class="nav-item"><a class="nav-link" href="menu?type=0"><fmt:message>menu.menu</fmt:message></a>
 							</li>
 							<li class="nav-item"><a class="nav-link" href="about.jsp"><fmt:message>menu.about</fmt:message></a>
@@ -85,15 +85,15 @@
 
 							</a>
 
-						<c:if test="${not empty user}">
+							<c:if test="${not empty user}">
 								<a href="#" onclick="doLogout()" class="user_link"><img
 									width="30px" alt="" src="images/logout3.png"> </a>
-									<c:if test="${user.role != 1}">
-								<a href="admin" class="user_link"><img
-									width="30px" alt="" src="images/admin.png"> </a>
-									
-									</c:if>
-									
+								<c:if test="${user.role != 1}">
+									<a href="admin" class="user_link"><img width="30px" alt=""
+										src="images/admin.png"> </a>
+
+								</c:if>
+
 							</c:if>
 
 							<a href="shoppingcart" class="user_link"><img width="30px"
@@ -121,51 +121,50 @@
 
 				<div class="products">
 
-					<c:forEach var="i" begin="0" end="${fn:length(listCart)-1}" step="1" >
+					<c:if test="${not empty listCart}">
+						<c:forEach var="i" begin="0" end="${fn:length(listCart)-1}"
+							step="1">
 
-						<div class="product">
+							<div class="product">
 
-							<img src="${listItem[i].imageName}">
+								<img src="${listItem[i].imageName}">
 
-							<div class="product-info">
+								<div class="product-info">
 
-								<h3 class="product-name">
-									<fmt:message>nameItem</fmt:message>
-									: ${listItem[i].name}
-								</h3>
+									<h3 class="product-name">
+										<fmt:message>nameItem</fmt:message>
+										: ${listItem[i].name}
+									</h3>
 
-								<h4 class="product-price">
-									<fmt:message>price</fmt:message>
-									: ${listItem[i].price} VND
-								</h4>
+									<h4 class="product-price">
+										<fmt:message>price</fmt:message>
+										: ${listItem[i].price} VND
+									</h4>
+									<h4 class="product-offer">
+										<fmt:message>QUANTITYAVAILABLE</fmt:message>
+										: <a
+											href="editcart?action=decrease&cartID=${listCart[i].id}&itemId=${listItem[i].id}">
+											<i class="fa fa-minus"></i>
+										</a> ${listCart[i].quantity} <a
+											href="editcart?action=increase&cartID=${listCart[i].id}&itemId=${listItem[i].id}">
+											<i class="fa fa-plus"></i>
+										</a>
+									</h4>
+									<h4 class="product-price">
+										<fmt:message>totalPrice</fmt:message>
+										: ${listCart[i].totalPrice} VND
+									</h4>
 
+									<p class="product-remove">
 
-
-								<h4 class="product-offer">
-									<fmt:message>QUANTITYAVAILABLE</fmt:message>
-									:${listCart[i].quantity}
-								</h4>
-								<h4 class="product-price">
-									<fmt:message>totalPrice</fmt:message>
-									: ${listCart[i].totalPrice} VND
-								</h4>
-
-								<p class="product-remove">
-
-									<a class="fa fa-trash" aria-hidden="true"
-										href="editcart?cartID=${listCart[i].id}"></a>
-
-								</p>
-
+										<a class="fa fa-trash" aria-hidden="true"
+											href="editcart?action=remove&cartID=${listCart[i].id}&itemId=${listItem[i].id}"></a>
+									</p>
+								</div>
 							</div>
-
-						</div>
-					</c:forEach>
-
-
-
+						</c:forEach>
+					</c:if>
 				</div>
- 		
 				<div class="cart-total">
 
 					<p>
