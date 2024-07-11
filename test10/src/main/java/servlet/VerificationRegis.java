@@ -14,6 +14,7 @@ import log.MyLog;
 import model.Cart;
 import model.Logging;
 import model.User;
+import utils.Encryption;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -70,7 +71,8 @@ public class VerificationRegis extends HttpServlet {
 			DBUser l = new DBUser();
 	   		DBCart cart = new DBCart();
 			try {
-   				User a = new User(USER_NAME, PASSWORD, NAME, PHONE, GENDER,EMAIL);
+			
+   				User a = new User(USER_NAME, Encryption.mahoaPass(PASSWORD), NAME, PHONE, GENDER,EMAIL);
    				System.out.println("aaaaaaaaaaaaaaaaaaaaaa" + a.getName());
 				l.addUSER(a);
 				a.setId(l.getUserId(a));

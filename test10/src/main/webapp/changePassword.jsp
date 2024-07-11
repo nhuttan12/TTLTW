@@ -32,12 +32,12 @@
 <!-- responsive style -->
 <link href="css/responsive.css" rel="stylesheet" />
 <script type="text/javascript">
-function doLogout() {
-	if (confirm("Are you Logout?")) {
-		window.location = "logout";
+	function doLogout() {
+		if (confirm("Are you Logout?")) {
+			window.location = "logout";
+		}
+
 	}
-	
-}
 </script>
 </head>
 <body class="sub_page">
@@ -49,7 +49,7 @@ function doLogout() {
 			<img src="images/bg.jpg" alt="">
 		</div>
 		<!-- header section strats -->
-			<header class="header_section">
+		<header class="header_section">
 			<div class="container">
 				<nav class="navbar navbar-expand-lg custom_nav-container ">
 					<a class="navbar-brand" href="index"><img alt="logo"
@@ -79,16 +79,16 @@ function doLogout() {
 
 							</a>
 
-							
+
 							<c:if test="${not empty user}">
 								<a href="#" onclick="doLogout()" class="user_link"><img
 									width="30px" alt="" src="images/logout3.png"> </a>
-									<c:if test="${user.role != 1}">
-								<a href="admin" class="user_link"><img
-									width="30px" alt="" src="images/admin.png"> </a>
-									
-									</c:if>
-									
+								<c:if test="${user.role != 1}">
+									<a href="admin" class="user_link"><img width="30px" alt=""
+										src="images/admin.png"> </a>
+
+								</c:if>
+
 							</c:if>
 
 							<a href="shoppingcart" class="user_link"><img width="30px"
@@ -110,6 +110,7 @@ function doLogout() {
 
 			<form action="changePassword" method="get">
 				<center>
+					<h4 style="color: red">${erro}</h4>
 					<table class="login-table">
 						<tr class="login-head">
 							<th colspan="3"><center>
@@ -120,11 +121,15 @@ function doLogout() {
 						</tr>
 						<tr class="login-body">
 							<td><fmt:message>OLDPASSWORD</fmt:message> :</td>
-							<td><input type="text" name="oldPassword"></td>
+							<td><input type="password" name="oldPassword"></td>
 						</tr>
 						<tr class="login-body">
 							<td><fmt:message>NEWPASSWORD</fmt:message> :</td>
-							<td><input type="text" name="newPassword"></td>
+							<td><input type="password" name="newPassword"></td>
+						</tr>
+						<tr class="login-body">
+							<td><fmt:message>PRE_NEWPASSWORD</fmt:message> :</td>
+							<td><input type="password" name="prenewPassword"></td>
 						</tr>
 
 						<tr class="login-foot">

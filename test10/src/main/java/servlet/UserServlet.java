@@ -58,16 +58,22 @@ public class UserServlet extends HttpServlet {
 		
 		if (checkPhone(PHONE) == null) {
 			try {
-				l.updateInfor(user.getId(), NAME, Integer.parseInt(PHONE), GENDER);
+				l.updateInfor(user.getId(), NAME, PHONE, GENDER);
 				User user2 = l.getUserByID(user.getId());
 				User old = new User(user.getId(), NAME, PHONE, Integer.parseInt(GENDER));
 				User neww = new User(user2.getId(), user2.getName(), user2.getPhone(), user2.getGender());
 				httpSession.removeAttribute("user");
 				httpSession.setAttribute("user", user2);
 				Gson gson = new Gson();
-				logging = new Logging(LevelLog.INFOR.name(), InforMessage.CAP_NHAT_THONG_TIN_THANH_CONG.name(),
-						old, neww);
-				req.setAttribute("erro", "Cập nhật thông tin thành công");
+//				if(old.equals(neww)) {
+//					req.setAttribute("erro", "");
+//					System.out.println("giong ne");
+//				}else {
+					logging = new Logging(LevelLog.INFOR.name(), InforMessage.CAP_NHAT_THONG_TIN_THANH_CONG.name(),
+							old, neww);
+					req.setAttribute("erro", "Cập nhật thông tin thành công");
+//					System.out.println("khac ne");
+//				}
 			} catch (NumberFormatException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
