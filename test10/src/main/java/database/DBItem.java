@@ -236,6 +236,7 @@ public class DBItem {
 				Double DISCOUNT = rs.getDouble("DISCOUNT");
 				String DISCRIPTION = rs.getString("DISCRIPTION");
 				String IMAGES = rs.getString("IMAGES");
+				item = new Item();
 				item.setId(ID);
 				item.setName(ITEM_NAME);
 				item.setPrice(PRICE);

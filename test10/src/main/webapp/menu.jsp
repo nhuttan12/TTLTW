@@ -169,7 +169,7 @@ function doLogout() {
 										<div class="options">
 											<h6>${i.price}VND</h6>
 											<a
-												href="#">
+												href="cart?userId=${user.id}&itemId=${i.id}">
 												+ </a>
 												
 

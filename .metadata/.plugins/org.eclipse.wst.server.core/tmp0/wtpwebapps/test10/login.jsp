@@ -108,11 +108,11 @@
 						</tr>
 						<tr class="login-body">
 							<td><fmt:message>username</fmt:message> :</td>
-							<td><input type="text" name="taikhoan" required ></td>
+							<td colspan="2"><input type="text" name="taikhoan" required ></td>
 						</tr>
 						<tr class="login-body">
-							<td><fmt:message>pass</fmt:message> :</td>
-							<td><input type="text" name="matkhau" required ></td>
+							<td  colspan="1"><fmt:message>pass</fmt:message> :</td>
+							<td  colspan="2"><input type="pa" name="matkhau" required ></td>
 						</tr>
 						<tr class="login-foot">
 							<th class="foot-item"><input class="button" type="submit"

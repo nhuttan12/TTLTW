@@ -42,6 +42,7 @@
 </head>
 
 <body class="sub_page">
+	<c:set var="user" value="${sessionScope.user}" />
 	<fmt:setLocale value="${sessionScope.lang}" />
 	<fmt:setBundle basename="languages.lang" />
 
@@ -71,12 +72,9 @@
 								<a href="?lang_local=vi_VN" class="lang">VN </a> <a
 									href="?lang_local=en_US" class="lang"> EN </a>
 							</div>
-
 							<a href="user" class="user_link"> <i class="fa fa-user"
 								aria-hidden="true">${user.userName}</i>
-
 							</a>
-
 							<c:if test="${not empty user}">
 								<a href="#" onclick="doLogout()" class="user_link"><img
 									width="30px" alt="" src="images/logout3.png"> </a>
@@ -99,8 +97,7 @@
 	<!-- book section -->
 	<section class="book_section layout_padding">
 		<c:set var="erro" value="${requestScope.erro}" />
-		<c:set var="user" value="${sessionScope.user}" />
-		<c:set var="ph" value="${requestScope.phone }" />
+		<c:set var="ph" value="${requestScope.phone}" />
 		<div class="loginn">
 			<form action="user" method="post">
 				<center>
@@ -134,34 +131,36 @@
 							<td><fmt:message>phone</fmt:message> :</td>
 							<td><input type="text" name="sodienthoai" value="${PHONE}"
 								minlength="10" maxlength="10" required></td>
-							
+
 						</tr>
 						<c:if test="${er}">
-						<tr> <td colspan="3"><p style="color: red">${ph}</p></td></tr>
-								
-							</c:if>
+							<tr>
+								<td colspan="3"><p style="color: red">${ph}</p></td>
+							</tr>
+
+						</c:if>
 						<tr class="login-body">
 							<td><fmt:message>contact.email</fmt:message> :</td>
 							<td>${EMAIL}</td>
 						</tr>
 						<tr class="login-body">
 							<td><fmt:message>gender</fmt:message> :</td>
-							<td><input type="radio" name="gioitinh" value="1" ${GENDER eq '1' ? 'checked' : ''}>
-								<fmt:message>male</fmt:message> 
-								<input type="radio"
-								name="gioitinh" value="2" ${GENDER eq '2' ? 'checked' : ''}> <fmt:message>female</fmt:message>
+							<td><input type="radio" name="gioitinh" value="1"
+								${GENDER eq '1' ? 'checked' : ''}> <fmt:message>male</fmt:message>
+								<input type="radio" name="gioitinh" value="2"
+								${GENDER eq '2' ? 'checked' : ''}> <fmt:message>female</fmt:message>
 							</td>
 						</tr>
 						<tr class="login-foot">
 							<td colspan="2" class="foot-item"><input class="button"
 								type="submit" name="submit"
-								value=" <fmt:message>UPDATE</fmt:message> "></td>
+								value=" <fmt:message>UPDATE</fmt:message> " style="margin-left: 150px;background-color:rgb(12, 132, 171);color:white"></td>
 						</tr>
 						<tr class="login-foot">
-							<td colspan="2"><a href="#"><input type="button"
-									value="<fmt:message>ODERHISTORY</fmt:message>"></a></td>
-							<td><a href="changePassword.jsp?uid=${user.id}"><input
-									type="button" value="<fmt:message>CHAGEPASSWORD</fmt:message>"></a>
+							<td colspan="1"><a href="#"><input type="button"
+									value="<fmt:message>ODERHISTORY</fmt:message>" style="background-color: yellow"></a></td>
+							<td colspan="2"><a href="changePassword.jsp?uid=${user.id}"><input
+									type="button" value="<fmt:message>CHAGEPASSWORD</fmt:message>" style="background-color: red;color: white"></a>
 							</td>
 						</tr>
 					</table>

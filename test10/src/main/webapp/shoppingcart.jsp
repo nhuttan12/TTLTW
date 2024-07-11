@@ -121,7 +121,7 @@
 
 				<div class="products">
 
-					<c:forEach var="i" begin="0" end="${fn:length(listCart)}" step="1" >
+					<c:forEach var="i" begin="0" end="${fn:length(listCart)-1}" step="1" >
 
 						<div class="product">
 
