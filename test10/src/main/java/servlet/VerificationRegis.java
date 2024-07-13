@@ -80,7 +80,7 @@ public class VerificationRegis extends HttpServlet {
 				a.setStatus(1);
 				System.out.println(l.getUserId(a));
 				req.setAttribute("erro", "Đăng Ký Thành Công");
-				logging=new Logging(LevelLog.INFOR.name(),InforMessage.DANG_KY_TAI_KHOAN_THANH_CONG.name());
+				logging=new Logging(LevelLog.INFO.name(),InforMessage.DANG_KY_TAI_KHOAN_THANH_CONG.name());
 	   			RequestDispatcher dispatcher = req.getRequestDispatcher("login.jsp");
 	   			dispatcher.forward(req, resp);
 			} catch (SQLException e) {

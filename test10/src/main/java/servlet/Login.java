@@ -87,9 +87,9 @@ public class Login extends HttpServlet {
 //				System.out.println(a.getId());
 				HttpSession session = req.getSession();
 				session.setAttribute("user", a);
-				session.setMaxInactiveInterval(20);
+				//session.setMaxInactiveInterval(20);
 				System.out.println("login thanh cong");
-				logging = new Logging(LevelLog.INFOR.name(),InforMessage.DANG_NHAP_THANH_CONG.name());
+				logging = new Logging(LevelLog.INFO.name(),InforMessage.DANG_NHAP_THANH_CONG.name());
 				RequestDispatcher dispatcher = req.getRequestDispatcher("index.jsp");
 				dispatcher.forward(req, resp);
 			}

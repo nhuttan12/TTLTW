@@ -69,7 +69,7 @@ public class UserServlet extends HttpServlet {
 //					req.setAttribute("erro", "");
 //					System.out.println("giong ne");
 //				}else {
-					logging = new Logging(LevelLog.INFOR.name(), InforMessage.CAP_NHAT_THONG_TIN_THANH_CONG.name(),
+					logging = new Logging(LevelLog.INFO.name(), InforMessage.CAP_NHAT_THONG_TIN_THANH_CONG.name(),
 							old, neww);
 					req.setAttribute("erro", "Cập nhật thông tin thành công");
 //					System.out.println("khac ne");

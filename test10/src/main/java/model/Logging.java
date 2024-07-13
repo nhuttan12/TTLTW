@@ -1,10 +1,9 @@
 package model;
 
-import java.time.LocalDateTime;
 
 public  class Logging {
 	private int id;
-	private LocalDateTime time;
+	private String time;
 	private String IP;
 	private String level;//level cua log( 
 	private String message;//noi dung cua log
@@ -13,7 +12,7 @@ public  class Logging {
 	public Logging() {
 		
 	}
-	public Logging(int id,LocalDateTime time, String iP, String level, String message, Object pre_value, Object current_value) {
+	public Logging(int id,String time, String iP, String level, String message, Object pre_value, Object current_value) {
 		super();
 		this.id = id;
 		this.time=time;
@@ -24,14 +23,14 @@ public  class Logging {
 		this.current_value = current_value;
 	}
 	
-	public Logging(LocalDateTime time, String iP, String message) {
+	public Logging(String time, String iP, String message) {
 		super();
 		this.time = time;
 		IP = iP;
 		this.message = message;
 	}
 	
-	public Logging(LocalDateTime time, String iP, String message, Object pre_value, Object current_value) {
+	public Logging(String time, String iP, String message, Object pre_value, Object current_value) {
 		super();
 		this.time = time;
 		IP = iP;
@@ -40,7 +39,7 @@ public  class Logging {
 		this.current_value = current_value;
 	}
 	
-	public Logging(LocalDateTime time, String iP, String level, String message) {
+	public Logging(String time, String iP, String level, String message) {
 		super();
 		this.time = time;
 		IP = iP;
@@ -48,7 +47,7 @@ public  class Logging {
 		this.message = message;
 	}
 	
-	public Logging(LocalDateTime time, String iP, String level, String message, Object pre_value,
+	public Logging(String time, String iP, String level, String message, Object pre_value,
 			Object current_value) {
 		super();
 		this.time = time;
@@ -110,12 +109,18 @@ public  class Logging {
 	public void setCurrent_value(Object current_value) {
 		this.current_value = current_value;
 	}
-	public LocalDateTime getTime() {
+	public String getTime() {
 		return time;
 	}
-	public void setTime(LocalDateTime time) {
+	public void setTime(String time) {
 		this.time = time;
 	}
+	@Override
+	public String toString() {
+		return "Logging [id=" + id + ", time=" + time + ", IP=" + IP + ", level=" + level + ", message=" + message
+				+ ", pre_value=" + pre_value + ", current_value=" + current_value + "]";
+	}
+	
 	
 	
 
