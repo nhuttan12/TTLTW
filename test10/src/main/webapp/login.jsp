@@ -112,7 +112,7 @@
 						</tr>
 						<tr class="login-body">
 							<td  colspan="1"><fmt:message>pass</fmt:message> :</td>
-							<td  colspan="2"><input type="pa" name="matkhau" required ></td>
+							<td  colspan="2"><input type="password" name="matkhau" required ></td>
 						</tr>
 						<tr class="login-foot">
 							<th class="foot-item"><input class="button" type="submit"

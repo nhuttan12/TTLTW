@@ -29,8 +29,10 @@ public static boolean insertLog(Logging logging,HttpServletRequest httpServletRe
 	String sql="INSERT INTO LOG(TIME,IP,LEVEL,MESSAGE,PRE_VALUE,CURRENT_VALUE) VALUES(?,?,?,?,?,?);";
 		PreparedStatement preparedStatement =connection.prepareStatement(sql);
 		LocalDateTime time=LocalDateTime.now();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+		String time_curent=time.format(formatter);
 		Gson gson = new Gson();
-		preparedStatement.setTimestamp(1, Timestamp.valueOf(time));
+		preparedStatement.setString(1, time_curent);
 		preparedStatement.setString(2, IP.getClientIP(httpServletRequest ));
 		preparedStatement.setString(3, logging.getLevel());
 		preparedStatement.setString(4, logging.getMessage());
@@ -49,6 +51,7 @@ public static boolean insertLog(Logging logging,HttpServletRequest httpServletRe
 	}
 	return false;
 }
+
 
 public static void main(String[] args) {
 	  try {
