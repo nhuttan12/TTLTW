@@ -7,7 +7,7 @@ body {
 }
 
 .layout_padding {
-  padding: 20px 0;
+  padding-top: 20px;
 }
 
 .layout_padding2 {
@@ -504,7 +504,7 @@ a:focus {
       -ms-flex-pack: center;
           justify-content: center;
   list-style-type: none;
-  margin: 45px 0 20px 0;
+  margin: 20px 0 10px 0;
 }
 
 .food_section .filters_menu li {
