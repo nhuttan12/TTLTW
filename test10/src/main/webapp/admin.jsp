@@ -19,38 +19,21 @@ a {
 img {
 	display: inline;
 }
-#product-table_filter label input{
-	color: #e4e7ea;
-}
-#product-table_length {
-	color: #e4e7ea;
-}
-#product-table_length label select {
-	color: #e4e7ea;
-}
-#product-table tbody tr{
-	background-color: transparent;
-	color: #e4e7ea;
-}
-#product-table_previous, #product-table_next {
-	color: #e4e7ea !important;
-}
-#product-table_paginate span .paginate_button.current, 
-#product-table_paginate span .paginate_button {
-	background-color: white;
-}
 </style>
 
 <!-- Jquery -->
 <script src="https://code.jquery.com/jquery-3.7.1.js"
 	integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
 	crossorigin="anonymous"></script>
+<!-- Ajax -->
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
 <!-- Css & Js -->
 <link rel="shortcut icon" href="images/loo6.png" />
-<link rel="stylesheet" href="css/admin/ad.css">
+<link rel="stylesheet" href="css/admin/ii.css">
 
-<!-- boot strap -->
+<!-- boot strap -->	
 <link rel="stylesheet"
 	href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
 	integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
@@ -69,25 +52,111 @@ img {
 
 <!-- data table -->
 <link rel="stylesheet"
-	href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css" />
+	href="https://cdn.datatables.net/2.0.8/css/dataTables.bootstrap5.min.css" />
+<script src="https://cdn.datatables.net/2.0.8/js/dataTables.min.js"></script>
 <script
-	src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+	src="https://cdn.datatables.net/2.0.8/js/dataTables.bootstrap5.min.js"></script>
 <script type="text/javascript">
 	$(document).ready(function() {
 		new DataTable('#product-table', {
-		    info: false,
-		    ordering: true,
-		    paging: true,
-		    lengthMenu: [10, 25, 50, 75, 100],
-		    language: {
-			    paginate: {
-		            first: "Trang đầu",
-		            previous: "Trang trước",
-		            next: "Trang sau",
-		            last: "Trang cuối"
-		        },
-		    },
+			info : true,
+			ordering : true,
+			paging : true,
+			lengthMenu : [ 10, 25, 50, 75, 100 ],
+			language : {
+				paginate : {
+					first : "Trang đầu",
+					previous : "Trang trước",
+					next : "Trang sau",
+					last : "Trang cuối"
+				},
+			},
 		});
+		var log_table = $('#log_table').DataTable({
+
+			createdRow : function(row, data, stt_row) {
+				var level_ = data[3];//cột message
+				switch (level_) {
+				case "INFO":
+					$(row).css('background-color', '#20c997');
+					break;
+				case "WARN":
+					$(row).css('background-color', '#ffc107');
+					break;
+				case "ERROR":
+					$(row).css('background-color', '#c96d2e');
+					break;
+				case "FATAL":
+					$(row).css('background-color', '#ff0000');
+					break;
+
+				}
+			},
+			paging : true,
+			searching : true,
+			info : true,
+			lengthChange : true,
+			ordering : true,
+			pageLength : 5,
+			lengthMenu : [ 5, 10, 20, 75, 100 ]
+		});
+		$('#level_select').on('change', function() {
+			var selectedValue = $(this).val();
+			log_table.column(3).search(selectedValue).draw();
+
+		});
+		  function changeTime() {
+	            var to_time = $('#to_time').val();
+	            var from_time = $('#from_time').val();
+	            if (!from_time || !to_time) {//không chọn 1 trong 2
+	                log_table.rows().every(function() {
+	                    $(this.node()).show();
+	                });
+	                log_table.draw();
+	                return;
+	            }
+	            var to_time1 = Date.parse(to_time);
+	            var from_time2 = Date.parse(from_time);
+	            console.log("From Time:", from_time2);
+	            console.log("To Time:", to_time1);
+	            log_table.rows().every(function() {
+	                var data = this.data();
+	                var a=data[1];
+	                console.log(" Date:",a);
+	                var formattedDate = a.replace(/(\d{2})-(\d{2})-(\d{4}) (\d{2}):(\d{2}):(\d{2})/, '$3-$2-$1T$4:$5:$6');
+	                var dateObject = new Date(formattedDate);
+					var date=Date.parse(dateObject);
+	                console.log("Row Date:",date);
+	                if (date >= from_time2 && date <= to_time1) {
+	                    console.log("Show ");
+	                    $(this.node()).show();
+	                } else {
+	                    console.log("ẩn nè");
+	                    $(this.node()).hide();
+	                }
+	            });
+
+	            log_table.draw();
+	        }
+
+	        $('#from_time, #to_time').on('change', changeTime);
+	        function convertDateFormat(dateStr) {
+	            // Tách ngày và thời gian từ chuỗi
+	            var parts = dateStr.split(' ');
+	            var datePart = parts[0];
+	            var timePart = parts[1];
+
+	            // Tách ngày thành các thành phần ngày, tháng, năm
+	            var dateParts = datePart.split('/');
+	            var day = dateParts[0];
+	            var month = dateParts[1];
+	            var year = dateParts[2];
+
+	            // Định dạng lại chuỗi ngày tháng
+	            var formattedDate = year + '-' + month + '-' + day + ' ' + timePart;
+
+	            return formattedDate;
+	        }
 	});
 </script>
 <script type="text/javascript">
@@ -132,40 +201,35 @@ img {
 </script>
 </head>
 <body>
-	<fmt:setLocale value="${sessionScope.lang}" />
-	<fmt:setBundle basename="languages.lang" />
+
 
 	<header>
 		<h2>T Fast Food - Admin</h2>
-		<div style="margin-right: 30px; float: right;" class="language">
-			<a style="color: white;" href="?lang_local=vi_VN" class="lang">VN
-			</a> <a style="color: white;" href="?lang_local=en_US" class="lang">
-				EN </a>
-		</div>
+
 	</header>
 
 	<!-- Menu -->
 
 	<aside class="sidebar">
-		<ul class="nav">
+		<ul class="nav" style="display: block;">
 			<li class="nav-title">MENU</li>
 			<li class="nav-item"><a
 				class="nav-link ${gr2 eq home?'active':''}" href="admin?gr=home"><i
 					class="fa fa-home"></i> Trang Chủ</a></li>
 			<li class="nav-item"><a
 				class="nav-link ${gr2 eq item?'active':''}" href="admin?gr=item"><i
-					class="fa fa-th-large"></i> Sản Phẩm</a></li>
+					class="fa fa-th-large"></i>Quản lý sản phẩm</a></li>
 			<li class="nav-item"><a
 				class="nav-link ${gr2 eq spcart?'active':''}" href="admin?gr=spcart"><i
-					class="fa fa-file-text-o"></i> Đơn Hàng</a></li>
+					class="fa fa-file-text-o"></i>Quản lý đơn hàng</a></li>
 			<li class="nav-item"><a
 				class="nav-link ${gr2 eq user?'active':''}" href="admin?gr=user"><i
-					class="fa fa-address-book-o"></i> Khách Hàng</a></li>
-			<li class="nav-item">
-				<hr>
-			</li>
-			<li class="nav-item"><a href="#" class="nav-link"
-				onclick="doLogout()"> <i class="fa fa-arrow-left"></i> <fmt:message>logout</fmt:message>
+					class="fa fa-address-book-o"></i>Quản lý User</a></li>
+			<li class="nav-item"><a
+				class="nav-link ${gr2 eq log?'active':''}" href="admin?gr=log"><i
+					class="fa fa-address-book-o"></i>Quản lý Log</a></li>
+			<li class="nav-item"><a href="index" class="nav-link">
+					<i class="fa fa-arrow-left"></i>Quay về Home
 			</a></li>
 		</ul>
 	</aside>
@@ -179,9 +243,8 @@ img {
 		<!-- Sản Phẩm -->
 		<c:if test="${gr2 eq item}">
 			<div class="sanpham">
-
 				<div class="table-content">
-					<table style="width: 100%" id="product-table">	
+					<table style="width: 100%" id="product-table">
 						<thead>
 							<tr class="table-header">
 								<th>Mã số</th>
@@ -285,7 +348,6 @@ img {
 		</c:if>
 		<c:if test="${gr2 eq user}">
 			<div class="khachhang">
-
 				<!-- Khách hàng -->
 				<c:set var="listuser" value="${requestScope.listUser }" />
 				<div class="table-content">
@@ -320,11 +382,76 @@ img {
 					</table>
 				</div>
 			</div>
-			<!-- // khach hang -->
+			<!-- // ket thuc khach hang -->
 		</c:if>
+		<!-- // log -->
+		<c:if test="${gr2 eq log}">
+
+			<c:set var="listLog" value="${requestScope.listLog}" />
+			<div class="table-content">
+				<div class="search">
+					<b>From</b> <input type="datetime-local" id="from_time"
+					> <b>To</b> <input
+						type="datetime-local" id="to_time">
+				</div>
+
+				<table style="width: 100%; border:solid white;" id="log_table" border="1px white;">
+					<thead>
+						<tr class="table-header">
+							<th>ID</th>
+							<th>Thời gian</th>
+							<th>IP</th>
+							<th>Level</th>
+							<th>Nội dung</th>
+							<th>Giá trị trước</th>
+							<th>Giá trị hiện tại</th>
+
+						</tr>
+					</thead>
+					<tbody>
+						<c:forEach var="log" items="${listLog}">
+							<tr>
+								<td>${log.id}</td>
+								<td>${log.time}</td>
+								<td>${log.IP}</td>
+								<td>${log.level}</td>
+								<td>${log.message}</td>
+								<td>${log.pre_value}</td>
+								<td>${log.current_value}</td>
+							</tr>
+						</c:forEach>
+					</tbody>
+				</table>
+				<select id="level_select">
+					<option value="">Level</option>
+					<option value="INFO">INFOR</option>
+					<option value="WARN">WARN</option>
+					<option value="ERRO">ERRO</option>
+					<option value="FATAL">FATAL</option>
+				</select>
+			</div>
+
+
+		</c:if>
+		<!-- // ket thuc log -->
 		<!-- // main -->
 
 	</div>
-
+<script type="text/javascript">
+$(document).ready(function() {
+    var log_table = $('#log_table')
+function changeTime() {
+	var to_time = $('#to_time').val();
+	var from_time = $('#from_time').val();
+	var to_time1 = new Date(to_time);
+	var from_time2 = new Date(from_time);
+	log_table.columns(1).search(function(data, index, rowData) {
+		var rowDataTime = new Date(data); // Chuyển đổi dữ liệu từ cột thời gian sang đối tượng Date
+		// Kiểm tra xem thời gian rowDataTime có nằm trong khoảng từ from_time đến to_time không
+		return (rowDataTime >= from_time2 && rowDataTime <= to_time1);
+	}).draw();
+}
+}
+</script>
 </body>
 </html>

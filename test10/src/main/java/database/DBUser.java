@@ -327,6 +327,30 @@ public class DBUser {
 
 		return status;
 	}
+	
+	public int updateInfor(int id, String fullname,String phone, String gender) throws SQLException {
+		int status = 0;
+
+		try (Connection c = connectionDB.connect()) {
+			User a = getUserByID(id);
+			if (a != null) {
+				String sql = "UPDATE USERS SET FULL_NAME = ?, PHONE = ?, GENDER = ? WHERE USER_ID = ?;";
+				PreparedStatement ps = c.prepareStatement(sql);
+				ps.setString(1, fullname);
+				ps.setString(2, phone);
+				ps.setString(3, gender);
+				ps.setInt(4, id);
+				status = ps.executeUpdate();
+			} else {
+				System.out.println("khong tim thay user");
+			}
+
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+
+		return status;
+	}
 
 	public User getUserByUserName(String usn) throws SQLException {
 		User b = null;

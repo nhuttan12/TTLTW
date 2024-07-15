@@ -74,6 +74,14 @@ public class User {
 		this.status = status;
 	}
 
+	public User(int id, String name, String phone, int gender) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.phone = phone;
+		this.gender = gender;
+	}
+
 	public User() {
 		super();
 	}

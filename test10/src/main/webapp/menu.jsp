@@ -12,20 +12,18 @@
 <link rel="shortcut icon" href="images/loo6.png" />
 
 <title>Menu</title>
-
+<!-- ajax -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <!-- bootstrap core css -->
 <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
-
-
-
 <!-- font awesome style -->
 <link href="css/font-awesome.min.css" rel="stylesheet" />
 
 <!-- Custom styles for this template -->
-<link href="css/style.css" rel="stylesheet" />
+<link href="css/a.css" rel="stylesheet" />
 <!-- responsive style -->
 <link href="css/responsive.css" rel="stylesheet" />
-<style type="text/css"">
+<style type="text/css">
 .pagination {
 	display: inline-block;
 }
@@ -63,7 +61,6 @@ function doLogout() {
 	<fmt:setLocale value="${sessionScope.lang}" />
 	<fmt:setBundle basename="languages.lang" />
 	<c:set var="user" value="${sessionScope.user}" />
-
 	<div class="hero_area">
 		<div class="bg-box">
 			<img src="images/bg.jpg" alt="">
@@ -74,9 +71,6 @@ function doLogout() {
 				<nav class="navbar navbar-expand-lg custom_nav-container ">
 					<a class="navbar-brand" href="index"><img alt="logo"
 						style="width: 120px" src="images/log5.png"> </a>
-
-
-
 					<div class="collapse navbar-collapse" id="navbarSupportedContent">
 						<ul class="navbar-nav  mx-auto ">
 							<li class="nav-item "><a class="nav-link"
@@ -126,9 +120,10 @@ function doLogout() {
 	<section class="food_section layout_padding">
 		<div class="container">
 			<div class="heading_container heading_center">
-				<h2>
+				<h2 style="margin: auto;">
 					<fmt:message>menu.menu</fmt:message>
 				</h2>
+				<input type="text" id="search_menu" placeholder=<fmt:message>search</fmt:message> oninput="search(this,'${user.id}')">
 			</div>
 
 			<ul class="filters_menu">
@@ -155,9 +150,8 @@ function doLogout() {
 
 			<c:set var="list" value="${ requestScope.listItem}" />
 			<div class="filters-content">
-				<div class="row grid">
+				<div class="row grid" id="menu_ct">
 					<c:forEach var="i" items="${list}">
-
 						<div class="col-sm-6 col-lg-4 all pizza">
 							<div class="box">
 								<div>
@@ -169,14 +163,8 @@ function doLogout() {
 										<div class="options">
 											<h6>${i.price}VND</h6>
 											<a
-												href="#">
+												href="cart?userId=${user.id}&itemId=${i.id}">
 												+ </a>
-												
-
-<%-- <a
-												href="#shopping?shoppingCartId=${user.shoppingCartId}&itemId=${i.id}">
-												+ </a> --%>
-
 										</div>
 									</div>
 								</div>
@@ -236,5 +224,23 @@ function doLogout() {
 			</div>
 		</div>
 	</footer>
+	<script type="text/javascript">
+	function search(ip,uid) {
+		var search=ip.value;
+		$.ajax({
+			url:"searchmenu",
+			type:"get",
+			data:{
+				search:search,
+				userid:uid
+			},
+			success:function(data){
+				var row=document.getElementById("menu_ct");
+				row.innerHTML=data;
+			}
+			
+		});
+	}
+	</script>
 </body>
 </html>

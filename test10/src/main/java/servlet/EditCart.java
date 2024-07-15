@@ -36,7 +36,6 @@ public class EditCart extends HttpServlet {
 	 *      response)
 	 */
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		int cartID;
 		DBCart dbCart = new DBCart();
 		HttpSession httpSession = req.getSession();
 		User user = (User) httpSession.getAttribute("user");
@@ -44,13 +43,47 @@ public class EditCart extends HttpServlet {
 			req.setAttribute("erro", "bạn phải đăng nhập !");
 			req.getRequestDispatcher("login.jsp").forward(req, resp);
 		} else {
-			String cartid=req.getParameter("cartID");
-			try {
-				cartID=Integer.parseInt(cartid);
-				dbCart.deleteCartByCartID(cartID);
-			} catch (Exception e) {
-				// TODO: handle exception
-			}
+			
+			// đã đăng nhập thành công
+			String action = req.getParameter("action");
+		    int cartID = Integer.parseInt(req.getParameter("cartID"));
+		    int itemId = Integer.parseInt(req.getParameter("itemId"));
+			
+			if (action.equals("increase")) {
+		        // Increase quantity logic
+		        // Example: Assume listCart is a list of CartItem objects
+				try {
+					dbCart.addITEM(user.getId(), itemId, 1);
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		    } else if (action.equals("decrease")) {
+		        // Decrease quantity logic
+		        // Example: Assume listCart is a list of CartItem objects
+		    	try {
+					dbCart.subITEM(user.getId(), itemId, 1);
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		    } else if (action.equals("remove")) {
+		        // Remove item logic
+		        // Example: Assume listCart is a list of CartItem objects
+		        try {
+					dbCart.deleteCartByCartID(cartID);
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		    }
+
+//			try {
+//				cartID=Integer.parseInt(cartid);
+//				dbCart.deleteCartByCartID(cartID);
+//			} catch (Exception e) {
+//				// TODO: handle exception
+//			}
 			RequestDispatcher dispatcher = req.getRequestDispatcher("shoppingcart");
 			dispatcher.forward(req, resp);
 		}

@@ -8,103 +8,121 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import model.Cart;
+import model.Category;
 import model.Item;
 import model.User;
 
 public class DBCart {
+	DBItem it = new DBItem();
 
-	// phần chưa làm đang cmt
+	// chưa xét đến phần còn sản phẩm tồn kho không?
 	
-//	public int addITEM(int sId, int iId, int slm) throws SQLException {
-//		int status = 0;
-//		try (Connection c = connectionDB.connect()) {
-//			List<Item> list = new ArrayList<Item>();
-//			list = getListItemByCartID(sId);
-//			
-//			boolean test = false;
-//			Item i = new Item();
-//			for (Item item : list) {
-//				if (item.getId()== iId) {
-//					test = true;
-//					i = item;
-//				} 
-//			}
-//
-//			// neu trong list item do da co sp muon them thi chi update so luong mua
-//			if (test) {
+	public int addITEM(int uId, int iId, int slm) throws SQLException {
+		int status = 0;
+		try (Connection c = connectionDB.connect()) {
+			Item item = it.getItemByID(iId);
+			List<Cart> list = new ArrayList<Cart>();
+			list = getListCartByUserID(uId);
+			
+			// kiểm tra xem có sản phẩm trong giỏ hàng chưa
+			boolean test = false;
+			Cart gh = new Cart();
+			for (Cart cart : list) {
+				if (cart.getItemId()== iId) {
+					test = true;
+					gh = cart;
+//					item = getItem(cart.getId());
+				} 
+			}
+
+			// neu trong list item do da co sp muon them thi chi update so luong mua
+			if (test) {
 //				System.out.println(i.getName() +" "+ i.getQuantity() +" "+ i.getQuantityAvailable());
 //				if(i.getQuantity() + slm <= i.getQuantityAvailable()) {
-//					updateSLItem(sId,i, i.getQuantity() + slm);
-//					updateTotalPriceItem(sId, i, i.getQuantity() + slm);
+					int slmmoi = gh.getQuantity() + slm;
+					updateSLItem(gh.getId(), slmmoi);
+					gh.setQuantity(slmmoi);
+					double tonggiamoi = slmmoi*item.getPrice();
+					updateTotalPriceItem(gh.getId(), tonggiamoi);
+					gh.setTotalPrice(tonggiamoi);
 //					System.out.println("upload");
 //				}else {
 //					System.out.println(i.getQuantity() + slm);
 //					System.out.println(i.getQuantityAvailable());
 //					System.out.println("sp khong du sl ton kho");
 //				}
-//				
-//			// neu trong list item do chua co sp muon them thi them sp do vao list item trong cart
-//			} else {
-//				System.out.println("adddddddddddddddddddddd");
-//				System.out.println("item chua co trong cart");
-//				String sql = "INSERT INTO CART_ITEMS (SHOPPINGCART_ID, ITEM_ID, QUANTITY_ITEM) " + "VALUES (?, ?, ?);";
-//				PreparedStatement ps = c.prepareStatement(sql);
-//				// '"+title+"',"+Authorid+" , 18022018, 0000, "+Isbn+"
-//				ps.setInt(1, sId);
-//				ps.setInt(2, iId);
-//				ps.setInt(3, slm);
-//				status = ps.executeUpdate();
-//				System.out.println("da them");
-//				c.close();
-//
-//			}
-//
-//		} catch (Exception ex) {
-//			System.err.println(ex.getClass().getName() + ": " + ex.getMessage());
-//			System.exit(0);
-//		}
-//
-//		return status;
-//	}
-//	
-//	public int subITEM(int cId, int iId, int slb) throws SQLException {
-//		int status = 0;
-//		try (Connection c = connectionDB.connect()) {
-//			List<Item> list = new ArrayList<Item>();
-//			list = getListItemByCartID(cId);
-//			
-//			boolean test = false;
-//			Item i = new Item();
-//			for (Item item : list) {
-//				if (item.getId()== iId) {
-//					test = true;
-//					i = item;
-//				} 
-//			}
-//
-//			if (test) {
-//				if(i.getQuantity() > slb ) {
-//					updateSLItem(sId,i, i.getQuantity() - slb);
-//					updateTotalPriceItem(sId, i, i.getQuantity() - slb);
+				
+			// neu trong list item do chua co sp muon them thi them sp do vao list item trong cart
+			} else {
+				System.out.println("adddddddddddddddddddddd");
+				System.out.println("item chua co trong cart");
+				String sql = "INSERT INTO cart (USER_ID, ITEM_ID, QUANTITY, TOTAL_PRICE) " + "VALUES (?, ?, ?, ?);";
+				PreparedStatement ps = c.prepareStatement(sql);
+				// '"+title+"',"+Authorid+" , 18022018, 0000, "+Isbn+"
+				ps.setInt(1, uId);
+				ps.setInt(2, iId);
+				ps.setInt(3, slm);
+				ps.setDouble(4, item.getPrice()*slm);
+				status = ps.executeUpdate();
+				System.out.println("da them");
+				c.close();
+
+			}
+
+		} catch (Exception ex) {
+			System.err.println(ex.getClass().getName() + ": " + ex.getMessage());
+			System.exit(0);
+		}
+
+		return status;
+	}
+	// giảm số lượng
+	public int subITEM(int uId, int iId, int slt) throws SQLException {
+		int status = 0;
+		try (Connection c = connectionDB.connect()) {
+			Item item = it.getItemByID(iId);
+			List<Cart> list = new ArrayList<Cart>();
+			list = getListCartByUserID(uId);
+			
+			// kiểm tra xem có sản phẩm trong giỏ hàng chưa
+			boolean test = false;
+			Cart gh = new Cart();
+			for (Cart cart : list) {
+				if (cart.getItemId()== iId) {
+					test = true;
+					gh = cart;
+//					item = getItem(cart.getId());
+				} 
+			}
+
+			// neu trong list item do da co sp muon them thi chi update so luong mua
+			if (test) {
+//				System.out.println(i.getName() +" "+ i.getQuantity() +" "+ i.getQuantityAvailable());
+				if(gh.getQuantity() >1) {
+					int slmmoi = gh.getQuantity() - slt;
+					updateSLItem(gh.getId(), slmmoi);
+					gh.setQuantity(slmmoi);
+					double tonggiamoi = slmmoi*item.getPrice();
+					updateTotalPriceItem(gh.getId(), tonggiamoi);
+					gh.setTotalPrice(tonggiamoi);
 //					System.out.println("upload");
-//				}else if(i.getQuantity() <= slb) {
-//					deleteITEM(sId, i.getId());
-//					System.out.println("xoa sp");
-//				}
-//				
-//			} else {
-//				System.out.println("item chua co trong cart");
-//				c.close();
-//
-//			}
-//
-//		} catch (Exception ex) {
-//			System.err.println(ex.getClass().getName() + ": " + ex.getMessage());
-//			System.exit(0);
-//		}
-//
-//		return status;
-//	}
+				}else {
+					deleteCartByCartID(gh.getId());
+				}
+				
+			} else {
+				System.out.println("item chua co trong cart");
+				c.close();
+
+			}
+
+		} catch (Exception ex) {
+			System.err.println(ex.getClass().getName() + ": " + ex.getMessage());
+			System.exit(0);
+		}
+
+		return status;
+	}
 
 	public int deleteITEM(int uId, int iId) throws SQLException {
 		int status = 0;
@@ -179,17 +197,16 @@ public class DBCart {
 		return status;
 	}
 // UPLOAD Số lượng mua của từng item trong cart
-	public int updateSLItem(int uId, Item item, int slm) throws SQLException {
+	public int updateSLItem(int cId, int slm) throws SQLException {
 		int status = 0;
 
 		try (Connection c = connectionDB.connect()) {
 			if(slm >= 0) {
-				String sql = "UPDATE cart SET QUANTITY = ? WHERE ITEM_ID = ? and USER_ID = ?;";
+				String sql = "UPDATE cart SET QUANTITY = ? WHERE CART_ID = ?;";
 				PreparedStatement ps = c.prepareStatement(sql);
 				// '"+title+"',"+Authorid+" , 18022018, 0000, "+Isbn+"
 				ps.setInt(1, slm);
-				ps.setInt(2, item.getId());
-				ps.setInt(3, uId);
+				ps.setInt(2, cId);
 				System.out.println("update thanh cong");
 				status = ps.executeUpdate();
 			}
@@ -204,16 +221,15 @@ public class DBCart {
 		return status;
 	}
 	
-	public int updateTotalPriceItem(int uId, Item item, int slm) throws SQLException {
+	public int updateTotalPriceItem(int cId, double slm) throws SQLException {
 		int status = 0;
 
 		try (Connection c = connectionDB.connect()) {
-				String sql = "UPDATE cart SET TOTAL_PRICE = ? WHERE ITEM_ID = ? and USER_ID = ?;";
+				String sql = "UPDATE cart SET TOTAL_PRICE = ? WHERE CART_ID = ?;";
 				PreparedStatement ps = c.prepareStatement(sql);
 				// '"+title+"',"+Authorid+" , 18022018, 0000, "+Isbn+"
-				ps.setDouble(1, (item.getPrice()) * slm);
-				ps.setInt(2, item.getId());
-				ps.setInt(3, uId);
+				ps.setDouble(1,slm);
+				ps.setInt(2, cId);
 				System.out.println("update thanh cong");
 				status = ps.executeUpdate();
 
@@ -225,18 +241,59 @@ public class DBCart {
 	}
 
 	
-	public Item getItem(int user_id, int item_id) throws SQLException {
+//	public Item getItem(int user_id, int item_id) throws SQLException {
+//		Item i = null;
+//
+//		try (Connection c = connectionDB.connect()) {
+//
+//			String sql = "SELECT i.* FROM  cart ci JOIN items i on i.ITEM_ID = ci.ITEM_ID  WHERE ci.USER_ID = ? && ci.ITEM_ID = ?;";
+//
+//			PreparedStatement ps = c.prepareStatement(sql);
+//			// '"+title+"',"+Authorid+" , 18022018, 0000, "+Isbn+"
+//
+//			ps.setInt(1, user_id);
+//			ps.setInt(2, item_id);
+//
+//			ResultSet rs = ps.executeQuery();
+//
+//			while (rs.next()) {
+//				int ITEM_ID = rs.getInt("ITEM_ID");
+//				String ITEM_NAME = rs.getString("ITEM_NAME");
+//				double PRICE = rs.getDouble("PRICE");
+//				double DISCOUNT = rs.getDouble("DISCOUNT");
+//				String DISCRIPTION = rs.getString("DISCRIPTION");
+//				int CATEGORY_ID = rs.getInt("CATEGORY_ID");
+//				String IMAGES = rs.getString("IMAGES");
+//				
+//
+//				i = new Item();
+//				i.setId(ITEM_ID);
+//				i.setName(ITEM_NAME);
+//				i.setPrice(PRICE);
+//				i.setDiscount(DISCOUNT);
+//				i.setDiscription(DISCRIPTION);
+//				// phần này chưa đúng nghe, nên coi lại
+//				Category ca = new Category(CATEGORY_ID);
+//				i.setCategory(ca);
+//				i.setImageName(IMAGES);
+//			}
+//			rs.close();
+//		} catch (Exception ex) {
+//			ex.printStackTrace();
+//		}
+//		return i;
+//	}
+	public Item getItem(int cart_id) throws SQLException {
 		Item i = null;
 
 		try (Connection c = connectionDB.connect()) {
 
-			String sql = "SELECT i.* FROM  cart ci JOIN items i on i.ITEM_ID = ci.ITEM_ID  WHERE ci.USER_ID = ? && ci.ITEM_ID = ?;";
+			String sql = "SELECT i.* FROM  cart ci JOIN items i on i.ITEM_ID = ci.ITEM_ID  WHERE ci.CART_ID = ?;";
 
 			PreparedStatement ps = c.prepareStatement(sql);
 			// '"+title+"',"+Authorid+" , 18022018, 0000, "+Isbn+"
 
-			ps.setInt(1, user_id);
-			ps.setInt(2, item_id);
+			ps.setInt(1, cart_id);
 
 			ResultSet rs = ps.executeQuery();
 
@@ -250,13 +307,15 @@ public class DBCart {
 				String IMAGES = rs.getString("IMAGES");
 				
 
-//				i = new Item(ITEM_ID, ITEM_NAME, PRICE, IMAGES, DISCOUNT, CATEGORY_ID, DISCRIPTION);
+				i = new Item();
 				i.setId(ITEM_ID);
 				i.setName(ITEM_NAME);
 				i.setPrice(PRICE);
 				i.setDiscount(DISCOUNT);
 				i.setDiscription(DISCRIPTION);
-				i.getCategory().setId(CATEGORY_ID);
+				// phần này chưa đúng nghe, nên coi lại
+				Category ca = new Category(CATEGORY_ID);
+				i.setCategory(ca);
 				i.setImageName(IMAGES);
 			}
 			rs.close();
@@ -295,7 +354,8 @@ public class DBCart {
 				i.setPrice(PRICE);
 				i.setDiscount(DISCOUNT);
 				i.setDiscription(DISCRIPTION);
-				i.getCategory().setId(CATEGORY_ID);
+				Category ca = new Category(CATEGORY_ID);
+				i.setCategory(ca);
 				i.setImageName(IMAGES);
 				list.add(i);
 			}
@@ -369,18 +429,22 @@ public class DBCart {
 //		}
 		
 		DBCart cart = new DBCart();
-		List<Cart> a= cart.getListCartByUserID(1);
-		for (Cart c : a) {
-			System.out.println(c.getUserId());
-			
-		}
-		cart.deleteCartByUserID(1);
-		System.out.println("đã xóa");
-		List<Cart> b= cart.getListCartByUserID(1);
-		for (Cart c : b) {
-			System.out.println(c.getUserId());
-			
-		}
+		List<Item> a= cart.getListItemByUserID(2);
+//		for (Cart c : a) {
+//			System.out.println(c.getUserId());
+//			
+//		}
+//		cart.getListItemByUserID(2);
+//		System.out.println("đã xóa");
+//		List<Cart> b= cart.getListCartByUserID(1);
+		
+//		System.out.println(a.size());
+//		for (Item c : a) {
+//			System.out.println(c.getName());
+//			
+//		}
+//		System.out.println(cart.getItem(2, 4));
+		cart.addITEM(3, 1, 5);
 	}
 
 }

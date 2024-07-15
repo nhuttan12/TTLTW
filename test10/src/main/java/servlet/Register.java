@@ -60,7 +60,7 @@ public class Register extends HttpServlet {
 //   		System.out.println(a.getUserName());
 		if (checkUser(USER_NAME) == null && checkPass(PASSWORD) == null && checkPhone(PHONE) == null
 				&& checkEmail(EMAIL) == null) {
-			if (l.checkUSER(USER_NAME, PASSWORD) == null) {
+			if (l.checkUSERByEmail(EMAIL) == null) {
 				ServerSendMail m = new ServerSendMail();
 				String ver = m.createVerification();
 				m.setTo(EMAIL);
@@ -87,7 +87,7 @@ public class Register extends HttpServlet {
 
 			} else {
 
-				String erro = "Tài khoản đã tồn tại!";
+				String erro = "Email này đã được sử dụng để đăng ký trước đó";
 				req.setAttribute("erro", erro);
 				req.getRequestDispatcher("register.jsp").forward(req, resp);
 			}
