@@ -60,9 +60,6 @@
 				<nav class="navbar navbar-expand-lg custom_nav-container ">
 					<a class="navbar-brand" href="index"><img alt="logo"
 						style="width: 120px" src="images/log5.png"> </a>
-
-
-
 					<div class="collapse navbar-collapse" id="navbarSupportedContent">
 						<ul class="navbar-nav  mx-auto ">
 							<li class="nav-item "><a class="nav-link" href="index.jsp"><fmt:message>menu.home</fmt:message>
@@ -110,32 +107,23 @@
 	<!-- book section -->
 	<section class="book_section layout_padding">
 		<div class="container">
-
 			<h1>
 				<fmt:message>SHOPPINGCART</fmt:message>
 			</h1>
-
 			<div class="cart">
 				<c:set var="listCart" value="${ requestScope.listCart}" />
 				<c:set var="listItem" value="${ requestScope.listItem}" />
-
 				<div class="products">
-
 					<c:if test="${not empty listCart}">
 						<c:forEach var="i" begin="0" end="${fn:length(listCart)-1}"
 							step="1">
-
 							<div class="product">
-
 								<img src="${listItem[i].imageName}">
-
 								<div class="product-info">
-
 									<h3 class="product-name">
 										<fmt:message>nameItem</fmt:message>
 										: ${listItem[i].name}
 									</h3>
-
 									<h4 class="product-price">
 										<fmt:message>price</fmt:message>
 										: ${listItem[i].price} VND
@@ -154,9 +142,7 @@
 										<fmt:message>totalPrice</fmt:message>
 										: ${listCart[i].totalPrice} VND
 									</h4>
-
 									<p class="product-remove">
-
 										<a class="fa fa-trash" aria-hidden="true"
 											href="editcart?action=remove&cartID=${listCart[i].id}&itemId=${listItem[i].id}"></a>
 									</p>
@@ -166,32 +152,30 @@
 					</c:if>
 				</div>
 				<div class="cart-total">
-
 					<p>
-
 						<span><fmt:message>numberOfItem</fmt:message></span> <span></span>
 
 					</p>
-
 					<p>
-
 						<span><fmt:message>totalPrice</fmt:message></span> <span>
 							VND</span>
-
 					</p>
-
-
 					<a href="#"><fmt:message>checkout</fmt:message></a>
-
 				</div>
-
-
 			</div>
+			<div class="checkout-form">
+				<h2>Checkout Form</h2>
+				<form action="/submit_order" method="POST">
+					<label for="name">Tên người nhận:</label> <input type="text"
+						id="name" name="name" required> <label for="phone">Số
+						điện thoại người nhận:</label> <input type="tel" id="phone" name="phone"
+						required> <label for="address">Địa chỉ người nhận:</label>
+					<textarea id="address" name="address" rows="4" required></textarea>
 
+					<button type="submit">Đặt hàng</button>
+				</form>
+			</div>
 		</div>
-
-
-
 	</section>
 	<!-- end book section -->
 

@@ -13,11 +13,12 @@ import java.util.Map;
 import model.Item;
 import model.Order;
 import model.Cart;
+import model.Category;
 import model.User;
 
 public class DBOrder {
 
-//	public List<Item> getListItemByShopCartID(int cart_id) throws SQLException {
+//	public List<Item> getListByShopCartID(int cart_id) throws SQLException {
 //		List<Item> list = new ArrayList<Item>();
 //		try (Connection c = connectionDB.connect()) {
 //
@@ -34,15 +35,23 @@ public class DBOrder {
 //
 //				int ITEM_ID = rs.getInt("ITEM_ID");
 //				String ITEM_NAME = rs.getString("ITEM_NAME");
-//				double UNITPRICE = rs.getDouble("UNITPRICE");
-//				double PRICE = rs.getDouble("TOTAL_PRICE");
-//				int QUANTITY_AVAILABLE = rs.getInt("QUANTITY_AVAILABLE");
-//				int QUANTITY_ITEM = rs.getInt("QUANTITY_ITEM");
-//				String TYPE = rs.getString("TYPE");
+//				double PRICE = rs.getDouble("PRICE");
+//				double DISCOUNT = rs.getDouble("DISCOUNT");
+//				String DISCRIPTION = rs.getString("DISCRIPTION");
+//				int CATEGORY_ID = rs.getInt("CATEGORY_ID");
 //				String IMAGES = rs.getString("IMAGES");
+//				
 //
-//				Item i = new Item(ITEM_ID, ITEM_NAME, UNITPRICE, PRICE, QUANTITY_AVAILABLE, QUANTITY_ITEM, TYPE,
-//						IMAGES);
+//				Item i = new Item();
+//				i.setId(ITEM_ID);
+//				i.setName(ITEM_NAME);
+//				i.setPrice(PRICE);
+//				i.setDiscount(DISCOUNT);
+//				i.setDiscription(DISCRIPTION);
+//				// phần này chưa đúng nghe, nên coi lại
+//				Category ca = new Category(CATEGORY_ID);
+//				i.setCategory(ca);
+//				i.setImageName(IMAGES);
 //				list.add(i);
 //			}
 //			rs.close();
