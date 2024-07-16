@@ -13,5 +13,9 @@
 			<attribute name="owner.project.facets" value="jst.web"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/ACER/Downloads/cloudinary-core-1.30.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/ACER/Downloads/java-dotenv-5.2.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/ACER/Downloads/cloudinary-http42-1.39.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/ACER/Downloads/httpmime-4.5.13.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
