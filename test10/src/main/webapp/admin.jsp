@@ -1,3 +1,4 @@
+<%@page import="model.Order"%>
 <%@page import="model.Item"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -33,7 +34,7 @@ img {
 <link rel="shortcut icon" href="images/loo6.png" />
 <link rel="stylesheet" href="css/admin/ii.css">
 
-<!-- boot strap -->	
+<!-- boot strap -->
 <link rel="stylesheet"
 	href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
 	integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
@@ -56,108 +57,139 @@ img {
 <script src="https://cdn.datatables.net/2.0.8/js/dataTables.min.js"></script>
 <script
 	src="https://cdn.datatables.net/2.0.8/js/dataTables.bootstrap5.min.js"></script>
+
+<!-- font awesome -->
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
 <script type="text/javascript">
-	$(document).ready(function() {
-		new DataTable('#product-table', {
-			info : true,
-			ordering : true,
-			paging : true,
-			lengthMenu : [ 10, 25, 50, 75, 100 ],
-			language : {
-				paginate : {
-					first : "Trang đầu",
-					previous : "Trang trước",
-					next : "Trang sau",
-					last : "Trang cuối"
-				},
-			},
-		});
-		var log_table = $('#log_table').DataTable({
+	$(document)
+			.ready(
+					function() {
+						new DataTable('#product-table', {
+							info : true,
+							ordering : true,
+							paging : true,
+							lengthMenu : [ 10, 25, 50, 75, 100 ],
+							language : {
+								paginate : {
+									first : "Trang đầu",
+									previous : "Trang trước",
+									next : "Trang sau",
+									last : "Trang cuối"
+								},
+							},
+						});
+						var order_table = $('#order-table').DataTable({
+							info : true,
+							ordering : true,
+							paging : true,
+							lengthMenu : [ 10, 25, 50, 75, 100 ],
+							language : {
+								paginate : {
+									first : "Trang đầu",
+									previous : "Trang trước",
+									next : "Trang sau",
+									last : "Trang cuối"
+								},
+							},
+						});
+						var log_table = $('#log_table').DataTable({
 
-			createdRow : function(row, data, stt_row) {
-				var level_ = data[3];//cột message
-				switch (level_) {
-				case "INFO":
-					$(row).css('background-color', '#20c997');
-					break;
-				case "WARN":
-					$(row).css('background-color', '#ffc107');
-					break;
-				case "ERROR":
-					$(row).css('background-color', '#c96d2e');
-					break;
-				case "FATAL":
-					$(row).css('background-color', '#ff0000');
-					break;
+							createdRow : function(row, data, stt_row) {
+								var level_ = data[3];//cột message
+								switch (level_) {
+								case "INFO":
+									$(row).css('background-color', '#20c997');
+									break;
+								case "WARN":
+									$(row).css('background-color', '#ffc107');
+									break;
+								case "ERROR":
+									$(row).css('background-color', '#c96d2e');
+									break;
+								case "FATAL":
+									$(row).css('background-color', '#ff0000');
+									break;
 
-				}
-			},
-			paging : true,
-			searching : true,
-			info : true,
-			lengthChange : true,
-			ordering : true,
-			pageLength : 5,
-			lengthMenu : [ 5, 10, 20, 75, 100 ]
-		});
-		$('#level_select').on('change', function() {
-			var selectedValue = $(this).val();
-			log_table.column(3).search(selectedValue).draw();
+								}
+							},
+							paging : true,
+							searching : true,
+							info : true,
+							lengthChange : true,
+							ordering : true,
+							pageLength : 5,
+							lengthMenu : [ 5, 10, 20, 75, 100 ]
+						});
+						$('#level_select').on('change', function() {
+							var selectedValue = $(this).val();
+							log_table.column(3).search(selectedValue).draw();
 
-		});
-		  function changeTime() {
-	            var to_time = $('#to_time').val();
-	            var from_time = $('#from_time').val();
-	            if (!from_time || !to_time) {//không chọn 1 trong 2
-	                log_table.rows().every(function() {
-	                    $(this.node()).show();
-	                });
-	                log_table.draw();
-	                return;
-	            }
-	            var to_time1 = Date.parse(to_time);
-	            var from_time2 = Date.parse(from_time);
-	            console.log("From Time:", from_time2);
-	            console.log("To Time:", to_time1);
-	            log_table.rows().every(function() {
-	                var data = this.data();
-	                var a=data[1];
-	                console.log(" Date:",a);
-	                var formattedDate = a.replace(/(\d{2})-(\d{2})-(\d{4}) (\d{2}):(\d{2}):(\d{2})/, '$3-$2-$1T$4:$5:$6');
-	                var dateObject = new Date(formattedDate);
-					var date=Date.parse(dateObject);
-	                console.log("Row Date:",date);
-	                if (date >= from_time2 && date <= to_time1) {
-	                    console.log("Show ");
-	                    $(this.node()).show();
-	                } else {
-	                    console.log("ẩn nè");
-	                    $(this.node()).hide();
-	                }
-	            });
+						});
+						function changeTime() {
+							var to_time = $('#to_time').val();
+							var from_time = $('#from_time').val();
+							if (!from_time || !to_time) {//không chọn 1 trong 2
+								log_table.rows().every(function() {
+									$(this.node()).show();
+								});
+								log_table.draw();
+								return;
+							}
+							var to_time1 = Date.parse(to_time);
+							var from_time2 = Date.parse(from_time);
+							console.log("From Time:", from_time2);
+							console.log("To Time:", to_time1);
+							log_table
+									.rows()
+									.every(
+											function() {
+												var data = this.data();
+												var a = data[1];
+												console.log(" Date:", a);
+												var formattedDate = a
+														.replace(
+																/(\d{2})-(\d{2})-(\d{4}) (\d{2}):(\d{2}):(\d{2})/,
+																'$3-$2-$1T$4:$5:$6');
+												var dateObject = new Date(
+														formattedDate);
+												var date = Date
+														.parse(dateObject);
+												console.log("Row Date:", date);
+												if (date >= from_time2
+														&& date <= to_time1) {
+													console.log("Show ");
+													$(this.node()).show();
+												} else {
+													console.log("ẩn nè");
+													$(this.node()).hide();
+												}
+											});
 
-	            log_table.draw();
-	        }
+							log_table.draw();
+						}
 
-	        $('#from_time, #to_time').on('change', changeTime);
-	        function convertDateFormat(dateStr) {
-	            // Tách ngày và thời gian từ chuỗi
-	            var parts = dateStr.split(' ');
-	            var datePart = parts[0];
-	            var timePart = parts[1];
+						$('#from_time, #to_time').on('change', changeTime);
+						function convertDateFormat(dateStr) {
+							// Tách ngày và thời gian từ chuỗi
+							var parts = dateStr.split(' ');
+							var datePart = parts[0];
+							var timePart = parts[1];
 
-	            // Tách ngày thành các thành phần ngày, tháng, năm
-	            var dateParts = datePart.split('/');
-	            var day = dateParts[0];
-	            var month = dateParts[1];
-	            var year = dateParts[2];
+							// Tách ngày thành các thành phần ngày, tháng, năm
+							var dateParts = datePart.split('/');
+							var day = dateParts[0];
+							var month = dateParts[1];
+							var year = dateParts[2];
 
-	            // Định dạng lại chuỗi ngày tháng
-	            var formattedDate = year + '-' + month + '-' + day + ' ' + timePart;
+							// Định dạng lại chuỗi ngày tháng
+							var formattedDate = year + '-' + month + '-' + day
+									+ ' ' + timePart;
 
-	            return formattedDate;
-	        }
-	});
+							return formattedDate;
+						}
+					});
 </script>
 <script type="text/javascript">
 	function doDelete(id, aa) {
@@ -199,6 +231,17 @@ img {
 		window.location = "addItem";
 	}
 </script>
+<style>
+table.dataTable th.dt-type-numeric, table.dataTable th.dt-type-date,
+	table.dataTable td.dt-type-numeric, table.dataTable td.dt-type-date {
+	text-align: center;
+}
+
+table.dataTable thead th, table.dataTable thead td, table.dataTable tfoot th,
+	table.dataTable tfoot td {
+	text-align: center;
+}
+</style>
 </head>
 <body>
 
@@ -228,8 +271,8 @@ img {
 			<li class="nav-item"><a
 				class="nav-link ${gr2 eq log?'active':''}" href="admin?gr=log"><i
 					class="fa fa-address-book-o"></i>Quản lý Log</a></li>
-			<li class="nav-item"><a href="index" class="nav-link">
-					<i class="fa fa-arrow-left"></i>Quay về Home
+			<li class="nav-item"><a href="index" class="nav-link"> <i
+					class="fa fa-arrow-left"></i>Quay về Home
 			</a></li>
 		</ul>
 	</aside>
@@ -299,48 +342,46 @@ img {
 		<!-- // sanpham -->
 		<c:if test="${gr2 eq spcart}">
 			<div class="donhang">
-				<c:set var="users" value="${requestScope.users}" />
-				<c:set var="itemList" value="${requestScope.itemList}" />
-				<c:set var="orderList" value="${requestScope.orderList }" />
-				<c:set var="numUser" value="${requestScope.numUser }" />
-				<c:set var="numOrder" value="${requestScope.numOrder }" />
 				<!-- Đơn Hàng -->
 				<div class="table-content">
-					<table style="width: 100%">
-						<tr class="table-header">
-							<th>ID</th>
-							<th>Khach</th>
-							<th>San pham</th>
-							<th>Tong tien</th>
-							<th>Ngay</th>
-							<th>Trang thai</th>
-							<th>Hanh dong</th>
-						</tr>
-						<c:forEach var="i" begin="0" end="${fn:length(users)}" step="1">
-							<c:set var="u" value="${users[i] }" />
-							<c:set var="ordersOfI" value="${orderList[i]}" />
-							<c:set var="numberOrdersOfI" value="${fn:length(ordersOfI)}" />
-							<c:set var="itemsOfI" value="${itemList[i]}" />
-							<c:forEach var="ii" begin="0" step="1" end="${numberOrdersOfI}">
-								<c:set var="o" value="${ordersOfI[ii]}" />
-								<c:set var="items" value="${itemsOfI[ii]}" />
-
-								<tr>
-									<td>${o.orderId}</td>
-									<td>${u.userName}</td>
-									<td><c:forEach var="iz" items="${items}">
-						${iz.name}
-						</c:forEach></td>
-									<td>${o.orderPrice}</td>
-									<td>${o.date}</td>
-									<td>${o.status==3?"đã giao hàng":"chưa giao hàng"}</td>
-									<td><a href="updateStatus?orderId=${o.orderId }&gr=spcart"><img
-											width="20px" alt="" src="images/ok2.png"></a> <a href="#"
-										onclick="doDelete2('${o.orderId}','spcart')"><img
-											width="20px" alt="" src="images/delete2.png"></a></td>
-								</tr>
-							</c:forEach>
-						</c:forEach>
+					<table style="width: 100%" id="order-table">
+						<thead>
+							<tr class="table-header">
+								<th>ID</th>
+								<th>Khách hàng</th>
+								<th>Tổng giá hoá đơn</th>
+								<th>Địa chỉ</th>
+								<th>Ngày tạo hoá đơn</th>
+								<th>Ngày giao</th>
+								<th>Trang thai</th>
+								<th>Thay đổi</th>
+							</tr>
+						</thead>
+						<tbody>
+							<%
+							List<Order> orders = (List<Order>) request.getAttribute("listOrder");
+							if (orders != null) {
+								for (Order o : orders) {
+							%>
+							<tr>
+								<td><%=o.getOrderId()%></td>
+								<td><%=o.getName()%></td>
+								<td><%=o.getTotalPrice()%></td>
+								<td><%=o.getAddress()%></td>
+								<td><%=o.getOrderDate()%></td>
+								<td><%=o.getDeliveriDate()%></td>
+								<td><%=o.getStatusOrder().getName()%></td>
+								<td style="display: flex; flex-direction: row;"><a
+									href="<%=request.getContextPath()%>/editOrder?id=<%=o.getOrderId()%>">
+										<i class="fa-solid fa-pencil"></i>
+								</a> <a href="<%=request.getContextPath()%>/getOrderDetail?id=<%=o.getOrderId()%>"><i
+										class="fa-solid fa-arrow-right"></i></a></td>
+							</tr>
+							<%
+							}
+							}
+							%>
+						</tbody>
 					</table>
 				</div>
 			</div>
@@ -390,12 +431,12 @@ img {
 			<c:set var="listLog" value="${requestScope.listLog}" />
 			<div class="table-content">
 				<div class="search">
-					<b>From</b> <input type="datetime-local" id="from_time"
-					> <b>To</b> <input
-						type="datetime-local" id="to_time">
+					<b>From</b> <input type="datetime-local" id="from_time"> <b>To</b>
+					<input type="datetime-local" id="to_time">
 				</div>
 
-				<table style="width: 100%; border:solid white;" id="log_table" border="1px white;">
+				<table style="width: 100%; border: solid white;" id="log_table"
+					border="1px white;">
 					<thead>
 						<tr class="table-header">
 							<th>ID</th>
@@ -437,21 +478,27 @@ img {
 		<!-- // main -->
 
 	</div>
-<script type="text/javascript">
-$(document).ready(function() {
-    var log_table = $('#log_table')
-function changeTime() {
-	var to_time = $('#to_time').val();
-	var from_time = $('#from_time').val();
-	var to_time1 = new Date(to_time);
-	var from_time2 = new Date(from_time);
-	log_table.columns(1).search(function(data, index, rowData) {
-		var rowDataTime = new Date(data); // Chuyển đổi dữ liệu từ cột thời gian sang đối tượng Date
-		// Kiểm tra xem thời gian rowDataTime có nằm trong khoảng từ from_time đến to_time không
-		return (rowDataTime >= from_time2 && rowDataTime <= to_time1);
-	}).draw();
-}
-}
-</script>
+	<script type="text/javascript">
+		$(document)
+				.ready(
+						function() {
+							var log_table = $('#log_table')
+							function changeTime() {
+								var to_time = $('#to_time').val();
+								var from_time = $('#from_time').val();
+								var to_time1 = new Date(to_time);
+								var from_time2 = new Date(from_time);
+								log_table
+										.columns(1)
+										.search(
+												function(data, index, rowData) {
+													var rowDataTime = new Date(
+															data); // Chuyển đổi dữ liệu từ cột thời gian sang đối tượng Date
+													// Kiểm tra xem thời gian rowDataTime có nằm trong khoảng từ from_time đến to_time không
+													return (rowDataTime >= from_time2 && rowDataTime <= to_time1);
+												}).draw();
+							}
+						});
+	</script>
 </body>
 </html>
