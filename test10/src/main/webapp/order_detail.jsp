@@ -1,3 +1,5 @@
+<%@page import="model.OrderDetail"%>
+<%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -6,7 +8,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Chi tiết đơn hàng</title>
     <!-- Jquery -->
     <script src="https://code.jquery.com/jquery-3.7.1.js"
         integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
@@ -29,8 +31,13 @@
     <script src="https://cdn.datatables.net/2.0.8/js/dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/2.0.8/js/dataTables.bootstrap5.min.js"></script>
 
+
+	<!-- favicon -->
+	<link rel="shortcut icon" href="images/loo6.png" />
+
     <!-- font awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    
     <script type="text/javascript">
         $(document).ready(function () {
             var order_table = $('#order-table').DataTable({
@@ -100,13 +107,22 @@
                     </tr>
                 </thead>
                 <tbody>
+                <%
+                List<OrderDetail> orderDetails = (List<OrderDetail>) request.getAttribute("order_details");
+                if (orderDetails != null) {
+					for (OrderDetail od : orderDetails) {
+				%>
                     <tr>
-                        <td>1</td>
-                        <td>Sản phẩm A</td>
-                        <td>20000</td>
-                        <td>20</td>
-                        <td>400000</td>
+                        <td><%=od.getId() %></td>
+                        <td><%=od.getItem().getName() %></td>
+                        <td><%=od.getItem().getPrice() %></td>
+                        <td><%=od.getQuantity() %></td>
+                        <td><%=od.getPrice() %></td>
                     </tr>
+                  	<%
+					}
+                }
+                  	%>
                 </tbody>
             </table>
         </div>

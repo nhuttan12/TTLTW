@@ -1,3 +1,4 @@
+<%@page import="model.User"%>
 <%@page import="model.Order"%>
 <%@page import="model.Item"%>
 <%@page import="java.util.List"%>
@@ -71,28 +72,54 @@ img {
 							ordering : true,
 							paging : true,
 							lengthMenu : [ 10, 25, 50, 75, 100 ],
-							language : {
-								paginate : {
-									first : "Trang đầu",
-									previous : "Trang trước",
-									next : "Trang sau",
-									last : "Trang cuối"
-								},
-							},
+							language: {
+			                    paginate: {
+			                        first: "Trang đầu",
+			                        previous: "Trang trước",
+			                        next: "Trang sau",
+			                        last: "Trang cuối"
+			                    },
+			                    processing: "Đang tải dữ liệu",
+			                    infoEmpty: "Không có dữ liệu",
+			                    zeroRecords: "Không tìm thấy",
+			                    emptyTable: "Không có dữ liệu",
+			                },
 						});
 						var order_table = $('#order-table').DataTable({
 							info : true,
 							ordering : true,
 							paging : true,
 							lengthMenu : [ 10, 25, 50, 75, 100 ],
-							language : {
-								paginate : {
-									first : "Trang đầu",
-									previous : "Trang trước",
-									next : "Trang sau",
-									last : "Trang cuối"
-								},
-							},
+							language: {
+			                    paginate: {
+			                        first: "Trang đầu",
+			                        previous: "Trang trước",
+			                        next: "Trang sau",
+			                        last: "Trang cuối"
+			                    },
+			                    processing: "Đang tải dữ liệu",
+			                    infoEmpty: "Không có dữ liệu",
+			                    zeroRecords: "Không tìm thấy",
+			                    emptyTable: "Không có dữ liệu",
+			                },
+						});
+						var user_table = $('#user-table').DataTable({
+							info : true,
+							ordering : true,
+							paging : true,
+							lengthMenu : [ 10, 25, 50, 75, 100 ],
+							language: {
+			                    paginate: {
+			                        first: "Trang đầu",
+			                        previous: "Trang trước",
+			                        next: "Trang sau",
+			                        last: "Trang cuối"
+			                    },
+			                    processing: "Đang tải dữ liệu",
+			                    infoEmpty: "Không có dữ liệu",
+			                    zeroRecords: "Không tìm thấy",
+			                    emptyTable: "Không có dữ liệu",
+			                },
 						});
 						var log_table = $('#log_table').DataTable({
 
@@ -316,15 +343,17 @@ table.dataTable thead th, table.dataTable thead td, table.dataTable tfoot th,
 								<td><%=i.getDifference()%></td>
 								<td><%=i.getDiscount()%></td>
 								<td><%=i.getImportDetail().getQuantity()%></td>
-								<td><a class="s" href="edit?id=<%=i.getId()%>&gr=spcart">
+								<td>
+									<a class="s" href="edit?id=<%=i.getId()%>&gr=spcart">
 										<img width="20px" alt="" src="images/edit2.png">
-								</a> <a class="s" href="#"
-									onclick="doDelete('<%=i.getId()%>','item')"> <img
-										width="20px" alt="" src="images/delete.png">
-								</a></td>
+									</a> 
+									<a class="s" href="#" onclick="doDelete('<%=i.getId()%>','item')"> 
+										<img width="20px" alt="" src="images/delete.png">
+									</a>
+								</td>
 							</tr>
 							<%
-							}
+								}
 							}
 							%>
 						</tbody>
@@ -371,14 +400,17 @@ table.dataTable thead th, table.dataTable thead td, table.dataTable tfoot th,
 								<td><%=o.getOrderDate()%></td>
 								<td><%=o.getDeliveriDate()%></td>
 								<td><%=o.getStatusOrder().getName()%></td>
-								<td style="display: flex; flex-direction: row;"><a
-									href="<%=request.getContextPath()%>/editOrder?id=<%=o.getOrderId()%>">
+								<td style="display: flex; flex-direction: row;">
+									<a href="<%=request.getContextPath()%>/editOrder?id=<%=o.getOrderId()%>">
 										<i class="fa-solid fa-pencil"></i>
-								</a> <a href="<%=request.getContextPath()%>/getOrderDetail?id=<%=o.getOrderId()%>"><i
-										class="fa-solid fa-arrow-right"></i></a></td>
+									</a> 
+									<a href="<%=request.getContextPath()%>/getOrderDetail?id=<%=o.getOrderId()%>">
+										<i class="fa-solid fa-arrow-right"></i>
+									</a>
+								</td>
 							</tr>
 							<%
-							}
+								}
 							}
 							%>
 						</tbody>
@@ -390,36 +422,43 @@ table.dataTable thead th, table.dataTable thead td, table.dataTable tfoot th,
 		<c:if test="${gr2 eq user}">
 			<div class="khachhang">
 				<!-- Khách hàng -->
-				<c:set var="listuser" value="${requestScope.listUser }" />
 				<div class="table-content">
-					<table style="width: 100%">
-						<tr class="table-header">
-							<th>ID</th>
-							<th>HO TEN</th>
-							<th>EMAIL</th>
-							<th>TAI KHOAN</th>
-							<th>MAT KHAU</th>
-							<th>HANH DONG</th>
-						</tr>
-						<c:forEach var="i" items="${listuser }">
+					<table style="width: 100%" id="user-table">
+						<thead>
+							<tr class="table-header">
+								<th>ID</th>
+								<th>Họ tên</th>
+								<th>Email</th>
+								<th>Tài khoản</th>
+								<th>Chức vụ</th>
+								<th>Trạng thái</th>
+								<th>Hành động</th>
+							</tr>
+						</thead>
+						<tbody>
+							<%
+							List<User> users = (List<User>) request.getAttribute("listUser");
+							if (users != null) {
+								for (User u : users) {
+							%>
 							<tr>
-								<td>${i.id}</td>
-								<td>${i.name}</td>
-								<td>${i.email}</td>
-								<td>${i.userName}</td>
-								<td>${i.password}</td>
+								<td><%=u.getId() %></td>
+								<td><%=u.getName() %></td>
+								<td><%=u.getEmail() %></td>
+								<td><%=u.getUserName() %></td>
+								<td><%=u.getRolee().getName() %></td>
+								<td><%=u.getStatusUser().getName() %></td>
 								<td>
-									<div class="switch">
-										<input class="slider"
-											onclick="doUpdateStatusUser('${i.id}','${i.status }','user')"
-											type="checkbox" id="${i.id}"
-											${i.status == 1 ? 'checked' : ''} hidden> <label
-											for="${i.id }"></label>
-									</div> <a href="#" onclick="doDeleteUser('${i.id}','user')"> <img
-										width="20px" alt="" src="images/delete2.png"></a>
+									<a href="<%=request.getContextPath()%>/updateStatusUser?id=<%=u.getId()%>">
+										<i class="fa-solid fa-pencil"></i>
+									</a> 
 								</td>
 							</tr>
-						</c:forEach>
+							<%
+								}
+							}
+							%>
+						</tbody>
 					</table>
 				</div>
 			</div>
