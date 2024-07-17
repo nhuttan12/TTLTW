@@ -6,6 +6,7 @@
 <!-- Basic -->
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
 <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <!-- Mobile Metas -->
@@ -16,10 +17,10 @@
 <meta name="description" content="" />
 <meta name="author" content="" />
 <link rel="shortcut icon" href="images/loo6.png" />
-<title>Login</title>
+<title>Contact</title>
 <!-- bootstrap core css -->
 <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
-
+<link rel="stylesheet" type="text/css" href="css/cart.css">
 <!--owl slider stylesheet -->
 <link rel="stylesheet" type="text/css"
 	href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
@@ -29,9 +30,17 @@
 
 <!-- Custom styles for this template -->
 <link href="css/style.css" rel="stylesheet" />
+<link href="css/gioHang.css" rel="stylesheet" />
 <!-- responsive style -->
 <link href="css/responsive.css" rel="stylesheet" />
-
+<script type="text/javascript">
+function doLogout() {
+	if (confirm("Are you Logout?")) {
+		window.location = "logout";
+	}
+	
+}
+</script>
 </head>
 
 <body class="sub_page">
@@ -39,16 +48,20 @@
 	<fmt:setBundle basename="languages.lang" />
 	<c:set var="user" value="${sessionScope.user}" />
 
+
 	<div class="hero_area">
 		<div class="bg-box">
 			<img src="images/bg.jpg" alt="">
 		</div>
 		<!-- header section strats -->
-		<header class="header_section">
+			<header class="header_section">
 			<div class="container">
 				<nav class="navbar navbar-expand-lg custom_nav-container ">
 					<a class="navbar-brand" href="index"><img alt="logo"
 						style="width: 120px" src="images/log5.png"> </a>
+
+
+
 					<div class="collapse navbar-collapse" id="navbarSupportedContent">
 						<ul class="navbar-nav  mx-auto ">
 							<li class="nav-item "><a class="nav-link"
@@ -77,7 +90,9 @@
 									<c:if test="${user.role != 1}">
 								<a href="admin" class="user_link"><img
 									width="30px" alt="" src="images/admin.png"> </a>
+									
 									</c:if>
+									
 							</c:if>
 							<a href="shoppingcart" class="user_link"><img width="30px"
 								alt="" src="images/cart.png"> </a>
@@ -92,69 +107,56 @@
 
 	<!-- book section -->
 	<section class="book_section layout_padding">
-		<c:set var="erro" value="${requestScope.erro}" />
-		<div class="loginn">
+		<div class="container">
 
-			<form action="login" method="post">
-				<center>
-					<h4  style="color: blue">${erro}</h4>
-					<table class="login-table" border: 5px>
-						<tr class="login-head">
-							<th colspan="3"><center>
-									<h1>
-										<fmt:message>login</fmt:message>
-									</h1>
-								</center></th>
-						</tr>
-						<tr class="login-body">
-							<td><fmt:message>username</fmt:message> :</td>
-							<td colspan="2"><input type="text" name="taikhoan" required ></td>
-						</tr>
-						<tr class="login-body">
-							<td  colspan="1"><fmt:message>pass</fmt:message> :</td>
-							<td  colspan="2"><input type="password" name="matkhau" required ></td>
-						</tr>
-						<tr class="login-foot">
-							<th class="foot-item"><input class="button" type="submit"
-								name="submit" value=" <fmt:message>send</fmt:message> "
-								style="margin-left: 150px"></th>
+			<h1>
+				<fmt:message>SHOPPINGCART</fmt:message>
+			</h1>
 
-						</tr>
-						<tr>
-							<th class="foot-item"><a class="text" href="register.jsp">
-									<fmt:message>register</fmt:message>?
-							</a></th>
+			<div class="oderHistory">
+				<c:set var="listCart" value="${ requestScope.listCartOder}" />
+				<c:forEach var="order" items="${listCart.keySet()}">
+
+					<table class="listSanPham">
+						<tbody>
+							<tr>
+								<th>Người nhận</th>
+								<th>Địa chỉ</th>
+								<th>Số lượng</th>
+								<th>Thành tiền</th>
+								<th>Thời gian</th>
+							</tr>
+							<c:forEach var="i" items="${listCart.get(order)}">
+								<tr>
 
 
-						</tr>
-						<tr>
-							<th class="foot-item"><a
-								href="https://accounts.google.com/o/oauth2/auth?scope=email%20profile&redirect_uri=http://localhost:8080/test10/loginGoogle&response_type=code
-    &client_id=1089316008342-fllevmop2b90sd7mmsqotdo1neb934sg.apps.googleusercontent.com&approval_prompt=force">
-									<button class="btn google-btn social-btn" type="button">
-										<span><i class="fab fa-google-plus-g"></i> Đăng nhập
-											với Google+</span>
-									</button>
-							</a></th>
+									<td class="noPadding imgHide"><a> ${i.name} <img
+											src="${i.imageName}">
+									</a></td>
+									<td class="alignRight">${i.unitPrice}VND</td>
+									<td class="soluong">${i.quantity}</td>
+									<td class="alignRight">${i.price}VND</td>
+									<td style="text-align: center">${od.date}</td>
 
+								</tr>
+							</c:forEach>
 
-						</tr>
-						<tr>
-							<th class="foot-item"><a
-								href="https://www.facebook.com/v19.0/dialog/oauth?client_id=1586113255570962&redirect_uri=http://localhost:8080/test10/loginFacebook&scope=email">
-									<button class="btn fa-book-btn social-btn" type="button"
-										style="background-color: #3b5998; color: white;">
-										<span><i class="fab fa-facebook-f"></i> Đăng nhập với
-											Facebook</span>
-									</button>
-							</a></th>
-						</tr>
-
+							<tr style="font-weight: bold; text-align: center; height: 4em;">
+								<td colspan="3">TỔNG TIỀN:</td>
+								<td class="alignRight">${od.orderPrice}VND</td>
+								<td>${od.status==3?"đã giao hàng":"chưa giao hàng"}</td>
+							</tr>
+						</tbody>
 					</table>
-				</center>
-			</form>
+				</c:forEach>
+
+
+			</div>
 
 		</div>
+
+
+
 	</section>
 	<!-- end book section -->
 
@@ -204,31 +206,5 @@
 			</div>
 		</div>
 	</footer>
-	<script>
-		window.fbAsyncInit = function() {
-			FB.init({
-				appId : '{your-app-id}',
-				cookie : true,
-				xfbml : true,
-				version : '{api-version}'
-			});
-
-			FB.AppEvents.logPageView();
-
-		};
-
-		(function(d, s, id) {
-			var js, fjs = d.getElementsByTagName(s)[0];
-			if (d.getElementById(id)) {
-				return;
-			}
-			js = d.createElement(s);
-			js.id = id;
-			js.src = "https://connect.facebook.net/en_US/sdk.js";
-			fjs.parentNode.insertBefore(js, fjs);
-		}(document, 'script', 'facebook-jssdk'));
-	</script>
 </body>
-
-
 </html>

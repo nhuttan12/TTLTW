@@ -4,10 +4,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import model.Item;
@@ -61,58 +64,56 @@ public class DBOrder {
 //		return list;
 //	}
 //
-//// status = 1: chua thanh toan 2: thanh toan roi cho duyet 3: thanh toan roi duyet roi 4: xoa khoi lich su thanh toan
-//	public Order addOrder(int shopCartId) {
-//		Order order = new Order();
-//		LocalDate curDate = java.time.LocalDate.now();
-//		String date = curDate.toString();
-//		try (Connection c = connectionDB.connect()) {
-//
-//			List<Item> list = new ArrayList<Item>();
-//			list = getListItemByShopCartID(shopCartId);
-//
-//			double orderPrice = 0;
-//			for (Item item : list) {
-//				orderPrice += item.getPrice() + (item.getPrice() * 0.5);
-//			}
-//
-//			String sql = "INSERT INTO ODER (SHOP_CART_ID, DATE, ODER_PRICE, STATUS) " + "VALUES (?, ?, ?, ?);";
-//			PreparedStatement ps = c.prepareStatement(sql);
-//			// '"+title+"',"+Authorid+" , 18022018, 0000, "+Isbn+"
-//			ps.setInt(1, shopCartId);
-//			ps.setString(2, date);
-//			ps.setDouble(3, orderPrice);
-//			ps.setInt(4, 1);
-////			System.out.println(orderPrice);
-//			int status = ps.executeUpdate();
-//			System.out.println("da them");
-//
-//			String sql2 = "SELECT * FROM ODER WHERE ODER_ID = (SELECT MAX(ODER_ID) FROM ODER);";
-//			PreparedStatement ps2 = c.prepareStatement(sql2);
-//			ResultSet rs = ps2.executeQuery();
-//			while (rs.next()) {
-//
-//				int ODER_ID = rs.getInt("ODER_ID");
-//				int SHOP_CART_ID = rs.getInt("SHOP_CART_ID");
-//				String DATE = rs.getString("DATE");
-//				double ODER_PRICE = rs.getDouble("ODER_PRICE");
-//				int STATUS = rs.getInt("STATUS");
-//
-//				order = new Order(ODER_ID, SHOP_CART_ID, DATE, ODER_PRICE, STATUS);
-//			}
-//			rs.close();
-//			c.close();
-//
-//		} catch (
-//
-//		Exception ex) {
-//			System.err.println(ex.getClass().getName() + ": " + ex.getMessage());
-//			System.exit(0);
-//		}
-//
-//		return order;
-//
-//	}
+// status = 1: chua thanh toan 2: thanh toan roi cho duyet 3: thanh toan roi duyet roi 4: xoa khoi lich su thanh toan
+	public Order addOrder(int uId, String name, String phone, String address) {
+		Order order = new Order();
+		LocalDate curDate = java.time.LocalDate.now();
+		String date = curDate.toString();
+		try (Connection c = connectionDB.connect()) {
+
+			String sql = "INSERT INTO orders (USER_ID, FULL_NAME, PHONE, ADDRESS, ORDER_DATE, STATUS_ORDER_ID) " + "VALUES (?, ?, ?, ?, ?, ?);";
+			PreparedStatement ps = c.prepareStatement(sql);
+			// '"+title+"',"+Authorid+" , 18022018, 0000, "+Isbn+"
+			ps.setInt(1, uId);
+			ps.setString(2, name);
+			ps.setString(3, phone);
+			ps.setString(4, address);
+			ps.setString(5, date);
+			ps.setInt(6, 1);
+//			System.out.println(orderPrice);
+			ps.executeUpdate();
+			System.out.println("da them");
+
+			// lấy ra order trên cùng
+			String sql2 = "SELECT * FROM orders WHERE ORDER_ID = (SELECT MAX(ORDER_ID) FROM orders);";
+			PreparedStatement ps2 = c.prepareStatement(sql2);
+			ResultSet rs = ps2.executeQuery();
+			while (rs.next()) {
+
+				int ORDER_ID = rs.getInt("ORDER_ID");
+				int USER_ID = rs.getInt("USER_ID");
+				String NAME = rs.getString("FULL_NAME");
+				String PHONE = rs.getString("PHONE");
+				String ADDRESS = rs.getString("ADDRESS");
+				String NOTE = rs.getString("NOTE");
+				String ORDER_DATE = rs.getString("ORDER_DATE");
+				int STATUS = rs.getInt("STATUS_ORDER_ID");
+
+				order = new Order(ORDER_ID, USER_ID, NAME, PHONE, ADDRESS, NOTE, ORDER_DATE, STATUS);
+			}
+			rs.close();
+			c.close();
+
+		} catch (
+
+		Exception ex) {
+			System.err.println(ex.getClass().getName() + ": " + ex.getMessage());
+			System.exit(0);
+		}
+
+		return order;
+
+	}
 //
 //	public int updateStatus(int oid, int status) throws SQLException {
 //		int s = 0;
@@ -236,26 +237,30 @@ public class DBOrder {
 //		return order;
 //	}
 //
-//	public List<Order> getOderByShoppingCartID(int id) throws SQLException {
-//		List<Order> list = new ArrayList<Order>();
-//		Connection connection = connectionDB.connect();
-//		String sql = "select * from ODER where SHOP_CART_ID=?";
-//		PreparedStatement preparedStatement = connection.prepareStatement(sql);
-//		preparedStatement.setInt(1, id);
-//		ResultSet rs = preparedStatement.executeQuery();
-//		while (rs.next()) {
-//			int ODER_ID = rs.getInt("ODER_ID");
-//			int SHOP_CART_ID = rs.getInt("SHOP_CART_ID");
-//			String DATE = rs.getString("DATE");
-//			double ODER_PRICE = rs.getDouble("ODER_PRICE");
-//			int STATUS = rs.getInt("STATUS");
-//			Order order = new Order(ODER_ID, SHOP_CART_ID, DATE, ODER_PRICE, STATUS);
-//			list.add(order);
-//		}
-//
-//		return list;
-//
-//	}
+	public List<Order> getOderByUserID(int uid) throws SQLException {
+		List<Order> list = new ArrayList<Order>();
+		Connection connection = connectionDB.connect();
+		String sql = "select * from orders where USER_ID=?";
+		PreparedStatement preparedStatement = connection.prepareStatement(sql);
+		preparedStatement.setInt(1, uid);
+		ResultSet rs = preparedStatement.executeQuery();
+		while (rs.next()) {
+			int ORDER_ID = rs.getInt("ORDER_ID");
+			int USER_ID = rs.getInt("USER_ID");
+			String NAME = rs.getString("FULL_NAME");
+			String PHONE = rs.getString("PHONE");
+			String ADDRESS = rs.getString("ADDRESS");
+			String NOTE = rs.getString("NOTE");
+			String ORDER_DATE = rs.getString("ORDER_DATE");
+			int STATUS = rs.getInt("STATUS_ORDER_ID");
+
+			Order order = new Order(ORDER_ID, USER_ID, NAME, PHONE, ADDRESS, NOTE, ORDER_DATE, STATUS);
+			list.add(order);
+		}
+
+		return list;
+
+	}
 //
 //	public Order getOderByOderId(int id) throws SQLException {
 //

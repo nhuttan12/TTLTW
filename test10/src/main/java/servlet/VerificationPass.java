@@ -64,7 +64,7 @@ public class VerificationPass extends HttpServlet {
 				try{
 					db.updatePas(uid, Encryption.mahoaPass(newpas));
 					System.out.println("da update pas");
-					logging=new Logging(LevelLog.INFOR.name(),InforMessage.THAY_DOI_MAT_KHAU_THANH_CONG.name(),oldpass,newpas);
+					logging=new Logging(LevelLog.INFO.name(),InforMessage.THAY_DOI_MAT_KHAU_THANH_CONG.name(),oldpass,newpas);
 					req.setAttribute("erro", "Thay đổi mật khẩu thành công");
 					RequestDispatcher dispatcher = req.getRequestDispatcher("user");
 					dispatcher.forward(req, resp);

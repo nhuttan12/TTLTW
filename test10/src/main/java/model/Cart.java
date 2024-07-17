@@ -8,6 +8,7 @@ public class Cart {
 	private int itemId;
 	private int quantity; // số lượng của từng item
 	private double totalPrice; // tổng sl của từng loại sp
+	private int status; // tình trạng giỏ hàng đã checkout chưa
 
 	
 	public Cart() {
@@ -21,6 +22,16 @@ public class Cart {
 		this.itemId = itemId;
 		this.quantity = quantity;
 		this.totalPrice = totalPrice;
+		this.status = 0;
+	}
+	public Cart(int id, int userId, int itemId, int quantity, double totalPrice, int status) {
+		super();
+		this.id = id;
+		this.userId = userId;
+		this.itemId = itemId;
+		this.quantity = quantity;
+		this.totalPrice = totalPrice;
+		this.status = status;
 	}
 
 	public Cart(int userId, int items, int quantity, double totalPrice) {
@@ -29,6 +40,7 @@ public class Cart {
 		this.itemId = itemId;
 		this.quantity = quantity;
 		this.totalPrice = totalPrice;
+		this.status = 0;
 	}
 
 //////////////////////////////
@@ -130,11 +142,21 @@ public class Cart {
 	public void setTotalPrice(double totalPrice) {
 		this.totalPrice = totalPrice;
 	}
+	
+	
+
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
+	}
 
 	@Override
 	public String toString() {
 		return "Cart [id=" + id + ", userId=" + userId + ", itemId=" + itemId + ", quantity=" + quantity
-				+ ", totalPrice=" + totalPrice + "]";
+				+ ", totalPrice=" + totalPrice + ", status=" + status + "]";
 	}
 
 	

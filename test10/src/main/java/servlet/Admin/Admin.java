@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import database.DBItem;
+import database.DBLog;
 import database.DBOrder;
 import database.DBUser;
 import jakarta.servlet.RequestDispatcher;
@@ -17,6 +18,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.Item;
+import model.Logging;
 import model.Order;
 import model.User;
 
@@ -33,10 +35,14 @@ public class Admin extends HttpServlet {
 			req.getRequestDispatcher("login.jsp").forward(req, resp);
 		} else {
 			String gr = req.getParameter("gr");
+			if(gr==null) {
+				gr="home";
+			}
 			System.out.println(gr);
 			DBItem dbItem = new DBItem();
 			DBUser dbUser = new DBUser();
 			DBOrder dbOrder = new DBOrder();
+			DBLog dbLog = new DBLog();
 
 			List<User> users = new ArrayList<User>();
 			List<Item> items = new ArrayList<Item>();
@@ -44,6 +50,7 @@ public class Admin extends HttpServlet {
 			List<List<Item>> itemss = new ArrayList<List<Item>>();
 			List<List<List<Item>>> itemList = new ArrayList<List<List<Item>>>();
 			List<List<Order>> orderList = new ArrayList<List<Order>>();
+			
 			if (gr == null || gr.equals("home")) {
 				req.setAttribute("home", "home");
 
@@ -87,9 +94,13 @@ public class Admin extends HttpServlet {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+			}else if(gr.equals("log")) {
+				List<Logging> listLog =dbLog.getAll();
+				req.setAttribute("listLog", listLog);
 			}
 
 			req.setAttribute("gr2",gr);
+			req.setAttribute(gr, gr);
 			req.getRequestDispatcher("admin.jsp").forward(req, resp);
 
 		}
@@ -161,6 +172,8 @@ public class Admin extends HttpServlet {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+			}else if(gr.equals("log")) {
+				req.setAttribute("log", "log");
 			}
 
 			req.setAttribute("gr2", gr);

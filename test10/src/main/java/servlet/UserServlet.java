@@ -58,22 +58,34 @@ public class UserServlet extends HttpServlet {
 		
 		if (checkPhone(PHONE) == null) {
 			try {
-				l.updateInfor(user.getId(), NAME, PHONE, GENDER);
+				
 				User user2 = l.getUserByID(user.getId());
+//				httpSession.removeAttribute("user");
+//				httpSession.setAttribute("user", user2);
 				User old = new User(user.getId(), NAME, PHONE, Integer.parseInt(GENDER));
+				System.out.println("o"+old.toString());
 				User neww = new User(user2.getId(), user2.getName(), user2.getPhone(), user2.getGender());
-				httpSession.removeAttribute("user");
-				httpSession.setAttribute("user", user2);
+				System.out.println(neww.toString());
+				
 				Gson gson = new Gson();
-//				if(old.equals(neww)) {
-//					req.setAttribute("erro", "");
-//					System.out.println("giong ne");
-//				}else {
-					logging = new Logging(LevelLog.INFOR.name(), InforMessage.CAP_NHAT_THONG_TIN_THANH_CONG.name(),
+				if(user.getId()==user2.getId()&&NAME.equals(user2.getName())&&PHONE.equals(user2.getPhone())&&Integer.parseInt(GENDER)==user2.getGender()) {
+					req.setAttribute("erro", "");
+					System.out.println("giong ne");
+					req.getRequestDispatcher("user.jsp").forward(req, resp);
+
+				}else {
+					l.updateInfor(user.getId(), NAME, PHONE, GENDER);
+					User user3 = l.getUserByID(user.getId());
+					httpSession.removeAttribute("user");
+					httpSession.setAttribute("user", user3);
+					logging = new Logging(LevelLog.INFO.name(), InforMessage.CAP_NHAT_THONG_TIN_THANH_CONG.name(),
 							old, neww);
+					
 					req.setAttribute("erro", "Cập nhật thông tin thành công");
-//					System.out.println("khac ne");
-//				}
+					System.out.println("khac ne");
+					req.getRequestDispatcher("user.jsp").forward(req, resp);
+					MyLog.insertLog(logging, req);
+				}
 			} catch (NumberFormatException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -88,11 +100,12 @@ public class UserServlet extends HttpServlet {
 				req.setAttribute("phone", checkPhone(PHONE));
 			}
 			logging = new Logging(LevelLog.ERROR.name(), ErrorMessage.CAP_NHAT_THONG_TIN_THAT_BAI.name());
+			req.getRequestDispatcher("user.jsp").forward(req, resp);
+			MyLog.insertLog(logging, req);
 			
 
 		}
-		req.getRequestDispatcher("user.jsp").forward(req, resp);
-		MyLog.insertLog(logging, req);
+		
 		}
 
 	}

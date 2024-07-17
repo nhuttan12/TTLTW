@@ -12,20 +12,19 @@
 <link rel="shortcut icon" href="images/loo6.png" />
 
 <title>Menu</title>
-
+<!-- ajax -->
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <!-- bootstrap core css -->
 <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
-
-
-
 <!-- font awesome style -->
 <link href="css/font-awesome.min.css" rel="stylesheet" />
 
 <!-- Custom styles for this template -->
-<link href="css/style.css" rel="stylesheet" />
+<link href="css/a.css" rel="stylesheet" />
 <!-- responsive style -->
 <link href="css/responsive.css" rel="stylesheet" />
-<style type="text/css"">
+<style type="text/css">
 .pagination {
 	display: inline-block;
 }
@@ -37,10 +36,11 @@
 	padding: 2px 16px;
 	text-decoration: none;
 }
-.active{
 
-font-weight: bold;
+.active {
+	font-weight: bold;
 }
+
 .pagination a.active {
 	background-color: blue;
 	color: white;
@@ -51,38 +51,34 @@ font-weight: bold;
 }
 </style>
 <script type="text/javascript">
-function doLogout() {
-	if (confirm("Are you Logout?")) {
-		window.location = "logout";
+	function doLogout() {
+		if (confirm("Are you Logout?")) {
+			window.location = "logout";
+		}
+
 	}
-	
-}
 </script>
 </head>
 <body class="sub_page">
 	<fmt:setLocale value="${sessionScope.lang}" />
 	<fmt:setBundle basename="languages.lang" />
 	<c:set var="user" value="${sessionScope.user}" />
-
 	<div class="hero_area">
 		<div class="bg-box">
 			<img src="images/bg.jpg" alt="">
 		</div>
 		<!-- header section strats -->
-			<header class="header_section">
+		<header class="header_section">
 			<div class="container">
 				<nav class="navbar navbar-expand-lg custom_nav-container ">
 					<a class="navbar-brand" href="index"><img alt="logo"
 						style="width: 120px" src="images/log5.png"> </a>
-
-
-
 					<div class="collapse navbar-collapse" id="navbarSupportedContent">
 						<ul class="navbar-nav  mx-auto ">
-							<li class="nav-item "><a class="nav-link"
-								href="index.jsp"><fmt:message>menu.home</fmt:message> </a></li>
-							<li class="nav-item active"><a class="nav-link" href="menu?type=0"><fmt:message>menu.menu</fmt:message></a>
-							</li>
+							<li class="nav-item "><a class="nav-link" href="index.jsp"><fmt:message>menu.home</fmt:message>
+							</a></li>
+							<li class="nav-item active"><a class="nav-link"
+								href="menu?type=0"><fmt:message>menu.menu</fmt:message></a></li>
 							<li class="nav-item"><a class="nav-link" href="about.jsp"><fmt:message>menu.about</fmt:message></a>
 							</li>
 							<li class="nav-item"><a class="nav-link" href="contact.jsp"><fmt:message>menu.contact</fmt:message></a>
@@ -102,12 +98,12 @@ function doLogout() {
 							<c:if test="${not empty user}">
 								<a href="#" onclick="doLogout()" class="user_link"><img
 									width="30px" alt="" src="images/logout3.png"> </a>
-									<c:if test="${user.role != 1}">
-								<a href="admin" class="user_link"><img
-									width="30px" alt="" src="images/admin.png"> </a>
-									
-									</c:if>
-									
+								<c:if test="${user.role != 1}">
+									<a href="admin" class="user_link"><img width="30px" alt=""
+										src="images/admin.png"> </a>
+
+								</c:if>
+
 							</c:if>
 
 							<a href="shoppingcart" class="user_link"><img width="30px"
@@ -126,9 +122,12 @@ function doLogout() {
 	<section class="food_section layout_padding">
 		<div class="container">
 			<div class="heading_container heading_center">
-				<h2>
+				<h2 style="margin: auto;">
 					<fmt:message>menu.menu</fmt:message>
 				</h2>
+				<input type="text" id="search_menu"
+					placeholder=<fmt:message>search</fmt:message>
+					oninput="search(this,'${user.id}')">
 			</div>
 
 			<ul class="filters_menu">
@@ -147,17 +146,16 @@ function doLogout() {
 			<div class="paginationn">
 
 				<c:forEach begin="${1}" end="${requestScope.number }" var="stt">
-					<a class="${stt==page?" active":"" }" href="menu?page=${stt}&&type=${type2}">
-						${stt}</a>
+					<a class="${stt==page?"
+						active":"" }" href="menu?page=${stt}&&type=${type2}"> ${stt}</a>
 
 				</c:forEach>
 			</div>
 
 			<c:set var="list" value="${ requestScope.listItem}" />
 			<div class="filters-content">
-				<div class="row grid">
+				<div class="row grid" id="menu_ct">
 					<c:forEach var="i" items="${list}">
-
 						<div class="col-sm-6 col-lg-4 all pizza">
 							<div class="box">
 								<div>
@@ -168,15 +166,9 @@ function doLogout() {
 										<h5>${i.name}</h5>
 										<div class="options">
 											<h6>${i.price}VND</h6>
-											<a
-												href="cart?userId=${user.id}&itemId=${i.id}">
-												+ </a>
+											<a href="javascript:void(0);" class="add-to-cart"
+												data-itemid="${i.id}"> + </a>
 												
-
-<%-- <a
-												href="#shopping?shoppingCartId=${user.shoppingCartId}&itemId=${i.id}">
-												+ </a> --%>
-
 										</div>
 									</div>
 								</div>
@@ -236,5 +228,48 @@ function doLogout() {
 			</div>
 		</div>
 	</footer>
+	<script type="text/javascript">
+		function search(ip, uid) {
+			var search = ip.value;
+			$.ajax({
+				url : "searchmenu",
+				type : "get",
+				data : {
+					search : search,
+					userid : uid
+				},
+				success : function(data) {
+					var row = document.getElementById("menu_ct");
+					row.innerHTML = data;
+				}
+
+			});
+		}
+		$(document).ready(function() {
+		    // Thêm sản phẩm vào giỏ hàng
+		    $('.add-to-cart').click(function() {
+		        var itemId = $(this).data('itemid');
+
+		        $.ajax({
+		            url: 'cart',
+		            type: 'GET',
+		            data: {
+		                itemId: itemId
+		            },
+		            success: function(response) {
+		                if (response.success) {
+		                    	
+		                    // Cập nhật giỏ hàng hoặc thông tin khác nếu cần
+		                } else {
+		                    alert('Error: ' + response.message);
+		                }
+		            },
+		            error: function() {
+		                alert('Đã xảy ra lỗi khi thêm sản phẩm vào giỏ hàng.');
+		            }
+		        });
+		    });
+		});
+	</script>
 </body>
 </html>
