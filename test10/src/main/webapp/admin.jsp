@@ -1,3 +1,4 @@
+<%@page import="model.ImportItem"%>
 <%@page import="model.User"%>
 <%@page import="model.Order"%>
 <%@page import="model.Item"%>
@@ -68,7 +69,7 @@ img {
 			.ready(
 					function() {
 						new DataTable('#product-table', {
-							info : true,
+							info : false,
 							ordering : true,
 							paging : true,
 							lengthMenu : [ 10, 25, 50, 75, 100 ],
@@ -83,10 +84,52 @@ img {
 			                    infoEmpty: "Không có dữ liệu",
 			                    zeroRecords: "Không tìm thấy",
 			                    emptyTable: "Không có dữ liệu",
+			                    search: "Tìm kiếm",
+			                    lengthMenu: 'Hiển thị _MENU_ sản phẩm mỗi trang',
+			                },
+						});
+						var inventory_table = $('#inventory-table').DataTable({
+							info : false,
+							ordering : true,
+							paging : true,
+							lengthMenu : [ 10, 25, 50, 75, 100 ],
+							language: {
+			                    paginate: {
+			                        first: "Trang đầu",
+			                        previous: "Trang trước",
+			                        next: "Trang sau",
+			                        last: "Trang cuối"
+			                    },
+			                    processing: "Đang tải dữ liệu",
+			                    infoEmpty: "Không có dữ liệu",
+			                    zeroRecords: "Không tìm thấy",
+			                    emptyTable: "Không có dữ liệu",
+			                    search: "Tìm kiếm",
+			                    lengthMenu: 'Hiển thị _MENU_ sản phẩm mỗi trang',
+			                },
+						});
+						var import_table = $('#import-table').DataTable({
+							info : false,
+							ordering : true,
+							paging : true,
+							lengthMenu : [ 10, 25, 50, 75, 100 ],
+							language: {
+			                    paginate: {
+			                        first: "Trang đầu",
+			                        previous: "Trang trước",
+			                        next: "Trang sau",
+			                        last: "Trang cuối"
+			                    },
+			                    processing: "Đang tải dữ liệu",
+			                    infoEmpty: "Không có dữ liệu",
+			                    zeroRecords: "Không tìm thấy",
+			                    emptyTable: "Không có dữ liệu",
+			                    search: "Tìm kiếm",
+			                    lengthMenu: 'Hiển thị _MENU_ sản phẩm mỗi trang',
 			                },
 						});
 						var order_table = $('#order-table').DataTable({
-							info : true,
+							info : false,
 							ordering : true,
 							paging : true,
 							lengthMenu : [ 10, 25, 50, 75, 100 ],
@@ -101,10 +144,12 @@ img {
 			                    infoEmpty: "Không có dữ liệu",
 			                    zeroRecords: "Không tìm thấy",
 			                    emptyTable: "Không có dữ liệu",
+			                    search: "Tìm kiếm",
+			                    lengthMenu: 'Hiển thị _MENU_ hoá đơn mỗi trang',
 			                },
 						});
 						var user_table = $('#user-table').DataTable({
-							info : true,
+							info : false,
 							ordering : true,
 							paging : true,
 							lengthMenu : [ 10, 25, 50, 75, 100 ],
@@ -119,6 +164,8 @@ img {
 			                    infoEmpty: "Không có dữ liệu",
 			                    zeroRecords: "Không tìm thấy",
 			                    emptyTable: "Không có dữ liệu",
+			                    search: "Tìm kiếm",
+			                    lengthMenu: 'Hiển thị _MENU_ người dùng mỗi trang',
 			                },
 						});
 						var log_table = $('#log_table').DataTable({
@@ -257,6 +304,9 @@ img {
 	function doAddItem() {
 		window.location = "addItem";
 	}
+	function importItem(){
+		window.location = "importItem";
+	}
 </script>
 <style>
 table.dataTable th.dt-type-numeric, table.dataTable th.dt-type-date,
@@ -267,6 +317,11 @@ table.dataTable th.dt-type-numeric, table.dataTable th.dt-type-date,
 table.dataTable thead th, table.dataTable thead td, table.dataTable tfoot th,
 	table.dataTable tfoot td {
 	text-align: center;
+}
+.table-footer{
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
 }
 </style>
 </head>
@@ -283,24 +338,46 @@ table.dataTable thead th, table.dataTable thead td, table.dataTable tfoot th,
 	<aside class="sidebar">
 		<ul class="nav" style="display: block;">
 			<li class="nav-title">MENU</li>
-			<li class="nav-item"><a
-				class="nav-link ${gr2 eq home?'active':''}" href="admin?gr=home"><i
-					class="fa fa-home"></i> Trang Chủ</a></li>
-			<li class="nav-item"><a
-				class="nav-link ${gr2 eq item?'active':''}" href="admin?gr=item"><i
-					class="fa fa-th-large"></i>Quản lý sản phẩm</a></li>
-			<li class="nav-item"><a
-				class="nav-link ${gr2 eq spcart?'active':''}" href="admin?gr=spcart"><i
-					class="fa fa-file-text-o"></i>Quản lý đơn hàng</a></li>
-			<li class="nav-item"><a
-				class="nav-link ${gr2 eq user?'active':''}" href="admin?gr=user"><i
-					class="fa fa-address-book-o"></i>Quản lý User</a></li>
-			<li class="nav-item"><a
-				class="nav-link ${gr2 eq log?'active':''}" href="admin?gr=log"><i
-					class="fa fa-address-book-o"></i>Quản lý Log</a></li>
-			<li class="nav-item"><a href="index" class="nav-link"> <i
-					class="fa fa-arrow-left"></i>Quay về Home
-			</a></li>
+			<li class="nav-item">
+				<a class="nav-link ${gr2 eq home?'active':''}" href="admin?gr=home">
+					<i class="fa fa-home"></i> Trang Chủ
+				</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link ${gr2 eq item?'active':''}" href="admin?gr=item">
+					<i class="fa fa-th-large"></i>Quản lý sản phẩm
+				</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link ${gr2 eq inventory?'active':''}" href="admin?gr=inventory">
+					<i class="fa-solid fa-warehouse"></i></i>Quản lý tồn kho
+				</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link ${gr2 eq importHistory?'active':''}" href="admin?gr=importHistory">
+					<i class="fa-solid fa-warehouse"></i></i>Lịch sử nhập hàng
+				</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link ${gr2 eq spcart?'active':''}" href="admin?gr=spcart">
+					<i class="fa-solid fa-newspaper"></i>Quản lý đơn hàng
+				</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link ${gr2 eq user?'active':''}" href="admin?gr=user">
+					<i class="fa-regular fa-user"></i>Quản lý User
+				</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link ${gr2 eq log?'active':''}" href="admin?gr=log">
+					<i class="fa-regular fa-note-sticky"></i>Quản lý Log
+				</a>
+			</li>
+			<li class="nav-item">
+				<a href="index" class="nav-link"> 
+					<i class="fa fa-arrow-left"></i>Quay về Home
+				</a>
+			</li>
 		</ul>
 	</aside>
 	<div class="main">
@@ -320,6 +397,8 @@ table.dataTable thead th, table.dataTable thead td, table.dataTable tfoot th,
 								<th>Mã số</th>
 								<th>Loại</th>
 								<th>Tên</th>
+								<th>Giá tiền</th>
+								<th>Giảm giá</th>
 								<th>Mô tả</th>
 								<th>Hiển thị</th>
 								<th>Thao tác</th>
@@ -335,6 +414,8 @@ table.dataTable thead th, table.dataTable thead td, table.dataTable tfoot th,
 								<td><%=i.getId()%></td>
 								<td><%=i.getCategory().getCategoryName()%></td>
 								<td><%=i.getName()%></td>
+								<td><%=i.getPrice()%> vnđ</td>
+								<td><%=i.getDiscount()%></td>
 								<td><%=i.getDiscription()%></td>
 								<td><%=(i.getHidden()==1)?"Hiển thị":"Ẩn"%></td>
 								<td>
@@ -351,7 +432,6 @@ table.dataTable thead th, table.dataTable thead td, table.dataTable tfoot th,
 					</table>
 				</div>
 				<div class="table-footer">
-
 					<button onclick="doAddItem()">
 						<i class="fa fa-plus-square"></i> Thêm sản phẩm
 					</button>
@@ -360,6 +440,97 @@ table.dataTable thead th, table.dataTable thead td, table.dataTable tfoot th,
 
 		</c:if>
 		<!-- // sanpham -->
+		<!-- Tồn kho -->
+		<c:if test="${gr2 eq inventory}">
+			<div class="tonkho">
+				<div class="table-content">
+					<table style="width: 100%" id="inventory-table">
+						<thead>
+							<tr class="table-header">
+								<th>ID</th>
+								<th>Tên sản phẩm</th>
+								<th>Loại</th>
+								<th>Số lượng tồn kho</th>
+								<th>Giá bán</th>
+								<th>Giá nhập</th>
+								<th>Chênh lệch</th>
+							</tr>
+						</thead>
+						<tbody>
+							<%
+							List<Item> inventories = (List<Item>) request.getAttribute("listInventory");
+							if (inventories != null) {
+								for (Item inv : inventories) {
+							%>
+							<tr>
+								<td><%=inv.getId() %></td>
+								<td><%=inv.getName() %></td>
+								<td><%=inv.getCategory().getCategoryName() %></td>
+								<td><%=inv.getImportDetail().getQuantity() %></td>
+								<td><%=inv.getPrice() %> vnđ</td>
+								<td><%=inv.getImportDetail().getPrice() %> vnđ</td>
+								<td><%=inv.getDifference() %> vnđ</td>
+							</tr>
+							<%
+								}
+							}
+							%>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</c:if>
+		<!-- // tonkho -->
+		<!-- Lịch sử nhập hàng -->
+		<c:if test="${gr2 eq importHistory}">
+			<div class="nhaphang">
+				<div class="table-content">
+					<table style="width: 100%" id="import-table">
+						<thead>
+							<tr class="table-header">
+								<th>ID</th>
+								<th>Người nhập</th>
+								<th>Tổng số lượng nhập</th>
+								<th>Tổng các loại sản phẩm nhập</th>
+								<th>Tổng giá</th>
+								<th>Ngày nhập</th>
+								<th>Thao tác</th>
+							</tr>
+						</thead>
+						<tbody>
+							<%
+							List<ImportItem> importItems = (List<ImportItem>) request.getAttribute("importList");
+							if (importItems != null) {
+								for (ImportItem item : importItems) {
+							%>
+							<tr>
+								<td><%=item.getId() %></td>
+								<td><%=item.getUser().getName() %></td>
+								<td><%=item.getTotalQuantity() %></td>
+								<td><%=item.getTotalItem() %></td>
+								<td><%=item.getTotalPrice() %> vnđ</td>
+								<td><%=item.getImportDate() %></td>
+								<td>
+									<a href="getImportDetails?id=<%=item.getId()%>" style="color: white;">
+										Xem chi tiết
+									</a>
+								</td>
+							</tr>
+							<%
+								}
+							}
+							%>
+						</tbody>
+					</table>
+				</div>
+				<div class="table-footer">
+					<button onclick="importItem()">
+						<i class="fa fa-plus-square"></i> Nhập thêm số lượng hàng hoá
+					</button>
+				</div>
+			</div>
+		</c:if>
+		<!-- //lichsunhaphang -->
 		<c:if test="${gr2 eq spcart}">
 			<div class="donhang">
 				<!-- Đơn Hàng -->
@@ -386,7 +557,7 @@ table.dataTable thead th, table.dataTable thead td, table.dataTable tfoot th,
 							<tr>
 								<td><%=o.getOrderId()%></td>
 								<td><%=o.getName()%></td>
-								<td><%=o.getTotalPrice()%></td>
+								<td><%=o.getTotalPrice()%> vnđ</td>
 								<td><%=o.getAddress()%></td>
 								<td><%=o.getOrderDate()%></td>
 								<td><%=o.getDeliveriDate()%></td>
