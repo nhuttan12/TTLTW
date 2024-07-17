@@ -1,118 +1,101 @@
+<%@page import="model.Category"%>
+<%@page import="java.util.List"%>
+<%@page import="model.Item"%>
+<%@page import="model.User"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
+
 <head>
-<!-- Basic -->
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-
-<meta charset="utf-8" />
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<!-- Mobile Metas -->
-<meta name="viewport"
-	content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-<!-- Site Metas -->
-<meta name="keywords" content="" />
-<meta name="description" content="" />
-<meta name="author" content="" />
-<link rel="shortcut icon" href="images/loo6.png" />
-<title>Contact</title>
-<!-- bootstrap core css -->
-<link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
-
-<!--owl slider stylesheet -->
-<link rel="stylesheet" type="text/css"
-	href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
-
-<!-- font awesome style -->
-<link href="css/font-awesome.min.css" rel="stylesheet" />
-
-<!-- Custom styles for this template -->
-<link href="css/style.css" rel="stylesheet" />
-<!-- responsive style -->
-<link href="css/responsive.css" rel="stylesheet" />
-
-<script type="text/javascript">
-function doCancel(item) {
-	window.location="admin?gr="+item;
-	
-}
-</script>
+    <meta charset="UTF-8">
+    <title>Chỉnh sửa sản phẩm</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+    <link rel="shortcut icon" href="images/loo6.png" />
 </head>
+<style>
+    .main {
+        padding: 2rem 4rem 2rem 4rem;
+        border: 1px solid #9c9c9c;
+        border-radius: 10px;
+        box-shadow: 0px 5px 10px #9c9c9c;
+        width: 50%;
+    }
 
-<body class="sub_page">
-	<fmt:setLocale value="${sessionScope.lang}" />
-	<fmt:setBundle basename="languages.lang" />
-	<c:set var="user" value="${sessionScope.user}" />
+    .container {
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+    }
+</style>
 
-
-
-	<!-- book section -->
-	<section class="book_section layout_padding">
-		<c:set var="erro" value="${requestScope.erro_Item}" />
-		<c:set var="item" value="${requestScope.item}" />
-
-		<div class="loginn">
-
-			<form action="edit?gr=item" enctype="multipart/form-data" method="post">
-				<center>
-					<h4 style="color: red"&"front-size:10px">${erro}</h4>
-					<table class="login-table">
-						<tr class="login-head">
-							<th colspan="3"><center>
-									<h1>
-										<fmt:message>EDITITEM</fmt:message>
-									</h1>
-								</center></th>
-						</tr>
-						<tr class="login-body">
-							<td><fmt:message>nameItem</fmt:message> :</td>
-							<td><input type="text" title="${item.name}" name="ITEM_NAME" placeholder="${item.name}"></td>
-						</tr>
-						<tr class="login-body">
-							<td><fmt:message>price</fmt:message> :</td>
-							<td><input type="number" title="${item.unitPrice}"  name="UNITPRICE"
-								placeholder="${item.unitPrice}"></td>
-						</tr>
-						<tr class="login-body">
-							<td><fmt:message>QUANTITYAVAILABLE</fmt:message> :</td>
-							<td><input type="number" title="${item.quantityAvailable}"  name="QUANTITY_AVAILABLE"
-								placeholder="${item.quantityAvailable}" ></td>
-								
-						</tr>
-
-						<tr lass="login-body">
-							<td><fmt:message>TYPE</fmt:message> : ${item.type}</td>
-							<td><select name="TYPE">
-									<option ${ item.type eq'Chickenjoy'?'selected':''} value="Chickenjoy">Chickenjoy</option>
-									<option ${ item.type eq'Burger'?'selected':''} value="Burger">Burger</option>
-									<option  ${ item.type eq'Drinks'?'selected':''} value="Drinks">Drinks</option>
-									<option ${ item.type eq'Noodles'?'selected':''} value="Noodles">Noodles</option>
-							</select></td>
-						</tr>
-						<tr class="login-body">
-							<td><fmt:message>IMAGES</fmt:message> : ${item.imageName}</td>
-							<td><input type="file" name="IMAGES"
-								></td>
-						</tr>
-						<tr class="login-foot">
-							<td class="foot-item"><input class="button" type="submit"
-								name="submit" value=" <fmt:message>ok</fmt:message> "></td>
-							<td><input class="button" type="button"
-								onclick="doCancel('item')"
-								value="<fmt:message>cancel</fmt:message>"></td>
-
-
-						</tr>
-					</table>
-				</center>
-			</form>
-		</div>
-	</section>
-	<!-- end book section -->
-
-	<!-- footer section -->
-
+<body>
+    <div class="container">
+        <div class="main m-auto">
+            <h1 class="text-center">Chỉnh sửa sản phẩm</h1>
+            <form action="edit" method="post" enctype="multipart/form-data">
+	            <%
+	            	Item item = (Item) request.getAttribute("item");
+	            %>
+                <div class="form-group">
+                    <label for="product-name">Mã sản phẩm</label>
+                    <input type="text" name="id" class="form-control" id="product-name" readonly value="<%=item.getId()%>">
+                </div>
+                <div class="form-group">
+                    <label for="category">Loại sản phẩm</label>
+                    <select name="category" class="form-control" id="category">
+	                    <%
+	                    List<Category> categories= (List<Category>) request.getAttribute("category");
+                    	if(categories!=null){
+                    		for(Category c : categories){
+	                    %>
+                        <option value=<%=c.getId() %> <%=(c.getId()==item.getCategory().getId())?"selected":"" %>><%=c.getCategoryName() %></option>
+                        <%
+                    		}
+                    	}
+                        %>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="product-name">Tên sản phẩm</label>
+                    <input type="text" name="name" class="form-control" id="product-name" value="<%=item.getName()%>">
+                </div>
+                <div class="form-group">
+                    <label for="product-price">Giá bán sản phẩm</label>
+                    <input name="price" type="number" class="form-control" id="product-price" value="<%=item.getPrice()%>">
+                </div>
+                <div class="form-group">
+                    <label for="product-discount">Giảm giá</label>
+                    <input type="number" name="discount" value="0" class="form-control" id="product-discount" value="<%=item.getDiscount()%>">
+                </div>
+                <div class="form-group">
+                    <label for="product-discription">Mô tả sản phẩm</label>
+                    <input name="description" type="text" class="form-control" id="product-discription" value="<%=item.getDiscription()%>">
+                </div>
+                <div class="form-group">
+                    <label for="hidden">Hiển thị sản phẩm</label>
+                    <select name="hidden" class="form-control" id="hidden">
+                        <option value=1 <%=item.getHidden()==1?"checked":"" %>>Hiển thị</option>
+                        <option value=2 <%=item.getHidden()==2?"checked":"" %>>Ẩn</option>
+                    </select>
+                </div>
+                <div class="form-group">
+					<label for="product-image">Hình của sản phẩm</label> 
+					<input name="image" type="file" class="form-control-file" id="product-image" accept="image/*">
+				</div>
+                <button type="submit" class="btn btn-primary">Chỉnh sửa</button>
+            </form>
+        </div>
+    </div>
 </body>
+
 </html>

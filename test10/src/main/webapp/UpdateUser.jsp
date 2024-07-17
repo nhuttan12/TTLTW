@@ -1,3 +1,4 @@
+<%@page import="model.User"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -37,30 +38,35 @@
     <div class="container">
         <div class="main m-auto">
             <h1 class="text-center">Chỉnh sửa thông tin người dùng</h1>
-            <form action="addItem" method="post" enctype="multipart/form-data">
+            <%
+            	User user=(User) request.getAttribute("u");
+            %>
+            <form action="updateStatusUser" method="post">
                 <div class="form-group">
                     <label for="product-name">Mã người dùng</label> 
-                    <input type="text" name="id" class="form-control" id="product-name" value="1" readonly>
+                    <input type="text" name="id" class="form-control" id="product-name" value="<%=user.getId() %>" readonly>
                 </div>
                 <div class="form-group">
-                    <label for="product-price">Tên khách hàng</label> 
-                    <input name="customer" type="text" class="form-control" id="customer" value="Khách hàng" readonly>
+                    <label for="product-price">Tên người dùng</label> 
+                    <input name="customer" type="text" class="form-control" id="customer" value="<%=user.getName() %>" readonly>
                 </div>
                 <div class="form-group">
                     <label for="product-discount">Email</label> 
-                    <input type="email" name="email" value="0" class="form-control" id="total-price" readonly>
+                    <input type="email" name="email" value="<%=user.getEmail() %>" class="form-control" id="total-price" readonly>
                 </div>
                 <div class="form-group">
                     <label for="product-discription">Tài khoản</label> 
-                    <input name="username" type="text" class="form-control" id="order-date" readonly>
+                    <input name="username" type="text" class="form-control" value="<%=user.getUserName() %>" id="order-date" readonly>
                 </div>
-                <label for="category">Chức vụ</label> 
-                <select name="category" class="form-control" id="category">
-					<option value=1>1</option>
+                <label for="role">Chức vụ</label> 
+                <select name="role" class="form-control" id="role">
+                	<option value="1" <%=(user.getRole())==1?"selected":""%>>Người dùng</option>
+                	<option value="2" <%=(user.getRole())==2?"selected":""%>>Quản lý</option>
 				</select>
-                <label for="category">Trạng thái</label> 
-                <select name="category" class="form-control" id="category">
-					<option value=1>1</option>
+                <label for="status">Trạng thái</label> 
+                <select name="status" class="form-control" id="status">
+					<option value="1" <%=(user.getStatus())==1?"selected":""%>>Không khoá</option>
+                	<option value="2" <%=(user.getStatus())==2?"selected":""%>>Khoá</option>
 				</select>
                 <button type="submit" class="btn btn-primary" style="margin-top: 1rem;">Xác nhận</button>
             </form>

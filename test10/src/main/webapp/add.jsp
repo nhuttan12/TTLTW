@@ -40,7 +40,7 @@
 <body>
 	<div class="main m-auto">
 		<h1 class="text-center">Thêm sản phẩm</h1>
-		<form action="addItem" method="post" enctype="multipart/form-data">
+		<form action="edit" method="post" enctype="multipart/form-data">
 			<div class="form-group">
 				<label for="category">Loại sản phẩm</label> <select name="category"
 					class="form-control" id="category">

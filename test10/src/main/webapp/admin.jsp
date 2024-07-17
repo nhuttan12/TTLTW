@@ -320,11 +320,8 @@ table.dataTable thead th, table.dataTable thead td, table.dataTable tfoot th,
 								<th>Mã số</th>
 								<th>Loại</th>
 								<th>Tên</th>
-								<th>Giá bán</th>
-								<th>Giá nhập</th>
-								<th>Chênh lệch</th>
-								<th>Giảm giá</th>
-								<th>Số lượng</th>
+								<th>Mô tả</th>
+								<th>Hiển thị</th>
 								<th>Thao tác</th>
 							</tr>
 						</thead>
@@ -338,18 +335,12 @@ table.dataTable thead th, table.dataTable thead td, table.dataTable tfoot th,
 								<td><%=i.getId()%></td>
 								<td><%=i.getCategory().getCategoryName()%></td>
 								<td><%=i.getName()%></td>
-								<td><%=i.getPrice()%></td>
-								<td><%=i.getImportDetail().getPrice()%></td>
-								<td><%=i.getDifference()%></td>
-								<td><%=i.getDiscount()%></td>
-								<td><%=i.getImportDetail().getQuantity()%></td>
+								<td><%=i.getDiscription()%></td>
+								<td><%=(i.getHidden()==1)?"Hiển thị":"Ẩn"%></td>
 								<td>
-									<a class="s" href="edit?id=<%=i.getId()%>&gr=spcart">
+									<a class="s" href="edit?id=<%=i.getId()%>">
 										<img width="20px" alt="" src="images/edit2.png">
 									</a> 
-									<a class="s" href="#" onclick="doDelete('<%=i.getId()%>','item')"> 
-										<img width="20px" alt="" src="images/delete.png">
-									</a>
 								</td>
 							</tr>
 							<%
