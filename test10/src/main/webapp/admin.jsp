@@ -88,6 +88,46 @@ img {
 			                    lengthMenu: 'Hiển thị _MENU_ sản phẩm mỗi trang',
 			                },
 						});
+						var inventory_table = $('#revenue-table').DataTable({
+							info : false,
+							ordering : true,
+							paging : true,
+							lengthMenu : [ 10, 25, 50, 75, 100 ],
+							language: {
+			                    paginate: {
+			                        first: "Trang đầu",
+			                        previous: "Trang trước",
+			                        next: "Trang sau",
+			                        last: "Trang cuối"
+			                    },
+			                    processing: "Đang tải dữ liệu",
+			                    infoEmpty: "Không có dữ liệu",
+			                    zeroRecords: "Không tìm thấy",
+			                    emptyTable: "Không có dữ liệu",
+			                    search: "Tìm kiếm",
+			                    lengthMenu: 'Hiển thị _MENU_ sản phẩm mỗi trang',
+			                },
+						});
+						var inventory_table = $('#not-use-in-6-month-table').DataTable({
+							info : false,
+							ordering : true,
+							paging : true,
+							lengthMenu : [ 10, 25, 50, 75, 100 ],
+							language: {
+			                    paginate: {
+			                        first: "Trang đầu",
+			                        previous: "Trang trước",
+			                        next: "Trang sau",
+			                        last: "Trang cuối"
+			                    },
+			                    processing: "Đang tải dữ liệu",
+			                    infoEmpty: "Không có dữ liệu",
+			                    zeroRecords: "Không tìm thấy",
+			                    emptyTable: "Không có dữ liệu",
+			                    search: "Tìm kiếm",
+			                    lengthMenu: 'Hiển thị _MENU_ sản phẩm mỗi trang',
+			                },
+						});
 						var inventory_table = $('#inventory-table').DataTable({
 							info : false,
 							ordering : true,
@@ -324,6 +364,7 @@ table.dataTable thead th, table.dataTable thead td, table.dataTable tfoot th,
     width: 100%;
 }
 </style>
+<script type="text/javascript" src="js/table2excel.js"></script>
 </head>
 <body>
 
@@ -384,6 +425,40 @@ table.dataTable thead th, table.dataTable thead td, table.dataTable tfoot th,
 		<c:set var="gr2" value="${requestScope.gr2}" />
 		<c:if test="${gr2 eq home}">
 			<!-- Khung hiển thị chính -->
+			<div class="home">
+				<h1 style="color: white; text-align: center;">
+					Những người không dùng dịch vụ hệ thống trong vòng 6 tháng
+				</h1> 
+				<div class="table-content" style="padding-top: 2rem;">
+					<table style="width: 100%" id="not-use-in-6-month-table">
+						<thead>
+							<tr class="table-header">
+								<th>Mã số</th>
+								<th>Tên người dùng</th>
+								<th>Ngày sử dụng gần nhất</th>
+								<th>Số ngày cụ thể chưa đăng nhập</th>
+							</tr>
+						</thead>
+						<tbody>
+							<%
+							List<Order> orders = (List<Order>) request.getAttribute("orders");
+							if (orders != null) {
+								for (Order o : orders) {
+							%>
+							<tr>
+								<td><%=o.getUserId()%></td>
+								<td><%=o.getName()%></td>
+								<td><%=o.getOrderDate()%></td>
+								<td><%=o.getDateDifference()%></td>
+							</tr>
+							<%
+								}
+							}
+							%>
+						</tbody>
+					</table>
+				</div>
+			</div>
 		</c:if>
 		<c:if test="${empty gr2}">
 		</c:if>
@@ -434,6 +509,9 @@ table.dataTable thead th, table.dataTable thead td, table.dataTable tfoot th,
 				<div class="table-footer">
 					<button onclick="doAddItem()">
 						<i class="fa fa-plus-square"></i> Thêm sản phẩm
+					</button>
+					<button id="export-to-excel">
+						<i class="fa-regular fa-note-sticky"></i> Xuất ra file excel 
 					</button>
 				</div>
 			</div>
@@ -628,52 +706,64 @@ table.dataTable thead th, table.dataTable thead td, table.dataTable tfoot th,
 		</c:if>
 		<!-- // log -->
 		<c:if test="${gr2 eq log}">
-
-			<c:set var="listLog" value="${requestScope.listLog}" />
-			<div class="table-content">
-				<div class="search">
-					<b>From</b> <input type="datetime-local" id="from_time"> <b>To</b>
-					<input type="datetime-local" id="to_time">
-				</div>
-
-				<table style="width: 100%; border: solid white;" id="log_table"
-					border="1px white;">
-					<thead>
-						<tr class="table-header">
-							<th>ID</th>
-							<th>Thời gian</th>
-							<th>IP</th>
-							<th>Level</th>
-							<th>Nội dung</th>
-							<th>Giá trị trước</th>
-							<th>Giá trị hiện tại</th>
-
-						</tr>
-					</thead>
-					<tbody>
-						<c:forEach var="log" items="${listLog}">
-							<tr>
-								<td>${log.id}</td>
-								<td>${log.time}</td>
-								<td>${log.IP}</td>
-								<td>${log.level}</td>
-								<td>${log.message}</td>
-								<td>${log.pre_value}</td>
-								<td>${log.current_value}</td>
+		<%
+			String error=(String)request.getAttribute("error");
+			if(error != "authorization"){
+		%>
+				<c:set var="listLog" value="${requestScope.listLog}" />
+				<div class="table-content">
+					<div class="search">
+						<b>From</b> <input type="datetime-local" id="from_time"> <b>To</b>
+						<input type="datetime-local" id="to_time">
+					</div>
+	
+					<table style="width: 100%; border: solid white;" id="log_table"
+						border="1px white;">
+						<thead>
+							<tr class="table-header">
+								<th>ID</th>
+								<th>Thời gian</th>
+								<th>IP</th>
+								<th>Level</th>
+								<th>Nội dung</th>
+								<th>Giá trị trước</th>
+								<th>Giá trị hiện tại</th>
+	
 							</tr>
-						</c:forEach>
-					</tbody>
-				</table>
-				<select id="level_select">
-					<option value="">Level</option>
-					<option value="INFO">INFOR</option>
-					<option value="WARN">WARN</option>
-					<option value="ERRO">ERRO</option>
-					<option value="FATAL">FATAL</option>
-				</select>
-			</div>
-
-
+						</thead>
+						<tbody>
+							<c:forEach var="log" items="${listLog}">
+								<tr>
+									<td>${log.id}</td>
+									<td>${log.time}</td>
+									<td>${log.IP}</td>
+									<td>${log.level}</td>
+									<td>${log.message}</td>
+									<td>${log.pre_value}</td>
+									<td>${log.current_value}</td>
+								</tr>
+							</c:forEach>
+						</tbody>
+					</table>
+					<select id="level_select">
+						<option value="">Level</option>
+						<option value="INFO">INFOR</option>
+						<option value="WARN">WARN</option>
+						<option value="ERRO">ERRO</option>
+						<option value="FATAL">FATAL</option>
+					</select>
+				</div>
+		<%
+			}else{
+		%>
+			<h1 style="
+			    padding-top: 3rem;
+			    text-align: center;
+			    color: white;
+			">Lỗi: Bạn không đủ quyền hạn để truy cập vào mục này</h1>
+		<%
+			}
+		%>
 		</c:if>
 		<!-- // ket thuc log -->
 		<!-- // main -->
@@ -699,6 +789,10 @@ table.dataTable thead th, table.dataTable thead td, table.dataTable tfoot th,
 													return (rowDataTime >= from_time2 && rowDataTime <= to_time1);
 												}).draw();
 							}
+							$('#export-to-excel').click(function() {
+							    var table2excel = new Table2Excel();
+							    table2excel.export($('#product-table'));
+							});
 						});
 	</script>
 </body>
