@@ -1,5 +1,9 @@
 package model;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 public class Order {
 	int orderId;
 	int userId;
@@ -11,11 +15,14 @@ public class Order {
 	String orderDate;
 	String deliveriDate;
 	int statusOrderId;
+<<<<<<< HEAD
 	StatusOrder statusOrder;
 	int dateDifference;
+=======
+>>>>>>> d63ebdc5ab49e94a2d743ad24f6405ce250f6851
 
 	public Order(int orderId, int userId, String name, String phone, String address, String note, String orderDate,
-			String deliveriDate, int statusOrderId) {
+		 int statusOrderId) {
 		super();
 		this.orderId = orderId;
 		this.userId = userId;
@@ -24,9 +31,23 @@ public class Order {
 		this.address = address;
 		this.note = note;
 		this.orderDate = orderDate;
-		this.deliveriDate = deliveriDate;
 		this.statusOrderId = statusOrderId;
 	}
+<<<<<<< HEAD
+=======
+
+	public Order(int orderId, int userId, String name, String phone, String address, String note, int statusOrderId) {
+		super();
+		this.orderId = orderId;
+		this.userId = userId;
+		this.name = name;
+		this.phone = phone;
+		this.address = address;
+		this.note = note;
+		this.orderDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
+		this.statusOrderId = statusOrderId;
+	}
+>>>>>>> d63ebdc5ab49e94a2d743ad24f6405ce250f6851
 
 	public Order(int userId, String name, String phone, String address, String note, String orderDate,
 			String deliveriDate, int statusOrderId) {
@@ -149,5 +170,8 @@ public class Order {
 				+ "]";
 	}
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> d63ebdc5ab49e94a2d743ad24f6405ce250f6851
 }

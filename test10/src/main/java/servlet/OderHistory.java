@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import model.Cart;
 import model.Item;
 import model.Order;
 import model.OrderDetail;
@@ -14,6 +15,7 @@ import model.User;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,37 +43,39 @@ public class OderHistory extends HttpServlet {
 	 *      response)
 	 */
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//		HttpSession httpSession = req.getSession();
-//
-//		User user = (User) httpSession.getAttribute("user");
-//		if (user == null) {
-//			req.setAttribute("erro", "bạn phải đăng nhập !");
-//			req.getRequestDispatcher("login.jsp").forward(req, resp);
-//		} else {
-//			DBOrder db = new DBOrder();
-//			DBOderDetail detail = new DBOderDetail();
-//			int cartId = Integer.parseInt(req.getParameter("shoppingCartId"));
-//			List<Order> os = db.getOderByCartIdStatus(cartId);
-////		req.setAttribute("listOder", os);
-//
-//			Map<Order, List<Item>> orderProductMap = new HashMap<>();
-//			for (Order or : os) {
-//				List<Item> od;
-//				try {
-//					od = detail.getOderDetailByOderID(or.getOrderId());
-//					System.out.println(or.getOrderId());
-//					orderProductMap.put(or, od);
-//				} catch (SQLException e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				}
-//
-//			}
-//			req.setAttribute("listOder", orderProductMap);
-//
-//			RequestDispatcher dispatcher = req.getRequestDispatcher("oderHistory.jsp");
-//			dispatcher.forward(req, resp);
-//		}
+		HttpSession httpSession = req.getSession();
+
+		User user = (User) httpSession.getAttribute("user");
+		if (user == null) {
+			req.setAttribute("erro", "bạn phải đăng nhập !");
+			req.getRequestDispatcher("login.jsp").forward(req, resp);
+		} else {
+			DBOrder order = new DBOrder();
+			DBOderDetail detail = new DBOderDetail();
+			List<Order> listOrder;
+			try {
+				listOrder = order.getOderByUserID(user.getId());
+				Map<Order, List<Cart>> orderCartMap = new HashMap<>();
+				Map<Order, List<Item>> orderProductMap = new HashMap<>();
+				
+				for (Order or : listOrder) {
+					List<Cart> listCart = detail.getCartByOderID(or.getOrderId());
+					orderCartMap.put(or, listCart);
+					List<Item> listItem = detail.getItemByOderID(or.getOrderId());
+					orderProductMap.put(or, listItem);
+				}
+				req.setAttribute("listCartOder", orderCartMap);
+				req.setAttribute("listItemOder", orderProductMap);
+//				req.setAttribute("listOder", listOrder);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+//		req.setAttribute("listOder", os);
+
+			RequestDispatcher dispatcher = req.getRequestDispatcher("oderHistory.jsp");
+			dispatcher.forward(req, resp);
+		}
 	}
 
 }

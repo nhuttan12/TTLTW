@@ -3,23 +3,32 @@ package model;
 public class OrderDetail {
 	int id;
 	int oderId;
-	int itemId;
+	int cartId;
 	int quantity;
 	Item item;
 	double price; // tổng giá của cả đơn
-	public OrderDetail(int oderId, int itemId, int quantity, double price) {
+	public OrderDetail(int oderId, int cartId, int quantity, double price) {
 		super();
 		this.oderId = oderId;
-		this.itemId = itemId;
+		this.cartId = cartId;
 		this.quantity = quantity;
 		this.price = price;
 	}
 	
-	public OrderDetail(int id, int oderId, int itemId, int quantity, double price) {
+	
+	public OrderDetail(int id, int oderId, int cartId) {
 		super();
 		this.id = id;
 		this.oderId = oderId;
-		this.itemId = itemId;
+		this.cartId = cartId;
+	}
+
+
+	public OrderDetail(int id, int oderId, int cartId, int quantity, double price) {
+		super();
+		this.id = id;
+		this.oderId = oderId;
+		this.cartId = cartId;
 		this.quantity = quantity;
 		this.price = price;
 	}
@@ -33,11 +42,11 @@ public class OrderDetail {
 	public void setOderId(int oderId) {
 		this.oderId = oderId;
 	}
-	public int getItemId() {
-		return itemId;
+	public int getCartId() {
+		return cartId;
 	}
-	public void setItemId(int itemId) {
-		this.itemId = itemId;
+	public void setCartId(int cartId) {
+		this.cartId = cartId;
 	}
 	public int getQuantity() {
 		return quantity;
@@ -69,7 +78,7 @@ public class OrderDetail {
 
 	@Override
 	public String toString() {
-		return "OrderDetail [oderId=" + oderId + ", itemId=" + itemId + ", quantity=" + quantity + ", price=" + price
+		return "OrderDetail [oderId=" + oderId + ", cartId=" + cartId + ", quantity=" + quantity + ", price=" + price
 				+ "]";
 	}
 	
