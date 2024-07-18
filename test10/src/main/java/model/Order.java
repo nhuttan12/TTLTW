@@ -1,5 +1,9 @@
 package model;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 public class Order {
 	int orderId;
 	int userId;
@@ -10,11 +14,9 @@ public class Order {
 	String orderDate;
 	String deliveriDate;
 	int statusOrderId;
-	
-	
-	
+
 	public Order(int orderId, int userId, String name, String phone, String address, String note, String orderDate,
-			String deliveriDate, int statusOrderId) {
+		 int statusOrderId) {
 		super();
 		this.orderId = orderId;
 		this.userId = userId;
@@ -23,10 +25,20 @@ public class Order {
 		this.address = address;
 		this.note = note;
 		this.orderDate = orderDate;
-		this.deliveriDate = deliveriDate;
 		this.statusOrderId = statusOrderId;
 	}
-	
+
+	public Order(int orderId, int userId, String name, String phone, String address, String note, int statusOrderId) {
+		super();
+		this.orderId = orderId;
+		this.userId = userId;
+		this.name = name;
+		this.phone = phone;
+		this.address = address;
+		this.note = note;
+		this.orderDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
+		this.statusOrderId = statusOrderId;
+	}
 
 	public Order(int userId, String name, String phone, String address, String note, String orderDate,
 			String deliveriDate, int statusOrderId) {
@@ -41,7 +53,6 @@ public class Order {
 		this.statusOrderId = statusOrderId;
 	}
 
-
 	public Order() {
 		super();
 	}
@@ -49,10 +60,11 @@ public class Order {
 	public int getOrderId() {
 		return orderId;
 	}
+
 	public void setOrderId(int orderId) {
 		this.orderId = orderId;
 	}
-	
+
 	public int getUserId() {
 		return userId;
 	}
@@ -123,8 +135,5 @@ public class Order {
 				+ address + ", note=" + note + ", orderDate=" + orderDate + ", deliveriDate=" + deliveriDate
 				+ ", statusOrderId=" + statusOrderId + "]";
 	}
-
-	
-	
 
 }

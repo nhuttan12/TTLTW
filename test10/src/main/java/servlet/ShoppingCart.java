@@ -61,7 +61,7 @@ public class ShoppingCart extends HttpServlet {
 		User a = (User) session.getAttribute("user");
 		int userID;
 		Item item=new Item();
-		List<Cart> listCart = new ArrayList<Cart>();
+		List<Cart> listCart = new ArrayList<Cart>();//danh sách các cart của cả gio hang
 		List<Item> listItem=new ArrayList<Item>();
 		DBCart dbCart = new DBCart();
 	
@@ -88,12 +88,13 @@ public class ShoppingCart extends HttpServlet {
 		} else {
 			userID=a.getId();
 			try {
-				listCart = dbCart.getListCartByUserID(userID);
+				listCart = dbCart.getListCartByUserIDForCart(userID);
 				for(Cart cart:listCart) {
 					tongtien_giohang+=cart.getTotalPrice();
 					total_quantity+=cart.getQuantity();
+					listItem.add(dbCart.getItemByCartId(cart.getId()));
 				}
-				listItem=dbCart.getListItemByUserID(userID);
+//				listItem=dbCart.getListItemByUserID(userID);
 				for(Item item2:listItem) {
 					list_item_id.add(item2.getId());
 					List_category_id.add(item2.getCategory().getId());

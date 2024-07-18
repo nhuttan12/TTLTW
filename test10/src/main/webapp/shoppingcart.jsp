@@ -28,9 +28,12 @@
 <!-- font awesome style -->
 <link href="css/font-awesome.min.css" rel="stylesheet" />
 <!-- select2 -->
-   <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<link
+	href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css"
+	rel="stylesheet" />
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script
+	src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <!-- Custom styles for this template -->
 <link href="css/style.css" rel="stylesheet" />
 <!-- responsive style -->
@@ -121,6 +124,8 @@
 			<div class="cart">
 				<c:set var="listCart" value="${ requestScope.listCart}" />
 				<c:set var="listItem" value="${ requestScope.listItem}" />
+				<c:set var="PHONE" value="${user.phone}" />
+				<c:set var="NAME" value="${user.name}" />
 
 				<div class="products">
 
@@ -128,9 +133,12 @@
 						<c:forEach var="i" begin="0" end="${fn:length(listCart)-1}"
 							step="1">
 
-							<div class="product" >
-								<div style="margin: auto;" ><img style="width: 120px;height: auto" src="${listItem[i].imageName}"></div>
-								
+							<div class="product" data-cartid="${listCart[i].id}" data-itemid="${listItem[i].id}">
+								<div style="margin: auto;">
+									<img style="width: 120px; height: auto"
+										src="${listItem[i].imageName}">
+								</div>
+
 
 								<div class="product-info">
 
@@ -144,60 +152,88 @@
 									</h6>
 									<h6 class="product-offer">
 										<fmt:message>QUANTITYAVAILABLE</fmt:message>
-										: <a
-											href="editcart?action=decrease&cartID=${listCart[i].id}&itemId=${listItem[i].id}">
-											<i class="fa fa-minus"></i>
-										</a> ${listCart[i].quantity} <a
-											href="editcart?action=increase&cartID=${listCart[i].id}&itemId=${listItem[i].id}">
-											<i class="fa fa-plus"></i>
+										: <a href="javascript:void(0);" class="quantity-decrease"
+											data-cartid="${listCart[i].id}"
+											data-itemid="${listItem[i].id}"> <i class="fa fa-minus"></i>
+
+										</a> <span id="quantity-${listCart[i].id}">${listCart[i].quantity}</span>
+										<a href="javascript:void(0);" class="quantity-increase"
+											data-cartid="${listCart[i].id}"
+											data-itemid="${listItem[i].id}"> <i class="fa fa-plus"></i>
 										</a>
 									</h6>
 									<h6 class="product-price">
 										<fmt:message>totalPrice</fmt:message>
-										: ${listCart[i].totalPrice} VND
+										: <span id="totalPrice-${listCart[i].id}">${listCart[i].totalPrice}
+											VND</span>
 									</h6>
 
 									<p class="product-remove">
-
 										<a class="fa fa-trash" aria-hidden="true"
-											href="editcart?action=remove&cartID=${listCart[i].id}&itemId=${listItem[i].id}"></a>
+											href="javascript:void(0);" class="remove-item"
+											data-cartid="${listCart[i].id}"
+											data-itemid="${listItem[i].id}"></a>
 									</p>
 								</div>
 							</div>
 						</c:forEach>
 					</c:if>
 				</div>
-				<div class="cart-total">
-					<div id="error_message" style="color: red; display: none;"></div>
-					<p> <select id="promotion_select">
-							<option value=""><fmt:message>VOUCHER</fmt:message></option>
-							<c:forEach var="pro" items="${requestScope.list_Promotion}">
-							<option value=${pro.discount} >
-								<div><fmt:message>DISCOUNT</fmt:message></div>
-								<div>${requestScope.tongtien_giohang*pro.discount/100}<span>VND</span></div>
-							</option>
-							</c:forEach>
-					</select>
-</p>
-					
-					<p>
-
-						<span><fmt:message>numberOfItem</fmt:message></span> <span>${requestScope.total_quantity}</span>
-
-					</p>
-
-					<p>
-
-						<span><fmt:message>totalPrice</fmt:message></span> <span id="total">${requestScope.tongtien_giohang}VND</span>
-
-					</p>
 
 
-					<a href="#"><fmt:message>checkout</fmt:message></a>
+				<c:set var="erro" value="${requestScope.erro}" />
+				<!-- Checkout Form -->
+				<div class="checkout-form">
+					<h2>Checkout Form</h2>
+					<form action="checkout" method="GET">
+						<label for="name"><fmt:message>fullname</fmt:message> :</label> <input
+							type="text" id="name" name="name" value="${NAME}" required>
+						<c:if test="${er}">
+							<td><p style="color: red">${nameer}</p></td>
+						</c:if>
+						<label for="phone"><fmt:message>phone</fmt:message> :</label> <input
+							type="tel" id="phone" name="phone" value="${PHONE}" required>
+						<c:if test="${er}">
+							<td><p style="color: red">${phoneer}</p></td>
+						</c:if>
+						<label for="address">Địa chỉ người nhận:</label>
+						<textarea id="address" name="address" rows="4" required></textarea>
+						<c:if test="${er}">
+							<td><p style="color: red">${addresser}</p></td>
+						</c:if>
 
+						<button type="submit">
+							<fmt:message>checkout</fmt:message>
+						</button>
+					</form>
 				</div>
 
+			</div>
+			<div class="cart-total">
+				<div id="error_message" style="color: red; display: none;"></div>
+				<p>
+					<select id="promotion_select">
+						<option value=""><fmt:message>VOUCHER</fmt:message></option>
+						<c:forEach var="pro" items="${requestScope.list_Promotion}">
+							<option value=${pro.discount} >
+								<div>
+									<fmt:message>DISCOUNT</fmt:message>
+								</div>
+								<div>${requestScope.tongtien_giohang*pro.discount/100}<span>VND</span>
+								</div>
+							</option>
+						</c:forEach>
+					</select>
+				</p>
 
+				<p>
+					<span><fmt:message>numberOfItem</fmt:message></span> <span
+						id="totalQuantity">${requestScope.total_quantity}</span>
+				</p>
+				<p>
+					<span><fmt:message>totalPrice</fmt:message></span> <span id="total">${requestScope.tongtien_giohang}VND</span>
+				</p>
+				<a href="#"><fmt:message>checkout</fmt:message></a>
 			</div>
 
 		</div>
@@ -254,43 +290,115 @@
 		</div>
 	</footer>
 	<script type="text/javascript">
-	  $(document).ready(function() {
-          $('#promotion_select').select2({
-              tags: true,
-              placeholder: "Voucher",
-              allowClear: true,
-              createTag: function (params) {
-                  return {
-                      id: params.term,
-                      text: params.term,
-                      newOption: true
-                  }
-              }
-          });
-          $('#promotion_select').on('change', function() {
-        	    var promoCode = $('#promotion_select').val();
-        	    $.ajax({
-        	        url: 'shoppingcart', // URL đến servlet xử lý mã khuyến mãi
-        	        type: 'POST',
-        	        data: { code: promoCode },
-        	        success: function(response) {
-        	        	var a=response.total;
-        	        	var b=response.error;
-        	        	  if (a !== undefined) {
-        	                  $('#total').text(a);
-        	                  $('#error_message').text(''); // Xóa thông báo lỗi nếu có
-        	              } else if (b !== undefined) {
-        	                  $('#error_message').text(b).show();
-        	                 
-        	              }
-        	      
-        	        },
-        	        error: function(response) {
-        	            alert('Đã xảy ra lỗi khi gửi mã khuyến mãi.');
-        	        }
-        	    });
-        	});
-      });
+		$(document).ready(function() {
+			$('#promotion_select').select2({
+				tags : true,
+				placeholder : "Voucher",
+				allowClear : true,
+				createTag : function(params) {
+					return {
+						id : params.term,
+						text : params.term,
+						newOption : true
+					}
+				}
+			});
+			$('#promotion_select').on('change', function() {
+				var promoCode = $('#promotion_select').val();
+				$.ajax({
+					url : 'shoppingcart', // URL đến servlet xử lý mã khuyến mãi
+					type : 'POST',
+					data : {
+						code : promoCode
+					},
+					success : function(response) {
+						var a = response.total;
+						var b = response.error;
+						if (a !== undefined) {
+							$('#total').text(a);
+							$('#error_message').text(''); // Xóa thông báo lỗi nếu có
+						} else if (b !== undefined) {
+							$('#error_message').text(b).show();
+
+						}
+
+					},
+					error : function(response) {
+						alert('Đã xảy ra lỗi khi gửi mã khuyến mãi.');
+					}
+				});
+			});
+		});
+
+		$(document)
+				.ready(
+						function() {
+							$('.quantity-increase').click(function() {
+								var cartID = $(this).data('cartid');
+								var itemId = $(this).data('itemid');
+								updateQuantity(cartID, itemId, 'increase');
+							});
+
+							$('.quantity-decrease').click(function() {
+								var cartID = $(this).data('cartid');
+								var itemId = $(this).data('itemid');
+								updateQuantity(cartID, itemId, 'decrease');
+							});
+
+							$('.remove-item').click(function() {
+								var cartID = $(this).data('cartid');
+								var itemId = $(this).data('itemid');
+								updateQuantity(cartID, itemId, 'remove');
+							});
+
+							function updateQuantity(cartID, itemId, action) {
+								$
+										.ajax({
+											url : 'editcart',
+											type : 'GET',
+											data : {
+												action : action,
+												cartID : cartID,
+												itemId : itemId
+											},
+											success : function(response) {
+												// Update the UI based on the response
+												if (response.success) {
+													if (action === 'remove') {
+								                        // Xóa sản phẩm khỏi giỏ hàng
+								                        $('.product[data-cartid="${'+cartID+'}"]').remove();
+								                        $('#total').text(response.tongtienGiohang+ ' VND');
+														$('#totalQuantity').text(response.totalQuantity);
+													} else {
+														$('#quantity-' + cartID)
+																.text(
+																		response.newQuantity);
+														$(
+																'#totalPrice-'
+																		+ cartID)
+																.text(
+																		response.newTotalPrice
+																				+ ' VND');
+														$('#total')
+																.text(
+																		response.tongtienGiohang
+																				+ ' VND');
+														$('#totalQuantity')
+																.text(
+																		response.totalQuantity);
+													}
+												} else {
+													alert('Error: '
+															+ response.message);
+												}
+											},
+											error : function(response) {
+												alert('Error occurred while updating the cart.');
+											}
+										});
+							}
+						});
+		
 	</script>
 </body>
 
