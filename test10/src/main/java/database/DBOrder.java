@@ -429,10 +429,15 @@ public class DBOrder {
 		List<Order> b = new ArrayList<Order>();
 		Connection c = connectionDB.connect();
 		String sql = "SELECT o.ORDER_ID, u.FULL_NAME, sum(c.TOTAL_PRICE) AS 'TOTAL_PRICE', \r\n"
-				+ "o.ORDER_DATE, o.DELIVERY_DATE, \r\n" + "so.STATUS_ORDER_NAME, o.ADDRESS\r\n" + "FROM orders o\r\n"
-				+ "JOIN users u ON o.USER_ID=u.USER_ID\r\n" + "JOIN order_detail od ON od.ORDER_ID=o.ORDER_ID\r\n"
-				+ "JOIN cart c ON od.CART_ID=c.CART_ID\r\n" + "JOIN items i ON c.ITEM_ID=i.ITEM_ID\r\n"
-				+ "JOIN status_oder so ON so.STATUS_ORDER_ID=o.STATUS_ORDER_ID \r\n" + "GROUP BY o.ORDER_ID";
+				+ "o.ORDER_DATE, o.DELIVERY_DATE, \r\n"
+				+ "so.STATUS_ORDER_NAME, o.ADDRESS\r\n"
+				+ "FROM orders o\r\n"
+				+ "JOIN users u ON o.USER_ID=u.USER_ID\r\n"
+				+ "JOIN order_detail od ON od.ORDER_ID=o.ORDER_ID\r\n"
+				+ "JOIN cart c ON od.CART_ID=c.CART_ID\r\n"
+				+ "JOIN items i ON c.ITEM_ID=i.ITEM_ID\r\n"
+				+ "JOIN status_oder so ON so.STATUS_ORDER_ID=o.STATUS_ORDER_ID \r\n"
+				+ "GROUP BY o.ORDER_ID";
 		try {
 			PreparedStatement ps = c.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
@@ -440,16 +445,16 @@ public class DBOrder {
 			while (rs.next()) {
 				int orderId = rs.getInt("ORDER_ID");
 				String name = rs.getString("FULL_NAME");
-				int total_price = rs.getInt("TOTAL_PRICE");
+				int total_price = rs.getInt("TOTAL_PRICE");	
 				String orderDate = rs.getString("ORDER_DATE");
 				String deliverDate = rs.getString("DELIVERY_DATE");
 				String status = rs.getString("STATUS_ORDER_NAME");
 				String address = rs.getString("ADDRESS");
-
+				
 				Order order = new Order();
-				StatusOrder statusOrder = new StatusOrder();
+				StatusOrder statusOrder=new StatusOrder();
 				order.setStatusOrder(statusOrder);
-
+				
 				order.setOrderId(orderId);
 				order.setName(name);
 				order.setTotalPrice(total_price);
@@ -457,7 +462,7 @@ public class DBOrder {
 				order.setDeliveriDate(deliverDate);
 				order.getStatusOrder().setName(status);
 				order.setAddress(address);
-
+				
 				b.add(order);
 			}
 			rs.close();
@@ -468,17 +473,21 @@ public class DBOrder {
 		}
 		return b;
 	}
-
+	
 	public Order getOrderById(int id) {
 		Connection c = connectionDB.connect();
 		Order order = new Order();
-		StatusOrder statusOrder = new StatusOrder();
+		StatusOrder statusOrder =new StatusOrder();
 		order.setStatusOrder(statusOrder);
 		String sql = "SELECT o.ORDER_ID, u.FULL_NAME,  sum(c.TOTAL_PRICE) AS 'TOTAL_PRICE', \r\n"
-				+ "o.ORDER_DATE, o.DELIVERY_DATE, \r\n" + "o.STATUS_ORDER_ID AS 'status', o.ADDRESS\r\n"
-				+ "FROM orders o\r\n" + "JOIN users u ON o.USER_ID=u.USER_ID\r\n"
-				+ "JOIN order_detail od ON od.ORDER_ID=o.ORDER_ID\r\n" + "JOIN cart c ON od.CART_ID=c.CART_ID\r\n"
-				+ "JOIN items i ON c.ITEM_ID=i.ITEM_ID\r\n" + "WHERE o.ORDER_ID=?";
+				+ "o.ORDER_DATE, o.DELIVERY_DATE, \r\n"
+				+ "o.STATUS_ORDER_ID AS 'status', o.ADDRESS\r\n"
+				+ "FROM orders o\r\n"
+				+ "JOIN users u ON o.USER_ID=u.USER_ID\r\n"
+				+ "JOIN order_detail od ON od.ORDER_ID=o.ORDER_ID\r\n"
+				+ "JOIN cart c ON od.CART_ID=c.CART_ID\r\n"
+				+ "JOIN items i ON c.ITEM_ID=i.ITEM_ID\r\n"
+				+ "WHERE o.ORDER_ID=?";
 		try {
 			PreparedStatement ps = c.prepareStatement(sql);
 			ps.setInt(1, id);
@@ -486,7 +495,7 @@ public class DBOrder {
 			ResultSet rs = ps.executeQuery();
 
 			while (rs.next()) {
-
+				
 				int orderId = rs.getInt("ORDER_ID");
 				String name = rs.getString("FULL_NAME");
 				double total_price = rs.getInt("TOTAL_PRICE");
@@ -509,15 +518,17 @@ public class DBOrder {
 		}
 		return order;
 	}
-
-	public int updateOrderStatus(int orderId, int statusId, String deliverDate) {
+	
+	public int updateOrderStatus(int orderId,int statusId, String deliverDate) {
 		int status = 0;
-
+		
 		Connection c = connectionDB.connect();
 		Order order = new Order();
-		StatusOrder statusOrder = new StatusOrder();
+		StatusOrder statusOrder =new StatusOrder();
 		order.setStatusOrder(statusOrder);
-		String sql = "UPDATE orders o\r\n" + "SET o.DELIVERY_DATE = ?,\r\n" + "		o.STATUS_ORDER_ID=?\r\n"
+		String sql="UPDATE orders o\r\n"
+				+ "SET o.DELIVERY_DATE = ?,\r\n"
+				+ "		o.STATUS_ORDER_ID=?\r\n"
 				+ "WHERE o.ORDER_ID=?;";
 		PreparedStatement ps;
 		try {
@@ -525,20 +536,24 @@ public class DBOrder {
 			ps.setString(1, deliverDate);
 			ps.setInt(2, statusId);
 			ps.setInt(3, orderId);
-
+			
 			status = ps.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-
+		
 		return status;
 	}
-
-	public List<Order> getCusomerNotBuyOver6Month() {
+	
+	public List<Order> getCusomerNotBuyOver6Month(){
 		List<Order> b = new ArrayList<Order>();
 		Connection c = connectionDB.connect();
-		String sql = "SELECT \r\n" + "    u.USER_ID, \r\n" + "    u.FULL_NAME, \r\n" + "    o.ORDER_DATE,\r\n"
-				+ "    DATEDIFF(CURDATE(), o.ORDER_DATE) AS DAYS_DIFFERENCE\r\n" + "FROM users u\r\n"
+		String sql = "SELECT \r\n"
+				+ "    u.USER_ID, \r\n"
+				+ "    u.FULL_NAME, \r\n"
+				+ "    o.ORDER_DATE,\r\n"
+				+ "    DATEDIFF(CURDATE(), o.ORDER_DATE) AS DAYS_DIFFERENCE\r\n"
+				+ "FROM users u\r\n"
 				+ "JOIN orders o ON o.USER_ID = u.USER_ID\r\n"
 				+ "WHERE DATEDIFF(CURDATE(), o.ORDER_DATE) > 6 * 30 -- Giả sử một tháng có 30 ngày\r\n"
 				+ "GROUP BY u.USER_ID, u.FULL_NAME, o.ORDER_DATE;\r\n";
@@ -550,15 +565,15 @@ public class DBOrder {
 				int userId = rs.getInt("USER_ID");
 				String name = rs.getString("FULL_NAME");
 				String orderDate = rs.getString("ORDER_DATE");
-				int dayDifference = rs.getInt("DAYS_DIFFERENCE");
-
+				int dayDifference = rs.getInt("DAYS_DIFFERENCE");	
+				
 				Order order = new Order();
-
+				
 				order.setUserId(userId);
 				order.setName(name);
 				order.setOrderDate(orderDate);
 				order.setDateDifference(dayDifference);
-
+				
 				b.add(order);
 			}
 			rs.close();
@@ -569,14 +584,19 @@ public class DBOrder {
 		}
 		return b;
 	}
-
-	public List<Order> topCustomer() {
+	
+	public List<Order> topCustomer(){
 		List<Order> b = new ArrayList<Order>();
 		Connection c = connectionDB.connect();
-		String sql = "SELECT \r\n" + "    u.USER_ID, \r\n" + "    u.FULL_NAME, \r\n"
-				+ "    COUNT(o.ORDER_ID) AS TOTAL_ORDERS\r\n" + "FROM users u\r\n"
-				+ "JOIN orders o ON o.USER_ID = u.USER_ID\r\n" + "WHERE MONTH(o.ORDER_DATE) = MONTH(CURDATE()) \r\n"
-				+ "AND YEAR(o.ORDER_DATE) = YEAR(CURDATE())\r\n" + "GROUP BY u.USER_ID, u.FULL_NAME;";
+		String sql = "SELECT \r\n"
+				+ "    u.USER_ID, \r\n"
+				+ "    u.FULL_NAME, \r\n"
+				+ "    COUNT(o.ORDER_ID) AS TOTAL_ORDERS\r\n"
+				+ "FROM users u\r\n"
+				+ "JOIN orders o ON o.USER_ID = u.USER_ID\r\n"
+				+ "WHERE MONTH(o.ORDER_DATE) = MONTH(CURDATE()) \r\n"
+				+ "AND YEAR(o.ORDER_DATE) = YEAR(CURDATE())\r\n"
+				+ "GROUP BY u.USER_ID, u.FULL_NAME;";
 		try {
 			PreparedStatement ps = c.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
@@ -585,13 +605,13 @@ public class DBOrder {
 				int userId = rs.getInt("USER_ID");
 				String name = rs.getString("FULL_NAME");
 				String orderDate = rs.getString("TOTAL_ORDERS");
-
+				
 				Order order = new Order();
-
+				
 				order.setUserId(userId);
 				order.setName(name);
 				order.setOrderDate(orderDate);
-
+				
 				b.add(order);
 			}
 			rs.close();
@@ -602,8 +622,5 @@ public class DBOrder {
 		}
 		return b;
 	}
-
-	public static void main(String[] args) throws SQLException {
-	}
-
+	
 }

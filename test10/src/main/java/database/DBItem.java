@@ -5,14 +5,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import model.Category;
 import model.ImportDetail;
 import model.Inventory;
 import model.Item;
-import model.User;
 
 public class DBItem {
 
@@ -426,7 +424,7 @@ public class DBItem {
 		}
 		return b;
 	}
-
+	
 	public int addInventoryFirst(Item e) throws SQLException {
 		int status = 0;
 
@@ -442,7 +440,7 @@ public class DBItem {
 		}
 		return status;
 	}
-
+	
 	public int updateInventory(int invenID, int quantity) throws SQLException {
 		int status = 0;
 
@@ -485,8 +483,6 @@ public class DBItem {
 
 	public static void main(String[] args) throws SQLException {
 		DBItem l = new DBItem();
-		List<Item> items = l.getItemForAdmin();
-		System.out.println(items);
+		System.out.println(l.getInventoryByInvenID(14));
 	}
-
 }

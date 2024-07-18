@@ -58,6 +58,7 @@ public class Admin extends HttpServlet {
 			if (gr == null || gr.equals("home")) {
 				orders=dbOrder.getCusomerNotBuyOver6Month();
 				
+				
 				req.setAttribute("orders", orders);
 				req.setAttribute("home", "home");
 
