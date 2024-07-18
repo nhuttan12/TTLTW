@@ -6,13 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import model.Item;
-<<<<<<< HEAD
-import model.Role;
-=======
 import model.Order;
 import model.Role;
 import model.StatusOrder;
->>>>>>> fd416312b978d75da5da4228c9118ebfeff927a3
 import model.StatusUser;
 import model.User;
 import java.util.ArrayList;

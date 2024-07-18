@@ -12,12 +12,7 @@ public class StatusOrder {
 		this.id = id;
 		this.name = name;
 	}
-<<<<<<< HEAD
-	public StatusOrder() {
-	}
-=======
 
->>>>>>> fd416312b978d75da5da4228c9118ebfeff927a3
 	public int getId() {
 		return id;
 	}
