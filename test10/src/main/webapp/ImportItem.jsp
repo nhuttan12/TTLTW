@@ -52,7 +52,7 @@
                 <div class="form-group">
 	                <%
 	                List<Item>items=(List<Item>)request.getAttribute("items");
-	                for(int i=0; i<5;i++){
+	                for(int i=1; i<6;i++){
 	                %>
 	                <div>
 	                    <select name="product-<%=i%>" class="form-control" id="product">
@@ -66,7 +66,7 @@
 			                }
 	                        %>
 	                    </select>
-	                    <input name="quantity-<%=i%>" type="number" class="form-control">
+	                    <input name="quantity-<%=i%>" value="0" type="number" class="form-control">
                     </div>
                     <%
                 	}
@@ -74,7 +74,7 @@
                 </div>
                 <div class="form-group">
                     <label for="importer">Người nhập: </label>
-                    <select name="category" class="form-control" id="importer">
+                    <select name="importer" class="form-control" id="importer">
 		                <%
 		                List<User>users=(List<User>)request.getAttribute("users");
 		                if(users != null){
