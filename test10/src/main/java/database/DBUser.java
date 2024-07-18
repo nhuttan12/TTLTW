@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import model.Item;
+import model.Role;
+import model.StatusUser;
 import model.User;
 import java.util.ArrayList;
 import java.util.List;
@@ -515,26 +517,102 @@ public class DBUser {
 		return sid;
 	}
 
-	public static void main(String[] args) throws SQLException {
-		DBUser l = new DBUser();
-//		User a = l.checkUSER("PERSON1", "123");
-//		User a = new User(1,"PERSON1", "123","Thu","03","nu","");
-//		User b = new User(2,"PERSON2", "456","Thao","02","nu","");
-		// System.out.println(l.update(b));
-//		System.out.println(l.deleteUSER("PERSON"));
-//		System.out.println(l.getUserByUserName("PERSON").getId());
-		// System.out.println(a.getUserName());
-//
-//		System.out.println(
-//				l.getUserByID(1));
-//		l.update1(new User(1, "tuuuuuuuuu", "999999999"));
-//		System.out.println(
-//				l.getUserByID(1));
-		User a =l.getUserByID(1);
-		System.out.println(a.getStatus());
-		l.updateByStatus(1);
-		a=l.getUserByID(1);
-		System.out.println(a.getStatus());
-	}
+	public List<User> getUsersForAdmin() {
+		List<User> b = new ArrayList<User>();
+		Connection c = connectionDB.connect();
+		String sql = "SELECT u.USER_ID, u.FULL_NAME, u.EMAIL, \r\n" + "u.USER_NAME, r.ROLE_NAME,\r\n"
+				+ "su.STATUS_USER_NAME\r\n" + "FROM users u \r\n" + "JOIN `role` r ON u.ROLE_ID=r.ROLE_ID\r\n"
+				+ "JOIN status_user su ON u.STATUS_USER_ID=su.STATUS_USER_ID\r\n" + "WHERE r.ROLE_ID != 3;";
+		try {
+			PreparedStatement ps = c.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
 
+			while (rs.next()) {
+				int userId = rs.getInt("USER_ID");
+				String fullName = rs.getString("FULL_NAME");
+				String email = rs.getString("EMAIL");
+				String userName = rs.getString("USER_NAME");
+				String roleName = rs.getString("ROLE_NAME");
+				String status = rs.getString("STATUS_USER_NAME");
+
+				User user = new User();
+				Role role = new Role();
+				StatusUser statusUser = new StatusUser();
+
+				user.setRolee(role);
+				user.setStatusUser(statusUser);
+
+				user.setId(userId);
+				user.setName(fullName);
+				user.setEmail(email);
+				user.setUserName(userName);
+				user.getRolee().setName(roleName);
+				user.getStatusUser().setName(status);
+
+				b.add(user);
+			}
+			rs.close();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return b;
+	}
+	
+	public int updateUser(int userId, int statusId, int roleId) {
+		int status = 0;
+		try (Connection c = connectionDB.connect()) {
+			User a = getUserByID(userId);
+			if (a != null) {
+				String sql = "UPDATE users u\r\n" + "SET u.STATUS_USER_ID=?, u.ROLE_ID=?\r\n" + "WHERE USER_ID=?;";
+				PreparedStatement ps = c.prepareStatement(sql);
+				ps.setInt(1, statusId);
+				ps.setInt(2, roleId);
+				ps.setInt(3, userId);
+				status = ps.executeUpdate();
+			} else {
+				System.out.println("khong tim thay user");
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return status;
+	}
+	
+	public List<User> getModAndAdmin(){
+		List<User> b = new ArrayList<User>();
+		Connection c = connectionDB.connect();
+		String sql = "SELECT u.USER_ID, u.FULL_NAME, u.ROLE_ID\r\n"
+				+ "FROM users u\r\n"
+				+ "WHERE u.ROLE_ID=2 OR u.ROLE_ID=3";
+		try {
+			PreparedStatement ps = c.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+				int userId = rs.getInt("USER_ID");
+				String fullName = rs.getString("FULL_NAME");
+				int roleId=rs.getInt("ROLE_ID");
+
+				User user = new User();
+
+				user.setId(userId);
+				user.setName(fullName);
+				user.setRole(roleId);
+
+				b.add(user);
+			}
+			rs.close();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return b;
+	}
+	public static void main(String[] args) throws SQLException {
+		DBUser db = new DBUser();
+		db.getModAndAdmin().forEach(e->System.out.println(e.getRole()));
+	}
 }

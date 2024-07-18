@@ -15,6 +15,7 @@ import java.util.Map;
 
 import model.Item;
 import model.Order;
+import model.StatusOrder;
 import model.Cart;
 import model.Category;
 import model.User;
@@ -71,7 +72,8 @@ public class DBOrder {
 		String date = curDate.toString();
 		try (Connection c = connectionDB.connect()) {
 
-			String sql = "INSERT INTO orders (USER_ID, FULL_NAME, PHONE, ADDRESS, ORDER_DATE, STATUS_ORDER_ID) " + "VALUES (?, ?, ?, ?, ?, ?);";
+			String sql = "INSERT INTO orders (USER_ID, FULL_NAME, PHONE, ADDRESS, ORDER_DATE, STATUS_ORDER_ID) "
+					+ "VALUES (?, ?, ?, ?, ?, ?);";
 			PreparedStatement ps = c.prepareStatement(sql);
 			// '"+title+"',"+Authorid+" , 18022018, 0000, "+Isbn+"
 			ps.setInt(1, uId);
@@ -114,6 +116,7 @@ public class DBOrder {
 		return order;
 
 	}
+
 //
 //	public int updateStatus(int oid, int status) throws SQLException {
 //		int s = 0;
@@ -261,6 +264,7 @@ public class DBOrder {
 		return list;
 
 	}
+
 //
 //	public Order getOderByOderId(int id) throws SQLException {
 //
@@ -421,70 +425,185 @@ public class DBOrder {
 //		return b;
 //
 //	}
+	public List<Order> getOrdersForAdmin() {
+		List<Order> b = new ArrayList<Order>();
+		Connection c = connectionDB.connect();
+		String sql = "SELECT o.ORDER_ID, u.FULL_NAME, sum(c.TOTAL_PRICE) AS 'TOTAL_PRICE', \r\n"
+				+ "o.ORDER_DATE, o.DELIVERY_DATE, \r\n" + "so.STATUS_ORDER_NAME, o.ADDRESS\r\n" + "FROM orders o\r\n"
+				+ "JOIN users u ON o.USER_ID=u.USER_ID\r\n" + "JOIN order_detail od ON od.ORDER_ID=o.ORDER_ID\r\n"
+				+ "JOIN cart c ON od.CART_ID=c.CART_ID\r\n" + "JOIN items i ON c.ITEM_ID=i.ITEM_ID\r\n"
+				+ "JOIN status_oder so ON so.STATUS_ORDER_ID=o.STATUS_ORDER_ID \r\n" + "GROUP BY o.ORDER_ID";
+		try {
+			PreparedStatement ps = c.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+				int orderId = rs.getInt("ORDER_ID");
+				String name = rs.getString("FULL_NAME");
+				int total_price = rs.getInt("TOTAL_PRICE");
+				String orderDate = rs.getString("ORDER_DATE");
+				String deliverDate = rs.getString("DELIVERY_DATE");
+				String status = rs.getString("STATUS_ORDER_NAME");
+				String address = rs.getString("ADDRESS");
+
+				Order order = new Order();
+				StatusOrder statusOrder = new StatusOrder();
+				order.setStatusOrder(statusOrder);
+
+				order.setOrderId(orderId);
+				order.setName(name);
+				order.setTotalPrice(total_price);
+				order.setOrderDate(orderDate);
+				order.setDeliveriDate(deliverDate);
+				order.getStatusOrder().setName(status);
+				order.setAddress(address);
+
+				b.add(order);
+			}
+			rs.close();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return b;
+	}
+
+	public Order getOrderById(int id) {
+		Connection c = connectionDB.connect();
+		Order order = new Order();
+		StatusOrder statusOrder = new StatusOrder();
+		order.setStatusOrder(statusOrder);
+		String sql = "SELECT o.ORDER_ID, u.FULL_NAME,  sum(c.TOTAL_PRICE) AS 'TOTAL_PRICE', \r\n"
+				+ "o.ORDER_DATE, o.DELIVERY_DATE, \r\n" + "o.STATUS_ORDER_ID AS 'status', o.ADDRESS\r\n"
+				+ "FROM orders o\r\n" + "JOIN users u ON o.USER_ID=u.USER_ID\r\n"
+				+ "JOIN order_detail od ON od.ORDER_ID=o.ORDER_ID\r\n" + "JOIN cart c ON od.CART_ID=c.CART_ID\r\n"
+				+ "JOIN items i ON c.ITEM_ID=i.ITEM_ID\r\n" + "WHERE o.ORDER_ID=?";
+		try {
+			PreparedStatement ps = c.prepareStatement(sql);
+			ps.setInt(1, id);
+
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+
+				int orderId = rs.getInt("ORDER_ID");
+				String name = rs.getString("FULL_NAME");
+				double total_price = rs.getInt("TOTAL_PRICE");
+				String orderDate = rs.getString("ORDER_DATE");
+				String deliverDate = rs.getString("DELIVERY_DATE");
+				int statusId = rs.getInt("status");
+				order.setOrderId(orderId);
+				order.setName(name);
+				order.setTotalPrice(total_price);
+				order.setOrderDate(orderDate);
+				order.setDeliveriDate(deliverDate);
+				order.getStatusOrder().setId(statusId);
+
+			}
+			rs.close();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return order;
+	}
+
+	public int updateOrderStatus(int orderId, int statusId, String deliverDate) {
+		int status = 0;
+
+		Connection c = connectionDB.connect();
+		Order order = new Order();
+		StatusOrder statusOrder = new StatusOrder();
+		order.setStatusOrder(statusOrder);
+		String sql = "UPDATE orders o\r\n" + "SET o.DELIVERY_DATE = ?,\r\n" + "		o.STATUS_ORDER_ID=?\r\n"
+				+ "WHERE o.ORDER_ID=?;";
+		PreparedStatement ps;
+		try {
+			ps = c.prepareStatement(sql);
+			ps.setString(1, deliverDate);
+			ps.setInt(2, statusId);
+			ps.setInt(3, orderId);
+
+			status = ps.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return status;
+	}
+
+	public List<Order> getCusomerNotBuyOver6Month() {
+		List<Order> b = new ArrayList<Order>();
+		Connection c = connectionDB.connect();
+		String sql = "SELECT \r\n" + "    u.USER_ID, \r\n" + "    u.FULL_NAME, \r\n" + "    o.ORDER_DATE,\r\n"
+				+ "    DATEDIFF(CURDATE(), o.ORDER_DATE) AS DAYS_DIFFERENCE\r\n" + "FROM users u\r\n"
+				+ "JOIN orders o ON o.USER_ID = u.USER_ID\r\n"
+				+ "WHERE DATEDIFF(CURDATE(), o.ORDER_DATE) > 6 * 30 -- Giả sử một tháng có 30 ngày\r\n"
+				+ "GROUP BY u.USER_ID, u.FULL_NAME, o.ORDER_DATE;\r\n";
+		try {
+			PreparedStatement ps = c.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+				int userId = rs.getInt("USER_ID");
+				String name = rs.getString("FULL_NAME");
+				String orderDate = rs.getString("ORDER_DATE");
+				int dayDifference = rs.getInt("DAYS_DIFFERENCE");
+
+				Order order = new Order();
+
+				order.setUserId(userId);
+				order.setName(name);
+				order.setOrderDate(orderDate);
+				order.setDateDifference(dayDifference);
+
+				b.add(order);
+			}
+			rs.close();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return b;
+	}
+
+	public List<Order> topCustomer() {
+		List<Order> b = new ArrayList<Order>();
+		Connection c = connectionDB.connect();
+		String sql = "SELECT \r\n" + "    u.USER_ID, \r\n" + "    u.FULL_NAME, \r\n"
+				+ "    COUNT(o.ORDER_ID) AS TOTAL_ORDERS\r\n" + "FROM users u\r\n"
+				+ "JOIN orders o ON o.USER_ID = u.USER_ID\r\n" + "WHERE MONTH(o.ORDER_DATE) = MONTH(CURDATE()) \r\n"
+				+ "AND YEAR(o.ORDER_DATE) = YEAR(CURDATE())\r\n" + "GROUP BY u.USER_ID, u.FULL_NAME;";
+		try {
+			PreparedStatement ps = c.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+				int userId = rs.getInt("USER_ID");
+				String name = rs.getString("FULL_NAME");
+				String orderDate = rs.getString("TOTAL_ORDERS");
+
+				Order order = new Order();
+
+				order.setUserId(userId);
+				order.setName(name);
+				order.setOrderDate(orderDate);
+
+				b.add(order);
+			}
+			rs.close();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return b;
+	}
 
 	public static void main(String[] args) throws SQLException {
-		// TODO Auto-generated method stub
-//		DBOrder c = new DBOrder();
-//		DBUser dbUser=new DBUser();
-//		for(User u:dbUser.getUserByRole(1)) {
-//			for(Order order:c.getOderByShoppingCartID(u.getShoppingCartId())) {
-//				System.out.println(order);
-////				for(Item item:c.getListItemOrderByOrderID(order.getOrderId())) {
-////					System.out.println(item);
-////				}
-//			}
-//		}
-		
-//		List<Order> o = c.getOderByCartId(7);
-//		for (Order order : o) {
-//			System.out.println(order.getOrderId());
-////			List<Item> item = c.getListItemOrderByOrderID(136);
-////			for (Item it : item) {
-////				System.out.println(it.getName());
-////			}
-//		}
-		
-//		List<Item> item = c.getListItemOrderByOrderID(136);
-//		for (Item item2 : item) {
-//			System.out.println(item2.getName());
-//		}
-		
-//		List<Item> item = c.getListItemOrderByOrderID(115);
-//		for (Item it : item) {
-//			System.out.println(it.getName());
-//		}
-
-//		Order o = c.getOderByOderId(136);
-//		System.out.println(o.getShoppingCartId());
-//		System.out.println(o.getOrderPrice());
-//		System.out.println(o.getDate());
-//		System.out.println(o.getOrderPrice());
-//		System.out.println(o.getStatus());
-		
-//		for(User u:dbUser.getUserByRole(1)) {
-//			for(Order order : 
-//				c.getOderByShoppingCartID(u.getShoppingCartId())) {
-//				System.out.println(order);
-//				for(Item item:c.getListItemOrderByOrderID(order.getOrderId())) {
-//					System.out.println(item);
-//				}
-//			}
-//		}
-		
-//		List<Order> os = c.getOderByCartIdStatus(7);
-////		req.setAttribute("listOder", os);
-//		
-//		Map<Order, List<Item>> orderProductMap = new HashMap<>();
-//		for (Order order : os) {
-//			List<Item> item = c.getListItemOrderByOrderID(order.getOrderId());
-//			System.out.println(order.getOrderId()+" "+order.getOrderPrice());
-//			for (Item it : item) {
-//				System.out.println(it);
-//			}
-//			
-//			orderProductMap.put(order, item);
-//		}
 	}
-	
 
 }

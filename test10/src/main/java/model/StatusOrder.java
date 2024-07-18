@@ -8,6 +8,8 @@ public class StatusOrder {
 		this.id = id;
 		this.name = name;
 	}
+	public StatusOrder() {
+	}
 	public int getId() {
 		return id;
 	}

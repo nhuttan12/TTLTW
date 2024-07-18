@@ -13,6 +13,8 @@ public class User {
 	int role;
 	String email;
 	int status;
+	Role rolee;
+	StatusUser statusUser;
 
 	public User(int id, String userName, String password, String name, String phone, int gender, String message,
 			int role, String email, int status) {
@@ -164,6 +166,22 @@ public class User {
 
 	public void setStatus(int status) {
 		this.status = status;
+	}
+
+	public Role getRolee() {
+		return rolee;
+	}
+
+	public void setRolee(Role rolee) {
+		this.rolee = rolee;
+	}
+
+	public StatusUser getStatusUser() {
+		return statusUser;
+	}
+
+	public void setStatusUser(StatusUser statusUser) {
+		this.statusUser = statusUser;
 	}
 
 	@Override

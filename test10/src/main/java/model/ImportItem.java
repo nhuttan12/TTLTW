@@ -6,8 +6,12 @@ import java.sql.Date;
 public class ImportItem {
 	private int id; //mã của đợt nhập hàng đó
 	private User user; //người nhập
-	private Date importDate; //ngày nhập
-	public ImportItem(int id, User user, Date importDate) {
+	private String importDate; //ngày nhập
+	private ImportDetail importDetail;
+	private int totalQuantity;
+	private int totalItem;
+	private int totalPrice;
+	public ImportItem(int id, User user, String importDate) {
 		super();
 		this.id = id;
 		this.user = user;
@@ -21,10 +25,10 @@ public class ImportItem {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public Date getImportDate() {
+	public String getImportDate() {
 		return importDate;
 	}
-	public void setImportDate(Date importDate) {
+	public void setImportDate(String importDate) {
 		this.importDate = importDate;
 	}
 	@Override
@@ -36,5 +40,29 @@ public class ImportItem {
 	}
 	public void setUser(User user) {
 		this.user = user;
+	}
+	public ImportDetail getImportDetail() {
+		return importDetail;
+	}
+	public void setImportDetail(ImportDetail importDetail) {
+		this.importDetail = importDetail;
+	}
+	public int getTotalQuantity() {
+		return totalQuantity;
+	}
+	public void setTotalQuantity(int totalQuantity) {
+		this.totalQuantity = totalQuantity;
+	}
+	public int getTotalItem() {
+		return totalItem;
+	}
+	public void setTotalItem(int totalItem) {
+		this.totalItem = totalItem;
+	}
+	public int getTotalPrice() {
+		return totalPrice;
+	}
+	public void setTotalPrice(int totalPrice) {
+		this.totalPrice = totalPrice;
 	}
 }

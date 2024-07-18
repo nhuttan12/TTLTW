@@ -8,6 +8,8 @@ public class StatusUser {
 		this.id = id;
 		this.name = name;
 	}
+	public StatusUser() {
+	}
 	public int getId() {
 		return id;
 	}
