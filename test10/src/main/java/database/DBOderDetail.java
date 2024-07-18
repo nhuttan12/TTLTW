@@ -78,7 +78,48 @@ public class DBOderDetail {
 //		return item;
 //
 //	}
+	public List<OrderDetail> getOrderDetails(int orderId){
+		List<OrderDetail> b = new ArrayList<OrderDetail>();
+		Connection c = connectionDB.connect();
+		String sql = "SELECT od.ORDER_DETAIL_ID, i.ITEM_NAME, i.PRICE, c.QUANTITY, c.TOTAL_PRICE\r\n"
+				+ "FROM items i\r\n"
+				+ "JOIN cart c ON c.ITEM_ID=i.ITEM_ID\r\n"
+				+ "JOIN order_detail od ON od.CART_ID=c.CART_ID\r\n"
+				+ "JOIN orders o ON o.ORDER_ID=od.ORDER_ID\r\n"
+				+ "WHERE o.ORDER_ID=?;";
+		try {
+			PreparedStatement ps = c.prepareStatement(sql);
+			ps.setInt(1, orderId);
 
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+				
+				int id=rs.getInt("ORDER_DETAIL_ID");
+				String name=rs.getString("ITEM_NAME");
+				double price=rs.getDouble("PRICE");
+				int quantity=rs.getInt("QUANTITY");
+				double totalPrice=rs.getDouble("TOTAL_PRICE");
+				
+				OrderDetail od=new OrderDetail();
+				Item item=new Item();
+				od.setItem(item);
+				od.setId(id);
+				od.getItem().setName(name);
+				od.getItem().setPrice(price);
+				od.setQuantity(quantity);
+				od.setPrice(totalPrice);
+
+				b.add(od);
+			}
+			rs.close();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return b;
+	}
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 

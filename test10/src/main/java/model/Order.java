@@ -3,6 +3,7 @@ package model;
 public class Order {
 	int orderId;
 	int userId;
+	double totalPrice; // hỗ trợ hiển thị tổng tiền của hoá đơn
 	String name;
 	String phone;
 	String address;
@@ -10,9 +11,9 @@ public class Order {
 	String orderDate;
 	String deliveriDate;
 	int statusOrderId;
-	
-	
-	
+	StatusOrder statusOrder;
+	int dateDifference;
+
 	public Order(int orderId, int userId, String name, String phone, String address, String note, String orderDate,
 			String deliveriDate, int statusOrderId) {
 		super();
@@ -26,7 +27,6 @@ public class Order {
 		this.deliveriDate = deliveriDate;
 		this.statusOrderId = statusOrderId;
 	}
-	
 
 	public Order(int userId, String name, String phone, String address, String note, String orderDate,
 			String deliveriDate, int statusOrderId) {
@@ -41,7 +41,6 @@ public class Order {
 		this.statusOrderId = statusOrderId;
 	}
 
-
 	public Order() {
 		super();
 	}
@@ -49,10 +48,11 @@ public class Order {
 	public int getOrderId() {
 		return orderId;
 	}
+
 	public void setOrderId(int orderId) {
 		this.orderId = orderId;
 	}
-	
+
 	public int getUserId() {
 		return userId;
 	}
@@ -117,14 +117,37 @@ public class Order {
 		this.statusOrderId = statusOrderId;
 	}
 
-	@Override
-	public String toString() {
-		return "Order [orderId=" + orderId + ", userId=" + userId + ", name=" + name + ", phone=" + phone + ", address="
-				+ address + ", note=" + note + ", orderDate=" + orderDate + ", deliveriDate=" + deliveriDate
-				+ ", statusOrderId=" + statusOrderId + "]";
+	public double getTotalPrice() {
+		return totalPrice;
 	}
 
-	
-	
+	public void setTotalPrice(double totalPrice) {
+		this.totalPrice = totalPrice;
+	}
+
+	public StatusOrder getStatusOrder() {
+		return statusOrder;
+	}
+
+	public void setStatusOrder(StatusOrder statusOrder) {
+		this.statusOrder = statusOrder;
+	}
+
+	public int getDateDifference() {
+		return dateDifference;
+	}
+
+	public void setDateDifference(int dateDifference) {
+		this.dateDifference = dateDifference;
+	}
+
+	@Override
+	public String toString() {
+		return "Order [orderId=" + orderId + ", userId=" + userId + ", totalPrice=" + totalPrice + ", name=" + name
+				+ ", phone=" + phone + ", address=" + address + ", note=" + note + ", orderDate=" + orderDate
+				+ ", deliveriDate=" + deliveriDate + ", statusOrderId=" + statusOrderId + ", statusOrder=" + statusOrder
+				+ "]";
+	}
+
 
 }

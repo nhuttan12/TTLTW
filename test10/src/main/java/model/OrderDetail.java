@@ -5,6 +5,7 @@ public class OrderDetail {
 	int oderId;
 	int itemId;
 	int quantity;
+	Item item;
 	double price; // tổng giá của cả đơn
 	public OrderDetail(int oderId, int itemId, int quantity, double price) {
 		super();
@@ -50,6 +51,22 @@ public class OrderDetail {
 	public void setPrice(double price) {
 		this.price = price;
 	}
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public Item getItem() {
+		return item;
+	}
+
+	public void setItem(Item item) {
+		this.item = item;
+	}
+
 	@Override
 	public String toString() {
 		return "OrderDetail [oderId=" + oderId + ", itemId=" + itemId + ", quantity=" + quantity + ", price=" + price

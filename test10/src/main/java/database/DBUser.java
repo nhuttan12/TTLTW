@@ -6,6 +6,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import model.Item;
+import model.Order;
+import model.Role;
+import model.StatusOrder;
+import model.StatusUser;
 import model.User;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,8 +42,7 @@ public class DBUser {
 				int ROLE = rs.getInt("ROLE_ID");
 				String EMAIL = rs.getString("EMAIL");
 				int STATUS = rs.getInt("STATUS_USER_ID");
-				User user = new User(USER_ID, NAME, PASSWORD, NAME, PHONE, GENDER, MESSAGE, ROLE,
-						EMAIL, STATUS);
+				User user = new User(USER_ID, NAME, PASSWORD, NAME, PHONE, GENDER, MESSAGE, ROLE, EMAIL, STATUS);
 				System.out.println("ok!!!");
 				return user;
 			}
@@ -51,7 +54,7 @@ public class DBUser {
 		return null;
 
 	}
-	
+
 	public User checkUSERByEmail(String email) {
 
 		String sql = "SELECT *  FROM USERS WHERE EMAIL=?";
@@ -74,8 +77,7 @@ public class DBUser {
 				int ROLE = rs.getInt("ROLE_ID");
 				String EMAIL = rs.getString("EMAIL");
 				int STATUS = rs.getInt("STATUS_USER_ID");
-				User user = new User(USER_ID, NAME, PASSWORD, NAME, PHONE, GENDER, MESSAGE, ROLE,
-						EMAIL, STATUS);
+				User user = new User(USER_ID, NAME, PASSWORD, NAME, PHONE, GENDER, MESSAGE, ROLE, EMAIL, STATUS);
 				System.out.println("ok!!!");
 				return user;
 			}
@@ -90,7 +92,7 @@ public class DBUser {
 
 	public int addUSER(User e) throws SQLException {
 		int status = 0;
-		
+
 		try (Connection c = connectionDB.connect()) {
 			User a = getUserByUserName(e.getUserName());
 			if (a == null) {
@@ -119,10 +121,10 @@ public class DBUser {
 
 		return status;
 	}
-	
+
 	public int addUSERForFB(String name, String email) throws SQLException {
 		int status = 0;
-		
+
 		try (Connection c = connectionDB.connect()) {
 			User a = getUserByEmail(email);
 			if (a == null) {
@@ -237,10 +239,10 @@ public class DBUser {
 			if (a != null) {
 				String sql = "UPDATE USERS SET STATUS_USER_ID=? WHERE USER_ID = ?;";
 				PreparedStatement ps = c.prepareStatement(sql);
-				if(a.getStatus()==1) {
-				// '"+title+"',"+Authorid+" , 18022018, 0000, "+Isbn+"
-				ps.setInt(1, 2);
-				}else if(a.getStatus()==2) {
+				if (a.getStatus() == 1) {
+					// '"+title+"',"+Authorid+" , 18022018, 0000, "+Isbn+"
+					ps.setInt(1, 2);
+				} else if (a.getStatus() == 2) {
 					ps.setInt(1, 1);
 				}
 				ps.setInt(2, id);
@@ -300,7 +302,8 @@ public class DBUser {
 		return status;
 	}
 
-	public int update1(int id, String name, String phone, String gender, String email, String message) throws SQLException {
+	public int update1(int id, String name, String phone, String gender, String email, String message)
+			throws SQLException {
 		int status = 0;
 
 		try (Connection c = connectionDB.connect()) {
@@ -327,8 +330,8 @@ public class DBUser {
 
 		return status;
 	}
-	
-	public int updateInfor(int id, String fullname,String phone, String gender) throws SQLException {
+
+	public int updateInfor(int id, String fullname, String phone, String gender) throws SQLException {
 		int status = 0;
 
 		try (Connection c = connectionDB.connect()) {
@@ -377,7 +380,8 @@ public class DBUser {
 				String MESSAGE = rs.getString("MESSAGE");
 				int STATUS_USER_ID = rs.getInt("STATUS_USER_ID");
 
-				b = new User(ID, USER_NAME, PASSWORD, FULL_NAME, PHONE, GENDER, MESSAGE, ROLE_ID, EMAIL, STATUS_USER_ID);
+				b = new User(ID, USER_NAME, PASSWORD, FULL_NAME, PHONE, GENDER, MESSAGE, ROLE_ID, EMAIL,
+						STATUS_USER_ID);
 			}
 			rs.close();
 		} catch (Exception ex) {
@@ -411,7 +415,8 @@ public class DBUser {
 				String MESSAGE = rs.getString("MESSAGE");
 				int STATUS_USER_ID = rs.getInt("STATUS_USER_ID");
 
-				b = new User(ID, USER_NAME, PASSWORD, FULL_NAME, PHONE, GENDER, MESSAGE, ROLE_ID, EMAIL, STATUS_USER_ID);
+				b = new User(ID, USER_NAME, PASSWORD, FULL_NAME, PHONE, GENDER, MESSAGE, ROLE_ID, EMAIL,
+						STATUS_USER_ID);
 			}
 			rs.close();
 		} catch (Exception ex) {
@@ -419,7 +424,7 @@ public class DBUser {
 		}
 		return b;
 	}
-	
+
 	public User getUserByID(int id) throws SQLException {
 		User b = null;
 
@@ -428,7 +433,6 @@ public class DBUser {
 			String sql = "SELECT * FROM USERS  WHERE USER_ID = ?;";
 
 			PreparedStatement ps = c.prepareStatement(sql);
-			// '"+title+"',"+Authorid+" , 18022018, 0000, "+Isbn+"
 			ps.setInt(1, id);
 
 			ResultSet rs = ps.executeQuery();
@@ -445,7 +449,8 @@ public class DBUser {
 				String MESSAGE = rs.getString("MESSAGE");
 				int STATUS_USER_ID = rs.getInt("STATUS_USER_ID");
 
-				b = new User(ID, USER_NAME, PASSWORD, FULL_NAME, PHONE, GENDER, MESSAGE, ROLE_ID, EMAIL, STATUS_USER_ID);
+				b = new User(ID, USER_NAME, PASSWORD, FULL_NAME, PHONE, GENDER, MESSAGE, ROLE_ID, EMAIL,
+						STATUS_USER_ID);
 			}
 			rs.close();
 		} catch (Exception ex) {
@@ -479,7 +484,8 @@ public class DBUser {
 				String MESSAGE = rs.getString("MESSAGE");
 				int STATUS_USER_ID = rs.getInt("STATUS_USER_ID");
 
-				User a = new User(ID, USER_NAME, PASSWORD, FULL_NAME, PHONE, GENDER, MESSAGE, ROLE_ID, EMAIL, STATUS_USER_ID);
+				User a = new User(ID, USER_NAME, PASSWORD, FULL_NAME, PHONE, GENDER, MESSAGE, ROLE_ID, EMAIL,
+						STATUS_USER_ID);
 				b.add(a);
 			}
 			rs.close();
@@ -515,26 +521,102 @@ public class DBUser {
 		return sid;
 	}
 
+	public List<User> getUsersForAdmin() {
+		List<User> b = new ArrayList<User>();
+		Connection c = connectionDB.connect();
+		String sql = "SELECT u.USER_ID, u.FULL_NAME, u.EMAIL, \r\n" + "u.USER_NAME, r.ROLE_NAME,\r\n"
+				+ "su.STATUS_USER_NAME\r\n" + "FROM users u \r\n" + "JOIN `role` r ON u.ROLE_ID=r.ROLE_ID\r\n"
+				+ "JOIN status_user su ON u.STATUS_USER_ID=su.STATUS_USER_ID\r\n" + "WHERE r.ROLE_ID != 3;";
+		try {
+			PreparedStatement ps = c.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+				int userId = rs.getInt("USER_ID");
+				String fullName = rs.getString("FULL_NAME");
+				String email = rs.getString("EMAIL");
+				String userName = rs.getString("USER_NAME");
+				String roleName = rs.getString("ROLE_NAME");
+				String status = rs.getString("STATUS_USER_NAME");
+
+				User user = new User();
+				Role role = new Role();
+				StatusUser statusUser = new StatusUser();
+
+				user.setRolee(role);
+				user.setStatusUser(statusUser);
+
+				user.setId(userId);
+				user.setName(fullName);
+				user.setEmail(email);
+				user.setUserName(userName);
+				user.getRolee().setName(roleName);
+				user.getStatusUser().setName(status);
+
+				b.add(user);
+			}
+			rs.close();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return b;
+	}
+
+	public int updateUser(int userId, int statusId, int roleId) {
+		int status = 0;
+		try (Connection c = connectionDB.connect()) {
+			User a = getUserByID(userId);
+			if (a != null) {
+				String sql = "UPDATE users u\r\n" + "SET u.STATUS_USER_ID=?, u.ROLE_ID=?\r\n" + "WHERE USER_ID=?;";
+				PreparedStatement ps = c.prepareStatement(sql);
+				ps.setInt(1, statusId);
+				ps.setInt(2, roleId);
+				ps.setInt(3, userId);
+				status = ps.executeUpdate();
+			} else {
+				System.out.println("khong tim thay user");
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return status;
+	}
+	public List<User> getModAndAdmin(){
+		List<User> b = new ArrayList<User>();
+		Connection c = connectionDB.connect();
+		String sql = "SELECT u.USER_ID, u.FULL_NAME, u.ROLE_ID\r\n"
+				+ "FROM users u\r\n"
+				+ "WHERE u.ROLE_ID=2 OR u.ROLE_ID=3";
+		try {
+			PreparedStatement ps = c.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+				int userId = rs.getInt("USER_ID");
+				String fullName = rs.getString("FULL_NAME");
+				int roleId=rs.getInt("ROLE_ID");
+
+				User user = new User();
+
+				user.setId(userId);
+				user.setName(fullName);
+				user.setRole(roleId);
+
+				b.add(user);
+			}
+			rs.close();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return b;
+	}
 	public static void main(String[] args) throws SQLException {
-		DBUser l = new DBUser();
-//		User a = l.checkUSER("PERSON1", "123");
-//		User a = new User(1,"PERSON1", "123","Thu","03","nu","");
-//		User b = new User(2,"PERSON2", "456","Thao","02","nu","");
-		// System.out.println(l.update(b));
-//		System.out.println(l.deleteUSER("PERSON"));
-//		System.out.println(l.getUserByUserName("PERSON").getId());
-		// System.out.println(a.getUserName());
-//
-//		System.out.println(
-//				l.getUserByID(1));
-//		l.update1(new User(1, "tuuuuuuuuu", "999999999"));
-//		System.out.println(
-//				l.getUserByID(1));
-		User a =l.getUserByID(1);
-		System.out.println(a.getStatus());
-		l.updateByStatus(1);
-		a=l.getUserByID(1);
-		System.out.println(a.getStatus());
+		DBUser db = new DBUser();
+		db.getModAndAdmin().forEach(e->System.out.println(e.getRole()));
 	}
 
 }
