@@ -21,7 +21,8 @@ public class DBItem {
 		Connection c = connectionDB.connect();
 		Item item = getItemByID(e.getId());
 		if (item == null) {
-			String sql = "INSERT INTO ITEMS (CATEGORY_ID, ITEM_NAME, PRICE, DISCOUNT, DISCRIPTION, IMAGES) VALUES (?, ?, ?, ?, ?, ?);";
+			String sql = "INSERT INTO ITEMS (CATEGORY_ID, ITEM_NAME, PRICE, DISCOUNT, DISCRIPTION, IMAGES, HIDDEN) "
+					+ "VALUES (?, ?, ?, ?, ?, ?, 1);";
 			PreparedStatement ps = c.prepareStatement(sql);
 			ps.setInt(1, e.getCategory().getId());
 			ps.setString(2, e.getName());
@@ -310,11 +311,13 @@ public class DBItem {
 	public List<Item> getItemForAdmin() {
 		List<Item> b = new ArrayList<Item>();
 		Connection c = connectionDB.connect();
-		String sql = "select i.ITEM_ID AS 'id', c.CATEGORY_NAME as 'category', i.ITEM_NAME AS 'item_name', i.PRICE as 'sale_price', \r\n"
-				+ "	import_detail.PRICE as 'import_price', (i.PRICE-import_detail.PRICE) as 'difference', \r\n"
-				+ "	i.DISCOUNT, import_detail.QUANTITY \r\n" + "from items i \r\n"
-				+ "join category c on i.CATEGORY_ID=c.CATEGORY_ID \r\n"
-				+ "join import_detail on i.ITEM_ID=import_detail.ITEM_ID;";
+		String sql = "SELECT items.ITEM_ID AS 'id', category.CATEGORY_NAME AS 'category' , items.ITEM_NAME AS 'name', \r\n"
+				+ "items.PRICE AS 'sale_price', import_detail.PRICE AS 'import_price', \r\n"
+				+ "(items.PRICE-import_detail.PRICE) AS 'difference',items.DISCOUNT AS 'discount', \r\n"
+				+ "inventory.quantity\r\n"
+				+ "FROM items JOIN category ON items.CATEGORY_ID=category.CATEGORY_ID\r\n"
+				+ "JOIN import_detail ON import_detail.ITEM_ID=items.ITEM_ID\r\n"
+				+ "JOIN inventory ON items.ITEM_ID=inventory.item_id;";
 		try {
 			PreparedStatement ps = c.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
@@ -326,12 +329,12 @@ public class DBItem {
 				item.setImportDetail(importDetail);
 				int id = rs.getInt("id");
 				String categoryName = rs.getString("category");
-				String itemName = rs.getString("item_name");
+				String itemName = rs.getString("name");
 				Double salePrice = rs.getDouble("sale_price");
 				Double importPrice = rs.getDouble("import_price");
 				Double difference = rs.getDouble("difference");
-				double DISCOUNT = rs.getDouble("DISCOUNT");
-				int quantity = rs.getInt("QUANTITY");
+				double DISCOUNT = rs.getDouble("discount");
+				int quantity = rs.getInt("quantity");
 				item.setId(id);
 				item.getCategory().setCategoryName(categoryName);
 				item.setName(itemName);
@@ -353,7 +356,7 @@ public class DBItem {
 
 	public static void main(String[] args) throws SQLException {
 		DBItem l = new DBItem();
-		List<Item> items = l.getItemByNameSearch("ay");
+		List<Item> items = l.getItemForAdmin();
 		System.out.println(items);
 	}
 

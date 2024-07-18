@@ -38,7 +38,7 @@ public class Admin extends HttpServlet {
 			if(gr==null) {
 				gr="home";
 			}
-			System.out.println(gr);
+//			System.out.println(gr);
 			DBItem dbItem = new DBItem();
 			DBUser dbUser = new DBUser();
 			DBOrder dbOrder = new DBOrder();
@@ -59,7 +59,7 @@ public class Admin extends HttpServlet {
 				req.setAttribute("listItem", items);
 				req.setAttribute("item", "item");
 
-				System.out.println(items);
+//				System.out.println(items);
 			} else if (gr.equals("spcart")) {// quan ly don hang
 				try {
 					users = dbUser.getUserByRole(1);
@@ -133,11 +133,11 @@ public class Admin extends HttpServlet {
 
 			} else if (gr.equals("item")) {// quan ly san pham
 				items = dbItem.getItemForAdmin();
-				System.out.println("item: " + items);
+//				System.out.println("item: " + items);
 				req.setAttribute("listItem", items);
 				req.setAttribute("item", "item");
 
-				System.out.println(items);
+//				System.out.println(items);
 			} else if (gr.equals("spcart")) {// quan ly don hang
 				try {
 					users = dbUser.getUserByRole(1);

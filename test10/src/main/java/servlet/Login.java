@@ -72,14 +72,14 @@ public class Login extends HttpServlet {
 		if (a == null) {
 			erro = "Tài khoản hoặc mật khẩu sai!";
 //			System.out.println(a.getId());
-			logging=new Logging(LevelLog.WARN.name(), WarnMessage.DANG_NHAP_THAT_BAI__THONG_TIN_DANG_NHAP_SAI.name());
+			logging = new Logging(LevelLog.WARN.name(), WarnMessage.DANG_NHAP_THAT_BAI__THONG_TIN_DANG_NHAP_SAI.name());
 			req.setAttribute("erro", erro);
 			req.getRequestDispatcher("login.jsp").forward(req, resp);
 
 		} else {
 			if (a.getStatus() == 2) {
 				erro = "Tài khoản đã bị khóa";
-				logging=new Logging(LevelLog.WARN.name(), WarnMessage.DANG_NHAP_THAT_BAI__TAI_KHOAN_BI_KHOA.name());
+				logging = new Logging(LevelLog.WARN.name(), WarnMessage.DANG_NHAP_THAT_BAI__TAI_KHOAN_BI_KHOA.name());
 				req.setAttribute("erro", erro);
 				req.getRequestDispatcher("login.jsp").forward(req, resp);
 
@@ -87,15 +87,15 @@ public class Login extends HttpServlet {
 //				System.out.println(a.getId());
 				HttpSession session = req.getSession();
 				session.setAttribute("user", a);
-				session.setMaxInactiveInterval(20);
+//				session.setMaxInactiveInterval(20);
 				System.out.println("login thanh cong");
-				logging = new Logging(LevelLog.INFO.name(),InforMessage.DANG_NHAP_THANH_CONG.name());
+				logging = new Logging(LevelLog.INFO.name(), InforMessage.DANG_NHAP_THANH_CONG.name());
 				RequestDispatcher dispatcher = req.getRequestDispatcher("index.jsp");
 				dispatcher.forward(req, resp);
 			}
 
-	}
-		MyLog.insertLog(logging,req);
+		}
+		MyLog.insertLog(logging, req);
 	}
 }
 

@@ -327,6 +327,7 @@ public class DBUser {
 
 		return status;
 	}
+	
 	public int updateInfor(int id, String fullname,String phone, String gender) throws SQLException {
 		int status = 0;
 
