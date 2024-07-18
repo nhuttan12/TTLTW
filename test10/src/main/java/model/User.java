@@ -73,6 +73,7 @@ public class User {
 		this.email = email;
 		this.status = status;
 	}
+	
 
 	public User(int id, String name, String phone, int gender) {
 		super();
@@ -171,5 +172,6 @@ public class User {
 		return "User [id=" + id + ", userName=" + userName + ", password=" + password + ", name=" + name + ", phone="
 				+ phone + ", gender=" + gender + ", message=" + message + ", role=" + role + ", email=" + email + ", status=" + status + "]";
 	}
+
 
 }

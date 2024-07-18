@@ -24,69 +24,69 @@
 	src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
 	integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
 	crossorigin="anonymous"></script>
-<link rel="shortcut icon" href="images/loo6.png" />
+	<link rel="shortcut icon" href="images/loo6.png" />
 </head>
 <style>
 .main {
-	margin-top: 1rem;
 	width: 50%;
-	padding: 2rem 2rem 3rem 2rem;
-	border: 1px solid #9c9c9c;
-	border-radius: 10px;
-	box-shadow: 0px 5px 10px #9c9c9c;
-	width: 50%;
+	padding-bottom: 3rem;
 }
 </style>
 <body>
 	<div class="main m-auto">
 		<h1 class="text-center">Thêm sản phẩm</h1>
-		<form action="edit" method="post" enctype="multipart/form-data">
+		<form action="/addItem" method="post">
 			<div class="form-group">
-				<label for="category">Loại sản phẩm</label> <select name="category"
+				<label for="category">Loại sản phẩm</label> <select
 					class="form-control" id="category">
 					<%
 					List<Category> categoryList = (List<Category>) request.getAttribute("categoryList");
 					if (categoryList != null) {
 						for (Category category : categoryList) {
 					%>
-					<option value=<%=category.getId()%>><%=category.getCategoryName()%></option>
+					<option><%= category.getCategoryName() %></option>
 					<%
-					}
+						}
 					}
 					%>
 				</select>
 			</div>
 			<div class="form-group">
 				<label for="product-name">Tên sản phẩm</label> <input type="text"
-					name="product-name" class="form-control" id="product-name"
+					class="form-control" id="product-name"
 					placeholder="Nhập tên sản phẩm ở đây" required=""
 					oninvalid="this.setCustomValidity('Vui lòng điền tên sản phẩm')">
 			</div>
 			<div class="form-group">
 				<label for="product-price">Giá bán sản phẩm</label> <input
-					name="price" type="number" class="form-control" id="product-price"
+					type="number" class="form-control" id="product-price"
 					placeholder="Nhập giá bán sản phẩm ở đây" required=""
 					oninvalid="this.setCustomValidity('Vui lòng điền giá bán sản phẩm')">
 			</div>
 			<div class="form-group">
+				<label for="product-price">Giá nhập sản phẩm</label> <input
+					type="number" class="form-control" id="product-price"
+					placeholder="Nhập giá nhập sản phẩm ở đây" required=""
+					oninvalid="this.setCustomValidity('Vui lòng điền nhập bán sản phẩm')">
+			</div>
+			<div class="form-group">
 				<label for="product-discount">Giảm giá</label> <input type="number"
-					name="discount" value="0" class="form-control"
-					id="product-discount" placeholder="Nhập giá thành sản phẩm ở đây">
+					value="0" class="form-control" id="product-discount"
+					placeholder="Nhập giá thành sản phẩm ở đây">
 			</div>
 			<div class="form-group">
 				<label for="product-discription">Mô tả sản phẩm</label> <input
-					name="description" type="text" class="form-control"
-					id="product-discription" placeholder="Nhập mô tả sản phẩm ở đây"
-					required=""
+					type="text" class="form-control" id="product-discription"
+					placeholder="Nhập mô tả sản phẩm ở đây" required=""
 					oninvalid="this.setCustomValidity('Vui lòng điền mô tả sản phẩm')">
 			</div>
 			<div class="form-group">
 				<label for="product-image">Hình của sản phẩm</label> <input
-					name="image" type="file" class="form-control-file"
-					id="product-image" required="" accept="image/*"
+					type="file" class="form-control-file" id="product-image"
+					required=""
 					oninvalid="this.setCustomValidity('Vui lòng thêm hình ảnh cho sản phẩm')">
 			</div>
-			<button type="submit" class="btn btn-primary">Thêm sản phẩm</button>
+			<button type="submit" class="btn btn-primary">Submit</button>
 		</form>
 	</div>
 </body>
