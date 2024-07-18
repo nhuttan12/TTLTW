@@ -157,7 +157,7 @@
 								value=" <fmt:message>UPDATE</fmt:message> " style="margin-left: 150px;background-color:rgb(12, 132, 171);color:white"></td>
 						</tr>
 						<tr class="login-foot">
-							<td colspan="1"><a href="#"><input type="button"
+							<td colspan="1"><a href="oderHistory"><input type="button"
 									value="<fmt:message>ODERHISTORY</fmt:message>" style="background-color: yellow"></a></td>
 							<td colspan="2"><a href="changePassword.jsp?uid=${user.id}"><input
 									type="button" value="<fmt:message>CHAGEPASSWORD</fmt:message>" style="background-color: red;color: white"></a>

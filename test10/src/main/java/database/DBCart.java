@@ -22,7 +22,7 @@ public class DBCart {
 		try (Connection c = connectionDB.connect()) {
 			Item item = it.getItemByID(iId);
 			List<Cart> list = new ArrayList<Cart>();
-			list = getListCartByUserID(uId);
+			list = getListCartByUserIDForCart(uId);
 			
 			// kiểm tra xem có sản phẩm trong giỏ hàng chưa
 			boolean test = false;
@@ -56,13 +56,15 @@ public class DBCart {
 			} else {
 				System.out.println("adddddddddddddddddddddd");
 				System.out.println("item chua co trong cart");
-				String sql = "INSERT INTO cart (USER_ID, ITEM_ID, QUANTITY, TOTAL_PRICE) " + "VALUES (?, ?, ?, ?);";
+				String sql = "INSERT INTO cart (USER_ID, ITEM_ID, QUANTITY, TOTAL_PRICE, STATUS) " + "VALUES (?, ?, ?, ?, ?);";
 				PreparedStatement ps = c.prepareStatement(sql);
 				// '"+title+"',"+Authorid+" , 18022018, 0000, "+Isbn+"
 				ps.setInt(1, uId);
 				ps.setInt(2, iId);
 				ps.setInt(3, slm);
 				ps.setDouble(4, item.getPrice()*slm);
+				ps.setInt(5, 0);
+				
 				status = ps.executeUpdate();
 				System.out.println("da them");
 				c.close();
@@ -82,7 +84,7 @@ public class DBCart {
 		try (Connection c = connectionDB.connect()) {
 			Item item = it.getItemByID(iId);
 			List<Cart> list = new ArrayList<Cart>();
-			list = getListCartByUserID(uId);
+			list = getListCartByUserIDForCart(uId);
 			
 			// kiểm tra xem có sản phẩm trong giỏ hàng chưa
 			boolean test = false;
@@ -283,7 +285,7 @@ public class DBCart {
 //		}
 //		return i;
 //	}
-	public Item getItem(int cart_id) throws SQLException {
+	public Item getItemByCartId(int cart_id) throws SQLException {
 		Item i = null;
 
 		try (Connection c = connectionDB.connect()) {
@@ -366,17 +368,18 @@ public class DBCart {
 		return list;
 	}
 //dùng để show giỏ hàng
-	public List<Cart> getListCartByUserID(int user_id) throws SQLException {
+	public List<Cart> getListCartByUserIDForCart(int user_id) throws SQLException {
 		System.out.println("toiiiiiiiiiiiiiiiiiii");
 		List<Cart> list = new ArrayList<Cart>();
 		try (Connection c = connectionDB.connect()) {
 
-			String sql = "SELECT * FROM  cart ci JOIN items i on i.ITEM_ID = ci.ITEM_ID  WHERE ci.USER_ID = ?;";
+			String sql = "SELECT * FROM  cart ci JOIN items i on i.ITEM_ID = ci.ITEM_ID  WHERE ci.USER_ID = ? && ci.STATUS =?;";
 
 			PreparedStatement ps = c.prepareStatement(sql);
 			// '"+title+"',"+Authorid+" , 18022018, 0000, "+Isbn+"
 
 			ps.setInt(1, user_id);
+			ps.setInt(2, 0);
 
 			ResultSet rs = ps.executeQuery();
 
@@ -397,7 +400,63 @@ public class DBCart {
 		}
 		return list;
 	}
+	
 
+	//dùng để show lịch sử đơn hàng
+		public List<Cart> getListCartByUserIDForOrder(int user_id) throws SQLException {
+			System.out.println("toiiiiiiiiiiiiiiiiiii");
+			List<Cart> list = new ArrayList<Cart>();
+			try (Connection c = connectionDB.connect()) {
+
+				String sql = "SELECT * FROM  cart ci JOIN items i on i.ITEM_ID = ci.ITEM_ID  WHERE ci.USER_ID = ? && ci.STATUS =?;";
+
+				PreparedStatement ps = c.prepareStatement(sql);
+				// '"+title+"',"+Authorid+" , 18022018, 0000, "+Isbn+"
+
+				ps.setInt(1, user_id);
+				ps.setInt(2, 1);
+
+				ResultSet rs = ps.executeQuery();
+
+				while (rs.next()) {
+
+					int CART_ID = rs.getInt("CART_ID");
+					int USER_ID = rs.getInt("USER_ID");
+					int ITEM_ID = rs.getInt("ITEM_ID");
+					int QUANTITY = rs.getInt("QUANTITY");
+					double TOTAL_PRICE = rs.getDouble("TOTAL_PRICE");
+					int STATUS = rs.getInt("STATUS");
+					
+					Cart i = new Cart(CART_ID, USER_ID, ITEM_ID, QUANTITY, TOTAL_PRICE, STATUS) ;
+					list.add(i);
+				}
+				rs.close();
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+			return list;
+		}
+		
+		// SAU KHI NHẤN CHECKOUT THÌ STATUS CỦA GIỎ HÀNG SẼ CHUYỂN SANG 1 ĐỂ HIỂN THỊ TRÊN ORDER
+		public int updateStatus(int cId, int status) throws SQLException {
+
+			try (Connection c = connectionDB.connect()) {
+					String sql = "UPDATE cart SET STATUS = ? WHERE CART_ID = ?;";
+					PreparedStatement ps = c.prepareStatement(sql);
+					// '"+title+"',"+Authorid+" , 18022018, 0000, "+Isbn+"
+					ps.setDouble(1,status);
+					ps.setInt(2, cId);
+					System.out.println("update thanh cong");
+					status = ps.executeUpdate();
+
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+
+			return status;
+		}
+	
+	
 	public static void main(String[] args) throws SQLException {
 		// TODO Auto-generated method stub
 //		DBCartItems c = new DBCartItems();
