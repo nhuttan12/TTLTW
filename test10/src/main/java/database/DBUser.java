@@ -6,6 +6,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import model.Item;
+import model.Order;
+import model.Role;
+import model.StatusOrder;
+import model.StatusUser;
 import model.User;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,16 +35,49 @@ public class DBUser {
 				int USER_ID = rs.getInt("USER_ID");
 				String USER_NAME = rs.getString("USER_NAME");
 				String PASSWORD = rs.getString("PASSWORD");
-				String NAME = rs.getString("NAME");
+				String NAME = rs.getString("FULL_NAME");
 				String PHONE = rs.getString("PHONE");
-				String GENDER = rs.getString("GENDER");
+				int GENDER = rs.getInt("GENDER");
 				String MESSAGE = rs.getString("MESSAGE");
-				int ROLE = rs.getInt("ROLE");
-				int SHOPPINGCART_ID = rs.getInt("SHOPPINGCART_ID");
+				int ROLE = rs.getInt("ROLE_ID");
 				String EMAIL = rs.getString("EMAIL");
-				int STATUS = rs.getInt("STATUS");
-				User user = new User(USER_ID, NAME, PASSWORD, NAME, PHONE, GENDER, MESSAGE, ROLE, SHOPPINGCART_ID,
-						EMAIL, STATUS);
+				int STATUS = rs.getInt("STATUS_USER_ID");
+				User user = new User(USER_ID, NAME, PASSWORD, NAME, PHONE, GENDER, MESSAGE, ROLE, EMAIL, STATUS);
+				System.out.println("ok!!!");
+				return user;
+			}
+			rs.close();
+		} catch (Exception ex) {
+			System.out.println(ex.getClass().getName() + ": " + ex.getMessage());
+			ex.printStackTrace();
+		}
+		return null;
+
+	}
+
+	public User checkUSERByEmail(String email) {
+
+		String sql = "SELECT *  FROM USERS WHERE EMAIL=?";
+		try (Connection c = connectionDB.connect()) {
+			System.out.println("ket noi ok!!!");
+			PreparedStatement ps = c.prepareStatement(sql);
+			ps.setString(1, email);
+			System.out.println(sql);
+			ResultSet rs = ps.executeQuery();
+//vttoan@hcmuaf.edu.vn
+
+			while (rs.next()) {
+				int USER_ID = rs.getInt("USER_ID");
+				String USER_NAME = rs.getString("USER_NAME");
+				String PASSWORD = rs.getString("PASSWORD");
+				String NAME = rs.getString("FULL_NAME");
+				String PHONE = rs.getString("PHONE");
+				int GENDER = rs.getInt("GENDER");
+				String MESSAGE = rs.getString("MESSAGE");
+				int ROLE = rs.getInt("ROLE_ID");
+				String EMAIL = rs.getString("EMAIL");
+				int STATUS = rs.getInt("STATUS_USER_ID");
+				User user = new User(USER_ID, NAME, PASSWORD, NAME, PHONE, GENDER, MESSAGE, ROLE, EMAIL, STATUS);
 				System.out.println("ok!!!");
 				return user;
 			}
@@ -59,18 +96,47 @@ public class DBUser {
 		try (Connection c = connectionDB.connect()) {
 			User a = getUserByUserName(e.getUserName());
 			if (a == null) {
-				String sql = "INSERT INTO USERS (USER_NAME, PASSWORD, NAME, PHONE, GENDER,ROLE,EMAIL,STATUS) "
-						+ "VALUES (?, ?, ?, ?, ?, 1,?,1);";
+				String sql = "INSERT INTO USERS (FULL_NAME, USER_NAME, PASSWORD, PHONE, GENDER, ROLE_ID, EMAIL, MESSAGE, STATUS_USER_ID) "
+						+ "VALUES (?, ?, ?, ?, ?, 1,?,?,1);";
 				PreparedStatement ps = c.prepareStatement(sql);
 				// '"+title+"',"+Authorid+" , 18022018, 0000, "+Isbn+"
-				ps.setString(1, e.getUserName());
-				ps.setString(2, e.getPassword());
-				ps.setString(3, e.getName());
+				ps.setString(1, e.getName());
+				ps.setString(2, e.getUserName());
+				ps.setString(3, e.getPassword());
 				ps.setString(4, e.getPhone());
-				ps.setString(5, e.getGender());
+				ps.setInt(5, e.getGender());
 				ps.setString(6, e.getEmail());
+				ps.setString(7, e.getMessage());
 				status = ps.executeUpdate();
+//				System.out.println("zzzzzzzzzzzzzzzzzzzzzzzzzzzzz");
+				c.close();
+			} else {
+				System.out.println("ten tai khoan da ton tai");
+			}
 
+		} catch (Exception ex) {
+			System.err.println(ex.getClass().getName() + ": " + ex.getMessage());
+			System.exit(0);
+		}
+
+		return status;
+	}
+
+	public int addUSERForFB(String name, String email) throws SQLException {
+		int status = 0;
+
+		try (Connection c = connectionDB.connect()) {
+			User a = getUserByEmail(email);
+			if (a == null) {
+				String sql = "INSERT INTO USERS (FULL_NAME, USER_NAME, EMAIL, ROLE_ID, STATUS_USER_ID) "
+						+ "VALUES (?, ?, ?, 1,1);";
+				PreparedStatement ps = c.prepareStatement(sql);
+				// '"+title+"',"+Authorid+" , 18022018, 0000, "+Isbn+"
+				ps.setString(1, name);
+				ps.setString(2, name);
+				ps.setString(3, email);
+				status = ps.executeUpdate();
+//				System.out.println("zzzzzzzzzzzzzzzzzzzzzzzzzzzzz");
 				c.close();
 			} else {
 				System.out.println("ten tai khoan da ton tai");
@@ -142,16 +208,17 @@ public class DBUser {
 		try (Connection c = connectionDB.connect()) {
 			User a = getUserByID(e.getId());
 			if (a != null) {
-				String sql = "UPDATE USERS SET USER_NAME = ?, PASSWORD = ?, NAME = ?, PHONE = ?, GENDER = ?, MESSAGE = ? WHERE USER_ID = ?;";
+				String sql = "UPDATE USERS SET FULL_NAME = ?, USER_NAME = ?, PASSWORD = ?, PHONE = ?, GENDER = ?, EMAIL = ?, MESSAGE = ? WHERE USER_ID = ?;";
 				PreparedStatement ps = c.prepareStatement(sql);
 				// '"+title+"',"+Authorid+" , 18022018, 0000, "+Isbn+"
-				ps.setString(1, e.getUserName());
-				ps.setString(2, e.getPassword());
-				ps.setString(3, e.getName());
+				ps.setString(1, e.getName());
+				ps.setString(2, e.getUserName());
+				ps.setString(3, e.getPassword());
 				ps.setString(4, e.getPhone());
-				ps.setString(5, e.getGender());
-				ps.setString(6, e.getMessage());
-				ps.setInt(7, a.getId());
+				ps.setInt(5, e.getGender());
+				ps.setString(6, e.getEmail());
+				ps.setString(7, e.getMessage());
+				ps.setInt(8, a.getId());
 				status = ps.executeUpdate();
 			} else {
 				System.out.println("khong tim thay user");
@@ -170,12 +237,12 @@ public class DBUser {
 		try (Connection c = connectionDB.connect()) {
 			User a = getUserByID(id);
 			if (a != null) {
-				String sql = "UPDATE USERS SET STATUS=? WHERE USER_ID = ?;";
+				String sql = "UPDATE USERS SET STATUS_USER_ID=? WHERE USER_ID = ?;";
 				PreparedStatement ps = c.prepareStatement(sql);
-				if(a.getStatus()==1) {
-				// '"+title+"',"+Authorid+" , 18022018, 0000, "+Isbn+"
-				ps.setInt(1, 2);
-				}else if(a.getStatus()==2) {
+				if (a.getStatus() == 1) {
+					// '"+title+"',"+Authorid+" , 18022018, 0000, "+Isbn+"
+					ps.setInt(1, 2);
+				} else if (a.getStatus() == 2) {
 					ps.setInt(1, 1);
 				}
 				ps.setInt(2, id);
@@ -235,13 +302,14 @@ public class DBUser {
 		return status;
 	}
 
-	public int update1(int id, String name, String phone, String gender, String email) throws SQLException {
+	public int update1(int id, String name, String phone, String gender, String email, String message)
+			throws SQLException {
 		int status = 0;
 
 		try (Connection c = connectionDB.connect()) {
 			User a = getUserByID(id);
 			if (a != null) {
-				String sql = "UPDATE USERS SET NAME = ?, PHONE = ?, GENDER = ?, EMAIL = ? WHERE USER_ID = ?;";
+				String sql = "UPDATE USERS SET FULL_NAME = ?, PHONE = ?, GENDER = ?, EMAIL = ?, MESSAGE = ? WHERE USER_ID = ?;";
 				PreparedStatement ps = c.prepareStatement(sql);
 				// '"+title+"',"+Authorid+" , 18022018, 0000, "+Isbn+"
 
@@ -249,7 +317,32 @@ public class DBUser {
 				ps.setString(2, phone);
 				ps.setString(3, gender);
 				ps.setString(4, email);
-				ps.setInt(5, id);
+				ps.setString(5, message);
+				ps.setInt(6, id);
+				status = ps.executeUpdate();
+			} else {
+				System.out.println("khong tim thay user");
+			}
+
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+
+		return status;
+	}
+
+	public int updateInfor(int id, String fullname, String phone, String gender) throws SQLException {
+		int status = 0;
+
+		try (Connection c = connectionDB.connect()) {
+			User a = getUserByID(id);
+			if (a != null) {
+				String sql = "UPDATE USERS SET FULL_NAME = ?, PHONE = ?, GENDER = ? WHERE USER_ID = ?;";
+				PreparedStatement ps = c.prepareStatement(sql);
+				ps.setString(1, fullname);
+				ps.setString(2, phone);
+				ps.setString(3, gender);
+				ps.setInt(4, id);
 				status = ps.executeUpdate();
 			} else {
 				System.out.println("khong tim thay user");
@@ -277,19 +370,53 @@ public class DBUser {
 
 			while (rs.next()) {
 				int ID = rs.getInt("USER_ID");
+				String FULL_NAME = rs.getString("FULL_NAME");
 				String USER_NAME = rs.getString("USER_NAME");
 				String PASSWORD = rs.getString("PASSWORD");
-				String NAME = rs.getString("NAME");
 				String PHONE = rs.getString("PHONE");
-				String GENDER = rs.getString("GENDER");
-				String MESSAGE = rs.getString("MESSAGE");
-				int ROLE = rs.getInt("ROLE");
-				int SHOPPINGCART_ID = rs.getInt("SHOPPINGCART_ID");
+				int GENDER = rs.getInt("GENDER");
+				int ROLE_ID = rs.getInt("ROLE_ID");
 				String EMAIL = rs.getString("EMAIL");
-				int STATUS = rs.getInt("STATUS");
+				String MESSAGE = rs.getString("MESSAGE");
+				int STATUS_USER_ID = rs.getInt("STATUS_USER_ID");
 
-				b = new User(ID, USER_NAME, PASSWORD, NAME, PHONE, GENDER, MESSAGE, ROLE, SHOPPINGCART_ID, EMAIL,
-						STATUS);
+				b = new User(ID, USER_NAME, PASSWORD, FULL_NAME, PHONE, GENDER, MESSAGE, ROLE_ID, EMAIL,
+						STATUS_USER_ID);
+			}
+			rs.close();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return b;
+	}
+
+	public User getUserByEmail(String email) throws SQLException {
+		User b = null;
+
+		try (Connection c = connectionDB.connect()) {
+
+			String sql = "SELECT * FROM USERS  WHERE EMAIL = ?;";
+
+			PreparedStatement ps = c.prepareStatement(sql);
+			// '"+title+"',"+Authorid+" , 18022018, 0000, "+Isbn+"
+			ps.setString(1, email);
+
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+				int ID = rs.getInt("USER_ID");
+				String FULL_NAME = rs.getString("FULL_NAME");
+				String USER_NAME = rs.getString("USER_NAME");
+				String PASSWORD = rs.getString("PASSWORD");
+				String PHONE = rs.getString("PHONE");
+				int GENDER = rs.getInt("GENDER");
+				int ROLE_ID = rs.getInt("ROLE_ID");
+				String EMAIL = rs.getString("EMAIL");
+				String MESSAGE = rs.getString("MESSAGE");
+				int STATUS_USER_ID = rs.getInt("STATUS_USER_ID");
+
+				b = new User(ID, USER_NAME, PASSWORD, FULL_NAME, PHONE, GENDER, MESSAGE, ROLE_ID, EMAIL,
+						STATUS_USER_ID);
 			}
 			rs.close();
 		} catch (Exception ex) {
@@ -306,26 +433,24 @@ public class DBUser {
 			String sql = "SELECT * FROM USERS  WHERE USER_ID = ?;";
 
 			PreparedStatement ps = c.prepareStatement(sql);
-			// '"+title+"',"+Authorid+" , 18022018, 0000, "+Isbn+"
 			ps.setInt(1, id);
 
 			ResultSet rs = ps.executeQuery();
 
 			while (rs.next()) {
 				int ID = rs.getInt("USER_ID");
+				String FULL_NAME = rs.getString("FULL_NAME");
 				String USER_NAME = rs.getString("USER_NAME");
 				String PASSWORD = rs.getString("PASSWORD");
-				String NAME = rs.getString("NAME");
 				String PHONE = rs.getString("PHONE");
-				String GENDER = rs.getString("GENDER");
-				String MESSAGE = rs.getString("MESSAGE");
-				int ROLE = rs.getInt("ROLE");
-				int SHOPPINGCART_ID = rs.getInt("SHOPPINGCART_ID");
+				int GENDER = rs.getInt("GENDER");
+				int ROLE_ID = rs.getInt("ROLE_ID");
 				String EMAIL = rs.getString("EMAIL");
-				int STATUS = rs.getInt("STATUS");
+				String MESSAGE = rs.getString("MESSAGE");
+				int STATUS_USER_ID = rs.getInt("STATUS_USER_ID");
 
-				b = new User(ID, USER_NAME, PASSWORD, NAME, PHONE, GENDER, MESSAGE, ROLE, SHOPPINGCART_ID, EMAIL,
-						STATUS);
+				b = new User(ID, USER_NAME, PASSWORD, FULL_NAME, PHONE, GENDER, MESSAGE, ROLE_ID, EMAIL,
+						STATUS_USER_ID);
 			}
 			rs.close();
 		} catch (Exception ex) {
@@ -349,19 +474,18 @@ public class DBUser {
 
 			while (rs.next()) {
 				int ID = rs.getInt("USER_ID");
+				String FULL_NAME = rs.getString("FULL_NAME");
 				String USER_NAME = rs.getString("USER_NAME");
 				String PASSWORD = rs.getString("PASSWORD");
-				String NAME = rs.getString("NAME");
 				String PHONE = rs.getString("PHONE");
-				String GENDER = rs.getString("GENDER");
-				String MESSAGE = rs.getString("MESSAGE");
-				int ROLE = rs.getInt("ROLE");
-				int SHOPPINGCART_ID = rs.getInt("SHOPPINGCART_ID");
+				int GENDER = rs.getInt("GENDER");
+				int ROLE_ID = rs.getInt("ROLE_ID");
 				String EMAIL = rs.getString("EMAIL");
-				int STATUS = rs.getInt("STATUS");
+				String MESSAGE = rs.getString("MESSAGE");
+				int STATUS_USER_ID = rs.getInt("STATUS_USER_ID");
 
-				User a = new User(ID, USER_NAME, PASSWORD, NAME, PHONE, GENDER, MESSAGE, ROLE, SHOPPINGCART_ID, EMAIL,
-						STATUS);
+				User a = new User(ID, USER_NAME, PASSWORD, FULL_NAME, PHONE, GENDER, MESSAGE, ROLE_ID, EMAIL,
+						STATUS_USER_ID);
 				b.add(a);
 			}
 			rs.close();
@@ -376,7 +500,7 @@ public class DBUser {
 
 		try (Connection c = connectionDB.connect()) {
 
-			String sql = "SELECT USER_ID FROM USERS  WHERE USER_NAME = ? AND PASSWORD = ?;";
+			String sql = "SELECT USER_ID FROM USERS WHERE USER_NAME = ? AND PASSWORD = ?;";
 
 			PreparedStatement ps = c.prepareStatement(sql);
 			System.out.println(e.getUserName());
@@ -397,26 +521,98 @@ public class DBUser {
 		return sid;
 	}
 
-	public static void main(String[] args) throws SQLException {
-		DBUser l = new DBUser();
-//		User a = l.checkUSER("PERSON1", "123");
-//		User a = new User(1,"PERSON1", "123","Thu","03","nu","");
-//		User b = new User(2,"PERSON2", "456","Thao","02","nu","");
-		// System.out.println(l.update(b));
-//		System.out.println(l.deleteUSER("PERSON"));
-//		System.out.println(l.getUserByUserName("PERSON").getId());
-		// System.out.println(a.getUserName());
-//
-//		System.out.println(
-//				l.getUserByID(1));
-//		l.update1(new User(1, "tuuuuuuuuu", "999999999"));
-//		System.out.println(
-//				l.getUserByID(1));
-		User a =l.getUserByID(8);
-		System.out.println(a.getStatus());
-		l.updateByStatus(8);
-		a=l.getUserByID(8);
-		System.out.println(a.getStatus());
+	public List<User> getUsersForAdmin() {
+		List<User> b = new ArrayList<User>();
+		Connection c = connectionDB.connect();
+		String sql = "SELECT u.USER_ID, u.FULL_NAME, u.EMAIL, \r\n" + "u.USER_NAME, r.ROLE_NAME,\r\n"
+				+ "su.STATUS_USER_NAME\r\n" + "FROM users u \r\n" + "JOIN `role` r ON u.ROLE_ID=r.ROLE_ID\r\n"
+				+ "JOIN status_user su ON u.STATUS_USER_ID=su.STATUS_USER_ID\r\n" + "WHERE r.ROLE_ID != 3;";
+		try {
+			PreparedStatement ps = c.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				int userId = rs.getInt("USER_ID");
+				String fullName = rs.getString("FULL_NAME");
+				String email = rs.getString("EMAIL");
+				String userName = rs.getString("USER_NAME");
+				String roleName = rs.getString("ROLE_NAME");
+				String status = rs.getString("STATUS_USER_NAME");
+
+				User user = new User();
+				Role role = new Role();
+				StatusUser statusUser = new StatusUser();
+
+				user.setRolee(role);
+				user.setStatusUser(statusUser);
+
+				user.setId(userId);
+				user.setName(fullName);
+				user.setEmail(email);
+				user.setUserName(userName);
+				user.getRolee().setName(roleName);
+				user.getStatusUser().setName(status);
+
+				b.add(user);
+			}
+			rs.close();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return b;
 	}
 
+	public List<User> getModAndAdmin(){
+		List<User> b = new ArrayList<User>();
+		Connection c = connectionDB.connect();
+		String sql = "SELECT u.USER_ID, u.FULL_NAME, u.ROLE_ID\r\n"
+				+ "FROM users u\r\n"
+				+ "WHERE u.ROLE_ID=2 OR u.ROLE_ID=3";
+		try {
+			PreparedStatement ps = c.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+				int userId = rs.getInt("USER_ID");
+				String fullName = rs.getString("FULL_NAME");
+				int roleId=rs.getInt("ROLE_ID");
+
+				User user = new User();
+
+				user.setId(userId);
+				user.setName(fullName);
+				user.setRole(roleId);
+
+				b.add(user);
+			}
+			rs.close();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return b;
+	}
+	
+	public int updateUser(int userId, int statusId, int roleId) {
+		int status = 0;
+		try (Connection c = connectionDB.connect()) {
+			User a = getUserByID(userId);
+			if (a != null) {
+				String sql = "UPDATE users u\r\n" + "SET u.STATUS_USER_ID=?, u.ROLE_ID=?\r\n" + "WHERE USER_ID=?;";
+				PreparedStatement ps = c.prepareStatement(sql);
+				ps.setInt(1, statusId);
+				ps.setInt(2, roleId);
+				ps.setInt(3, userId);
+				status = ps.executeUpdate();
+			} else {
+				System.out.println("khong tim thay user");
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return status;
+	}
+	
 }

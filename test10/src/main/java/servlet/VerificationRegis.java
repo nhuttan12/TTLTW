@@ -7,13 +7,19 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import model.ShoppingCart;
+import log.ErrorMessage;
+import log.InforMessage;
+import log.LevelLog;
+import log.MyLog;
+import model.Cart;
+import model.Logging;
 import model.User;
+import utils.Encryption;
 
 import java.io.IOException;
 import java.sql.SQLException;
 
-import database.DBShoppingCart;
+import database.DBCart;
 import database.DBUser;
 
 /**
@@ -38,8 +44,8 @@ public class VerificationRegis extends HttpServlet {
     }
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-		HttpSession httpSession =req.getSession();
+    	Logging logging = null;
+    	HttpSession httpSession =req.getSession();
 		String verification = null;
 
     	try {
@@ -53,7 +59,8 @@ public class VerificationRegis extends HttpServlet {
 		String PASSWORD = (String) httpSession.getAttribute("PASSWORD");
 		String NAME = (String) httpSession.getAttribute("NAME");
 		String PHONE = (String) httpSession.getAttribute("PHONE");
-		String GENDER = (String) httpSession.getAttribute("GENDER");
+		String GENDER1 = (String) httpSession.getAttribute("GENDER");
+		int GENDER = Integer.parseInt(GENDER1);
 		String EMAIL = (String) httpSession.getAttribute("EMAIL");
 		String ver = (String) httpSession.getAttribute("ver");
 //		System.out.println("pass moi " +req.getAttribute("newpas"));
@@ -62,34 +69,31 @@ public class VerificationRegis extends HttpServlet {
 		
 		if(verification.equals(ver)) {
 			DBUser l = new DBUser();
-	   		DBShoppingCart cart = new DBShoppingCart();
+	   		DBCart cart = new DBCart();
 			try {
-   				User a = new User(USER_NAME, PASSWORD, NAME, PHONE, GENDER,EMAIL);
+			
+   				User a = new User(USER_NAME, Encryption.mahoaPass(PASSWORD), NAME, PHONE, GENDER,EMAIL);
+   				System.out.println("aaaaaaaaaaaaaaaaaaaaaa" + a.getName());
 				l.addUSER(a);
 				a.setId(l.getUserId(a));
 				a.setRole(1);
 				a.setStatus(1);
 				System.out.println(l.getUserId(a));
-				ShoppingCart s = new ShoppingCart(a);
-				cart.addShoppingCart(s);
-				s.setId(cart.getCartId(a.getId()));
-				l.updateCart(a, s.getId());
-	   			httpSession.setAttribute("user", a);
-	   			httpSession.setAttribute("cart", s);
-	   			RequestDispatcher dispatcher = req.getRequestDispatcher("index.jsp");
+				req.setAttribute("erro", "Đăng Ký Thành Công");
+				logging=new Logging(LevelLog.INFO.name(),InforMessage.DANG_KY_TAI_KHOAN_THANH_CONG.name());
+	   			RequestDispatcher dispatcher = req.getRequestDispatcher("login.jsp");
 	   			dispatcher.forward(req, resp);
-	   			//req.getRequestDispatcher("login.jsp").forward(req, resp);
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
-
 		}else {
 			 System.out.println("ma khong dung");
-			 RequestDispatcher dispatcher = req.getRequestDispatcher("verification.jsp");
-				dispatcher.forward(req, resp);
+			 logging=new Logging(LevelLog.ERROR.name(),ErrorMessage.DANG_KY_TAI_KHOAN_THAT_BAI__MA_XAC_THUC_KHONG_DUNG.name());
+			 RequestDispatcher dispatcher = req.getRequestDispatcher("verificationRegis.jsp");
+			dispatcher.forward(req, resp);
 		}
+		MyLog.insertLog(logging, req);
     }
 
 }

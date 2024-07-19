@@ -16,7 +16,7 @@
 <meta name="keywords" content="" />
 <meta name="description" content="" />
 <meta name="author" content="" />
-<link rel="shortcut icon" href="images/logo2.png" />
+<link rel="shortcut icon" href="images/loo6.png" />
 <title>Contact</title>
 <!-- bootstrap core css -->
 <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
@@ -34,12 +34,12 @@
 <!-- responsive style -->
 <link href="css/responsive.css" rel="stylesheet" />
 <script type="text/javascript">
-function doLogout() {
-	if (confirm("Are you Logout?")) {
-		window.location = "logout";
+	function doLogout() {
+		if (confirm("Are you Logout?")) {
+			window.location = "logout";
+		}
+
 	}
-	
-}
 </script>
 </head>
 
@@ -57,18 +57,21 @@ function doLogout() {
 		<header class="header_section">
 			<div class="container">
 				<nav class="navbar navbar-expand-lg custom_nav-container ">
-					<a class="navbar-brand" href="index.jsp"><img alt="logo"
-						style="width: 120px" src="images/logo.png"> </a>
+					<a class="navbar-brand" href="index"><img alt="logo"
+						style="width: 120px" src="images/log5.png"> </a>
+
+
+
 					<div class="collapse navbar-collapse" id="navbarSupportedContent">
 						<ul class="navbar-nav  mx-auto ">
 							<li class="nav-item "><a class="nav-link" href="index.jsp"><fmt:message>menu.home</fmt:message>
 							</a></li>
-							<li class="nav-item"><a class="nav-link" href="menu"><fmt:message>menu.menu</fmt:message></a>
+							<li class="nav-item"><a class="nav-link" href="menu?type=0"><fmt:message>menu.menu</fmt:message></a>
 							</li>
 							<li class="nav-item"><a class="nav-link" href="about.jsp"><fmt:message>menu.about</fmt:message></a>
 							</li>
-							<li class="nav-item"><a class="nav-link"
-								href="contact.jsp"><fmt:message>menu.contact</fmt:message></a></li>
+							<li class="nav-item"><a class="nav-link" href="contact.jsp"><fmt:message>menu.contact</fmt:message></a>
+							</li>
 						</ul>
 						<div class="user_option">
 							<div class="language">
@@ -76,18 +79,23 @@ function doLogout() {
 									href="?lang_local=en_US" class="lang"> EN </a>
 							</div>
 
-							<a href="user?role=${user.role}" class="user_link"> <i
-								class="fa fa-user" aria-hidden="true">${user.userName}</i>
+							<a href="user" class="user_link"> <i class="fa fa-user"
+								aria-hidden="true">${user.userName}</i>
 
 							</a>
 
 							<c:if test="${not empty user}">
-								<a href="#" onclick="doLogout()" class="user_link"><img width="30px" alt=""
-									src="images/logout3.png"> </a>
+								<a href="#" onclick="doLogout()" class="user_link"><img
+									width="30px" alt="" src="images/logout3.png"> </a>
+								<c:if test="${user.role != 1}">
+									<a href="admin" class="user_link"><img width="30px" alt=""
+										src="images/admin.png"> </a>
+
+								</c:if>
+
 							</c:if>
-							<a href="cart?shoppingCartId=${user.shoppingCartId}"
-								class="user_link"><img width="30px" alt=""
-								src="images/cart.png"> </a>
+							<a href="shoppingcart" class="user_link"><img width="30px"
+								alt="" src="images/cart.png"> </a>
 
 						</div>
 					</div>
@@ -102,13 +110,12 @@ function doLogout() {
 		<div class="container">
 
 			<h1>
-				<fmt:message>SHOPPINGCART</fmt:message>
+				<fmt:message>ODERHISTORY</fmt:message>
 			</h1>
-
 			<div class="oderHistory">
-				<c:set var="list" value="${ requestScope.listOder}" />
-				<c:forEach var="od" items="${list.keySet()}">
-
+				<c:set var="list1" value="${ requestScope.listItemOder}" />
+				<c:set var="list2" value="${ requestScope.listCartOder}" />
+				<c:forEach var="od" items="${list1.keySet()}">
 					<table class="listSanPham">
 						<tbody>
 							<tr>
@@ -117,38 +124,35 @@ function doLogout() {
 								<th>Số lượng</th>
 								<th>Thành tiền</th>
 								<th>Thời gian</th>
+
 							</tr>
-							<c:forEach var="i" items="${list.get(od)}">
+							<c:forEach var="i" items="${list1[od]}" varStatus="status">
 								<tr>
-
-
-									<td class="noPadding imgHide"><a> ${i.name} <img
-											src="${i.imageName}">
-									</a></td>
-									<td class="alignRight">${i.unitPrice}VND</td>
-									<td class="soluong">${i.quantity}</td>
+									<td class="noPadding imgHide"><a>${i.name} <img
+											src="${i.imageName}"></a></td>
 									<td class="alignRight">${i.price}VND</td>
-									<td style="text-align: center">${od.date}</td>
 
+									<!-- Sử dụng chỉ số vòng lặp để lấy OrderDetail tương ứng -->
+									<c:set var="orderDetail" value="${list2[od][status.index]}" />
+									<td class="soluong">${orderDetail.quantity}</td>
+									<td class="alignRight">${orderDetail.totalPrice} VND</td>
+									<td style="text-align: center">${od.orderDate}</td>
 								</tr>
 							</c:forEach>
 
+
 							<tr style="font-weight: bold; text-align: center; height: 4em;">
-								<td colspan="3">TỔNG TIỀN:</td>
-								<td class="alignRight">${od.orderPrice}VND</td>
-								<td>${od.status==3?"đã giao hàng":"chưa giao hàng"}</td>
+								<td colspan="1">TỔNG TIỀN:</td>
+								<td>Người nhận: ${od.name}</td>
+								<td>Số điện thoại người nhận: ${od.phone}</td>
+								<td>Địa chỉ nhận: ${od.address}</td>
+								<td>${od.statusOrderId==3?"đã giao hàng":"chưa giao hàng"}</td>
 							</tr>
 						</tbody>
 					</table>
 				</c:forEach>
-
-
 			</div>
-
 		</div>
-
-
-
 	</section>
 	<!-- end book section -->
 

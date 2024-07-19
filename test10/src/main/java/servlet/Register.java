@@ -7,7 +7,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import model.ShoppingCart;
+import model.Cart;
 import model.User;
 
 import java.io.IOException;
@@ -15,7 +15,7 @@ import java.sql.SQLException;
 
 import javax.mail.internet.InternetAddress;
 
-import database.DBShoppingCart;
+import database.DBCart;
 import database.DBUser;
 import email.ServerSendMail;
 
@@ -24,6 +24,7 @@ import email.ServerSendMail;
  */
 @WebServlet("/register")
 public class Register extends HttpServlet {
+	DBUser l = new DBUser();
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -52,15 +53,14 @@ public class Register extends HttpServlet {
 		String PHONE = req.getParameter("sodienthoai");
 		String GENDER = req.getParameter("gioitinh");
 		String EMAIL = req.getParameter("email");
-		
 
 		System.out.println(GENDER);
-		DBUser l = new DBUser();
-		DBShoppingCart cart = new DBShoppingCart();
+		
+		DBCart cart = new DBCart();
 //   		System.out.println(a.getUserName());
 		if (checkUser(USER_NAME) == null && checkPass(PASSWORD) == null && checkPhone(PHONE) == null
 				&& checkEmail(EMAIL) == null) {
-			if (l.checkUSER(USER_NAME, PASSWORD) == null) {
+			if (l.checkUSERByEmail(EMAIL) == null) {
 				ServerSendMail m = new ServerSendMail();
 				String ver = m.createVerification();
 				m.setTo(EMAIL);
@@ -69,7 +69,11 @@ public class Register extends HttpServlet {
 					HttpSession session = req.getSession();
 					session.setAttribute("USER_NAME", USER_NAME);
 					session.setAttribute("PASSWORD", PASSWORD);
-					session.setAttribute("NAME", NAME);
+					if (NAME == null) {
+						session.setAttribute("NAME", NAME);
+					}else {
+						session.setAttribute("NAME", USER_NAME);
+					}
 					session.setAttribute("PHONE", PHONE);
 					session.setAttribute("GENDER", GENDER);
 					session.setAttribute("EMAIL", EMAIL);
@@ -83,7 +87,7 @@ public class Register extends HttpServlet {
 
 			} else {
 
-				String erro = "Tài khoản đã tồn tại!";
+				String erro = "Email này đã được sử dụng để đăng ký trước đó";
 				req.setAttribute("erro", erro);
 				req.getRequestDispatcher("register.jsp").forward(req, resp);
 			}
@@ -91,6 +95,7 @@ public class Register extends HttpServlet {
 			req.setAttribute("er", true);
 			if (checkUser(USER_NAME) != null) {
 				req.setAttribute("us", checkUser(USER_NAME));
+//				System.out.println("mmmmmmmmmmmmmmmmmmm" + checkUser(USER_NAME));
 			}
 			if (checkPass(PASSWORD) != null) {
 				req.setAttribute("pas", checkPass(PASSWORD));
@@ -108,16 +113,26 @@ public class Register extends HttpServlet {
 			req.setAttribute("NAME", NAME);
 			req.getRequestDispatcher("register.jsp").forward(req, resp);
 		}
-
 	}
 
 	public String checkUser(String usn) {
 		String status = null;
 		if (usn == null) {
 			status = "không được để trống tên đăng nhập";
-		}
+		} else
+			try {
+				if(l.getUserByUserName(usn) != null) {
+					
+					status = "username đã tồn tại";
+					
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		return status;
 	}
+	
 
 	public String checkPass(String pass) {
 		String status = null;

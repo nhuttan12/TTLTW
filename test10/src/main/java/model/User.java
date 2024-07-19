@@ -8,29 +8,15 @@ public class User {
 	String password;
 	String name;
 	String phone;
-	String gender;
+	int gender;
 	String message;
 	int role;
-	int shoppingCartId;
 	String email;
 	int status;
-	public User(int id, String userName, String password, String name, String phone, String gender, String message,
-			int role, int shoppingCartId, String email, int status) {
-		super();
-		this.id = id;
-		this.userName = userName;
-		this.password = password;
-		this.name = name;
-		this.phone = phone;
-		this.gender = gender;
-		this.message = message;
-		this.role = role;
-		this.shoppingCartId = shoppingCartId;
-		this.email = email;
-		this.status = status;
-	}
-	
-	public User(int id, String userName, String password, String name, String phone, String gender, String message,
+	Role rolee;
+	StatusUser statusUser;
+
+	public User(int id, String userName, String password, String name, String phone, int gender, String message,
 			int role, String email, int status) {
 		super();
 		this.id = id;
@@ -44,9 +30,8 @@ public class User {
 		this.email = email;
 		this.status = status;
 	}
-	
 
-	public User(String userName, String password, String name, String phone, String gender, String message,
+	public User(String userName, String password, String name, String phone, int gender, String message,
 			String email) {
 		super();
 		this.userName = userName;
@@ -57,9 +42,8 @@ public class User {
 		this.message = message;
 		this.email = email;
 	}
-	
 
-	public User(String userName, String password, String name, String phone, String gender, String email) {
+	public User(String userName, String password, String name, String phone, int gender, String email) {
 		super();
 		this.userName = userName;
 		this.password = password;
@@ -69,8 +53,8 @@ public class User {
 		this.email = email;
 	}
 
-	public User(int id, String userName, String password, String name, String phone, String gender, String message,
-			int shoppingCartId, String email) {
+	public User(int id, String userName, String password, String name, String phone, int gender, String message,
+			String email) {
 		super();
 		this.id = id;
 		this.userName = userName;
@@ -79,8 +63,25 @@ public class User {
 		this.phone = phone;
 		this.gender = gender;
 		this.message = message;
-		this.shoppingCartId = shoppingCartId;
 		this.email = email;
+	}
+
+	
+	public User(String userName, String name, int role, String email, int status) {
+		super();
+		this.userName = userName;
+		this.name = name;
+		this.role = role;
+		this.email = email;
+		this.status = status;
+	}
+
+	public User(int id, String name, String phone, int gender) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.phone = phone;
+		this.gender = gender;
 	}
 
 	public User() {
@@ -127,11 +128,11 @@ public class User {
 		this.phone = phone;
 	}
 
-	public String getGender() {
+	public int getGender() {
 		return gender;
 	}
 
-	public void setGender(String gender) {
+	public void setGender(int gender) {
 		this.gender = gender;
 	}
 
@@ -151,14 +152,6 @@ public class User {
 		this.role = role;
 	}
 
-	public int getShoppingCartId() {
-		return shoppingCartId;
-	}
-
-	public void setShoppingCartId(int shoppingCartId) {
-		this.shoppingCartId = shoppingCartId;
-	}
-
 	public String getEmail() {
 		return email;
 	}
@@ -175,15 +168,27 @@ public class User {
 		this.status = status;
 	}
 
+	public Role getRolee() {
+		return rolee;
+	}
+
+	public void setRolee(Role rolee) {
+		this.rolee = rolee;
+	}
+
+	public StatusUser getStatusUser() {
+		return statusUser;
+	}
+
+	public void setStatusUser(StatusUser statusUser) {
+		this.statusUser = statusUser;
+	}
+
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", userName=" + userName + ", password=" + password + ", name=" + name + ", phone="
-				+ phone + ", gender=" + gender + ", message=" + message + ", role=" + role + ", shoppingCartId="
-				+ shoppingCartId + ", email=" + email + ", status=" + status + "]";
+				+ phone + ", gender=" + gender + ", message=" + message + ", role=" + role + ", email=" + email
+				+ ", status=" + status + ", rolee=" + rolee + ", statusUser=" + statusUser + "]";
 	}
-	
-
-	
-
 
 }

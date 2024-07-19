@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
+import jakarta.servlet.FilterConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
@@ -20,10 +21,19 @@ public class LanguageFilter implements Filter{
 		System.out.println(lang);
 		if(lang!=null) {
 			req.getSession().setAttribute("lang", lang);
-			
+	
 		}
 		arg2.doFilter(arg0, arg1);
-		
+	}
+	@Override
+	public void init(FilterConfig filterConfig) throws ServletException {
+		// TODO Auto-generated method stub
+		Filter.super.init(filterConfig);
+	}
+	@Override
+	public void destroy() {
+		// TODO Auto-generated method stub
+		Filter.super.destroy();
 	}
 	public static void main(String[] args) {
 		

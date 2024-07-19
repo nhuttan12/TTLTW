@@ -8,17 +8,17 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.Item;
 import model.Order;
-import model.ShoppingCart;
+import model.Cart;
 import model.User;
 
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
-import database.DBCartItems;
+//import database.DBCartItems;
 import database.DBContact;
 import database.DBOrder;
-import database.DBShoppingCart;
+//import database.DBShoppingCart;
 import database.DBUser;
 import email.ClientSendEmail;
 
@@ -41,7 +41,6 @@ public class Contact extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		
 		String email = req.getParameter("email");
 		String name = req.getParameter("name");
 		String message = req.getParameter("message");
