@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import database.DBImport;
 import database.DBItem;
 import database.DBLog;
 import database.DBOrder;
@@ -17,6 +18,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import model.ImportItem;
 import model.Item;
 import model.Logging;
 import model.Order;
@@ -35,23 +37,29 @@ public class Admin extends HttpServlet {
 			req.getRequestDispatcher("login.jsp").forward(req, resp);
 		} else {
 			String gr = req.getParameter("gr");
-			if(gr==null) {
-				gr="home";
+			if (gr == null) {
+				gr = "home";
 			}
 //			System.out.println(gr);
 			DBItem dbItem = new DBItem();
 			DBUser dbUser = new DBUser();
 			DBOrder dbOrder = new DBOrder();
 			DBLog dbLog = new DBLog();
+			DBImport dbImport = new DBImport();
 
 			List<User> users = new ArrayList<User>();
 			List<Item> items = new ArrayList<Item>();
-			List<Order> oders = new ArrayList<Order>();
-			List<List<Item>> itemss = new ArrayList<List<Item>>();
-			List<List<List<Item>>> itemList = new ArrayList<List<List<Item>>>();
-			List<List<Order>> orderList = new ArrayList<List<Order>>();
-			
+			List<Order> orders = new ArrayList<Order>();
+			List<ImportItem> importItems = new ArrayList<ImportItem>();
+//			List<List<Item>> itemss = new ArrayList<List<Item>>();
+//			List<List<List<Item>>> itemList = new ArrayList<List<List<Item>>>();
+//			List<List<Order>> orderList = new ArrayList<List<Order>>();
+
 			if (gr == null || gr.equals("home")) {
+				orders=dbOrder.getCusomerNotBuyOver6Month();
+				
+				
+				req.setAttribute("orders", orders);
 				req.setAttribute("home", "home");
 
 			} else if (gr.equals("item")) {// quan ly san pham
@@ -60,25 +68,24 @@ public class Admin extends HttpServlet {
 				req.setAttribute("item", "item");
 
 //				System.out.println(items);
+			} else if (gr.equals("inventory")) {
+				items = dbItem.getInventoryForAdmin();
+
+				req.setAttribute("listInventory", items);
+				req.setAttribute("inventory", "inventory");
+			} else if (gr.equals("importHistory")) {
+				importItems = dbImport.getHistoryImportLists();
+
+				req.setAttribute("importList", importItems);
+				req.setAttribute("importHistory", "importHistory");
 			} else if (gr.equals("spcart")) {// quan ly don hang
 				try {
 					users = dbUser.getUserByRole(1);
 					req.setAttribute("users", users);
 					req.setAttribute("spcart", "spcart");
 
-//					for (User u : users) {
-//						oders = dbOrder.getOderByShoppingCartID(u.getShoppingCartId());
-//						for (Order order : oders) {
-//							items = dbOrder.getListItemOrderByOrderID(order.getOrderId());
-//							System.out.println(items);
-//							itemss.add(items);
-//						}
-//						orderList.add(oders);
-//						itemList.add(itemss);
-//
-//					}
-					req.setAttribute("itemList", itemList);
-					req.setAttribute("orderList", orderList);
+					orders = dbOrder.getOrdersForAdmin();
+					req.setAttribute("listOrder", orders);
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -86,20 +93,22 @@ public class Admin extends HttpServlet {
 
 			} else if (gr.equals("user")) {
 				try {
-					users = dbUser.getUserByRole(1);
+					users = dbUser.getUsersForAdmin();
 					req.setAttribute("listUser", users);
 					req.setAttribute("user", "user");
-
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
-			}else if(gr.equals("log")) {
-				List<Logging> listLog =dbLog.getAll();
-				req.setAttribute("listLog", listLog);
+			} else if (gr.equals("log")) {
+				if(user.getRole()==3) {
+					List<Logging> listLog = dbLog.getAll();
+					req.setAttribute("listLog", listLog);
+				}else {
+					req.setAttribute("error", "authorization");
+				}
 			}
 
-			req.setAttribute("gr2",gr);
+			req.setAttribute("gr2", gr);
 			req.setAttribute(gr, gr);
 			req.getRequestDispatcher("admin.jsp").forward(req, resp);
 
@@ -124,10 +133,10 @@ public class Admin extends HttpServlet {
 
 			List<User> users = new ArrayList<User>();
 			List<Item> items = new ArrayList<Item>();
-			List<Order> oders = new ArrayList<Order>();
-			List<List<Item>> itemss = new ArrayList<List<Item>>();
-			List<List<List<Item>>> itemList = new ArrayList<List<List<Item>>>();
-			List<List<Order>> orderList = new ArrayList<List<Order>>();
+			List<Order> orders = new ArrayList<Order>();
+//			List<List<Item>> itemss = new ArrayList<List<Item>>();
+//			List<List<List<Item>>> itemList = new ArrayList<List<List<Item>>>();
+//			List<List<Order>> orderList = new ArrayList<List<Order>>();
 			if (gr == null || gr.equals("home")) {
 				req.setAttribute("home", "home");
 
@@ -139,29 +148,8 @@ public class Admin extends HttpServlet {
 
 //				System.out.println(items);
 			} else if (gr.equals("spcart")) {// quan ly don hang
-				try {
-					users = dbUser.getUserByRole(1);
-					req.setAttribute("users", users);
-					req.setAttribute("spcart", "spcart");
-
-					for (User u : users) {
-//						oders = dbOrder.getOderByShoppingCartID(u.getShoppingCartId());
-						for (Order order : oders) {
-//							items = dbOrder.getListItemOrderByOrderID(order.getOrderId());
-							System.out.println(items);
-							itemss.add(items);
-						}
-						orderList.add(oders);
-						itemList.add(itemss);
-
-					}
-					req.setAttribute("itemList", itemList);
-					req.setAttribute("orderList", orderList);
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-
+				orders = dbOrder.getOrdersForAdmin();
+				req.setAttribute("listOrder", orders);
 			} else if (gr.equals("user")) {
 				try {
 					users = dbUser.getUserByRole(1);
@@ -172,7 +160,7 @@ public class Admin extends HttpServlet {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-			}else if(gr.equals("log")) {
+			} else if (gr.equals("log")) {
 				req.setAttribute("log", "log");
 			}
 

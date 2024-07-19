@@ -7,6 +7,7 @@ import java.util.Locale;
 public class Order {
 	int orderId;
 	int userId;
+	double totalPrice; // hỗ trợ hiển thị tổng tiền của hoá đơn
 	String name;
 	String phone;
 	String address;
@@ -14,6 +15,8 @@ public class Order {
 	String orderDate;
 	String deliveriDate;
 	int statusOrderId;
+	StatusOrder statusOrder;
+	int dateDifference;
 
 	public Order(int orderId, int userId, String name, String phone, String address, String note, String orderDate,
 		 int statusOrderId) {
@@ -129,11 +132,36 @@ public class Order {
 		this.statusOrderId = statusOrderId;
 	}
 
+	public StatusOrder getStatusOrder() {
+		return statusOrder;
+	}
+
+	public void setStatusOrder(StatusOrder statusOrder) {
+		this.statusOrder = statusOrder;
+	}
+
+	public int getDateDifference() {
+		return dateDifference;
+	}
+
+	public void setDateDifference(int dateDifference) {
+		this.dateDifference = dateDifference;
+	}
+
+	public double getTotalPrice() {
+		return totalPrice;
+	}
+
+	public void setTotalPrice(double totalPrice) {
+		this.totalPrice = totalPrice;
+	}
+
 	@Override
 	public String toString() {
-		return "Order [orderId=" + orderId + ", userId=" + userId + ", name=" + name + ", phone=" + phone + ", address="
-				+ address + ", note=" + note + ", orderDate=" + orderDate + ", deliveriDate=" + deliveriDate
-				+ ", statusOrderId=" + statusOrderId + "]";
+		return "Order [orderId=" + orderId + ", userId=" + userId + ", totalPrice=" + totalPrice + ", name=" + name
+				+ ", phone=" + phone + ", address=" + address + ", note=" + note + ", orderDate=" + orderDate
+				+ ", deliveriDate=" + deliveriDate + ", statusOrderId=" + statusOrderId + ", statusOrder=" + statusOrder
+				+ "]";
 	}
 
 }

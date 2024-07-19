@@ -47,8 +47,4 @@ pom.xml.releaseBackup
 pom.xml.versionsBackup
 pom.xml.next
 release.properties
-<<<<<<< HEAD
 dependency-reduced-pom.xml
-=======
-dependency-reduced-pom.xml
->>>>>>> 842681a73db9872cb46fa32a6705a6b99f0d7266

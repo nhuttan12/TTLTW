@@ -13,6 +13,8 @@ public class User {
 	int role;
 	String email;
 	int status;
+	Role rolee;
+	StatusUser statusUser;
 
 	public User(int id, String userName, String password, String name, String phone, int gender, String message,
 			int role, String email, int status) {
@@ -166,10 +168,27 @@ public class User {
 		this.status = status;
 	}
 
+	public Role getRolee() {
+		return rolee;
+	}
+
+	public void setRolee(Role rolee) {
+		this.rolee = rolee;
+	}
+
+	public StatusUser getStatusUser() {
+		return statusUser;
+	}
+
+	public void setStatusUser(StatusUser statusUser) {
+		this.statusUser = statusUser;
+	}
+
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", userName=" + userName + ", password=" + password + ", name=" + name + ", phone="
-				+ phone + ", gender=" + gender + ", message=" + message + ", role=" + role + ", email=" + email + ", status=" + status + "]";
+				+ phone + ", gender=" + gender + ", message=" + message + ", role=" + role + ", email=" + email
+				+ ", status=" + status + ", rolee=" + rolee + ", statusUser=" + statusUser + "]";
 	}
 
 }

@@ -102,10 +102,12 @@ public class Admin_Add_Item extends HttpServlet {
 			item.setDiscount(discountItem);
 			item.setDiscription(discription);
 			item.setImageName(url);
+			
 			Logging logging=new Logging(LevelLog.INFO.name(), InforMessage.THEM_SAN_PHAM_THANH_CONG.name(), null, item);
 			MyLog myLog = new MyLog();
 			try {
 				dbItem.addITEM(item);
+				dbItem.addInventoryFirst(item);
 				myLog.insertLog(logging, req);
 				
 			} catch (SQLException e) {
