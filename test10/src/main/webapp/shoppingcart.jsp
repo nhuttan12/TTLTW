@@ -46,6 +46,7 @@
 
 	}
 </script>
+<title>Shopping Cart</title>
 </head>
 
 <body class="sub_page">
@@ -270,20 +271,20 @@
           $('#promotion_select').on('change', function() {
         	    var promoCode = $('#promotion_select').val();
         	    $.ajax({
-        	        url: 'shoppingcart', // URL đến servlet xử lý mã khuyến mãi
+        	        url: 'shoppingcart',
         	        type: 'POST',
         	        data: { code: promoCode },
         	        success: function(response) {
         	        	var a=response.total;
         	        	var b=response.error;
         	        	  if (a !== undefined) {
+        	        		  console.log("co neeeeeeeeeeeee"+ a);
         	                  $('#total').text(a);
-        	                  $('#error_message').text(''); // Xóa thông báo lỗi nếu có
+        	                  $('#error_message').text('');
         	              } else if (b !== undefined) {
         	                  $('#error_message').text(b).show();
-        	                 
+        	                  console.log("co erooooooooo"+b);
         	              }
-        	      
         	        },
         	        error: function(response) {
         	            alert('Đã xảy ra lỗi khi gửi mã khuyến mãi.');
